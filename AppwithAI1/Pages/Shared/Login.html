@@ -1,0 +1,39 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Login</title>
+</head>
+<body>
+    <form action="login.php" method="post">
+        <label for="username">Username:</label><br>
+        <input type="text" id="username" name="username"><br>
+        <label for="password">Password:</label><br>
+        <input type="password" id="password" name="password"><br><br>
+        <input type="submit" value="Submit">
+    </form>
+    <!-- login.php -->
+    <?php
+    $username = $_POST["username"];
+    $password = $_POST["password"];
+
+    // Connect to Microsoft Active Directory
+    $ldap_connection = ldap_connect("ldap://domain.com");
+    ldap_set_option($ldap_connection, LDAP_OPT_PROTOCOL_VERSION, 3);
+
+    if (ldap_bind($ldap_connection, $username, $password)) {
+    // Set session variables and redirect to dashboard page
+    session_start();
+    $_SESSION["username"] = $username;
+    header("Location: dashboard.php");
+    exit();
+    } else {
+    // Display error message
+    echo "Invalid username or password";
+    }
+    ?>
+
+
+
+</body>
+</html>

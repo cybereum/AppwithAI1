@@ -1,0 +1,30 @@
+﻿@page
+@model TestModel
+@{
+    ViewData["Title"] = "Test_Proj";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sci-Fi Movie Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1 class="dashboard-header">Sci-Fi Movie Production Schedule</h1>
+    <div class="dashboard-section">
+        <div class="gantt-chart">
+            <div class="gantt-bar" style="left: 0px; width: 100px;">
+                <div class="gantt-bar-label">Movie 1</div>
+            </div>
+            <div class="gantt-bar" style="left: 150px; width: 200px;">
+                <div class="gantt-bar-label">Movie 2</div>
+            </div>
+            <div class="gantt-bar" style="left: 400px; width: 50px;">
+                <div class="gantt-bar-label">Movie 3</div>
+            </div>
+        </div>
+        <div class="gantt-today-marker"></div>
+        <div class="gantt-date-label">Date</div>
+    </div>
+</body>
+</html>

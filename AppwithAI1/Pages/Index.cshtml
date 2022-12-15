@@ -1,0 +1,271 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="text-center">
+    <img src="/Blue_Logo.png" style="width:150px;height:150px;" />
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://cybereum.io">building projects with cybereum</a>.</p>
+    <p>
+        <button type="button" onclick="location.href='https://localhost:7050/Privacy'">Login<br><h6>Assume Identity</h6></button>
+    </p>
+    <p><button type="button" onclick="location.href='https://cybereum.io'">Get Login<br><h6>Obtain Identity</h6></button></p>
+        
+    <p><button type="button" onclick="location.href='https://localhost:7050/GANTT_Chart'">Sample GANTT<br><h6>using DHTMLX library</h6></button></p>
+    
+    <p><button type="button" onclick="location.href='https://localhost:7050/CreateGraph'">Upload_JSON<br><h6>upload exisiting project schedule to Gremlin</h6></button></p>
+</div>
+
+<h1>/* Testing */</h1>
+<h2>DHTMLGANTT</h2>
+<script src="https://cdn.dhtmlx.com/gantt/edge/dhtmlxgantt.js"></script>
+
+<div id="gantt_here" style='width:100%; height:100%;'></div>
+<script>
+    gantt.init("gantt_here");
+
+    // Create an array of 20 tasks for the GANTT chart
+    var tasks = [];
+    for (var i = 0; i < 20; i++) {
+        // Pad the day and month with leading zeroes to ensure correct formatting
+        var day = (i + 1).toString().padStart(2, "0");
+        var month = "12".padStart(2, "0");
+        tasks.push({
+            id: i + 1,
+            text: "Task " + (i + 1),
+            start_date: "2022-" + month + "-" + day,
+            duration: 3,
+            progress: 0.4
+        });
+    }
+
+    // Enable interactive features for the GANTT chart
+    gantt.config.drag_move = true;
+    gantt.config.drag_progress = true;
+    gantt.config.drag_resize = true;
+    gantt.config.details_on_dblclick = true;
+    gantt.config.select_task = true;
+
+    // Parse the tasks array to generate the GANTT chart
+    gantt.parse(tasks);
+</script>
+
+
+<h2>DHTMLGANTT</h2>
+
+<form id="form1" runat="server">
+    <div>
+      <h1>Project Gantt Chart</h1>
+      <p>Please enter the following details to create a Gantt chart for your project:</p>
+        <table>
+    <tr>
+      <td>Project Name:</td>
+      <td>
+        <asp:TextBox ID="txtProjectName" runat="server" />
+      </td>
+    </tr>
+    <tr>
+      <td>Project Description:</td>
+      <td>
+        <asp:TextBox ID="txtProjectDescription" runat="server" TextMode="MultiLine" Rows="4" Columns="50" />
+      </td>
+    </tr>
+    <tr>
+      <td>Start Date:</td>
+      <td>
+        <asp:TextBox ID="txtStartDate" runat="server" />
+      </td>
+    </tr>
+    <tr>
+      <td>End Date:</td>
+      <td>
+        <asp:TextBox ID="txtEndDate" runat="server" />
+      </td>
+    </tr>
+  </table>
+
+  <p>
+    <asp:Button ID="btnCreateGanttChart" runat="server" Text="Create Gantt Chart" OnClick="btnCreateGanttChart_Click" />
+  </p>
+</div>
+</form>
+
+
+  <h1 class="dashboard-header">Project Dashboard</h1>
+  <div class="dashboard-section">
+    <div class="dashboard-stat">
+      <span class="dashboard-stat-value">123</span>
+      <span class="dashboard-stat-label">Total Project Participants</span>
+    </div>
+    <div class="dashboard-stat">
+      <span class="dashboard-stat-value">45</span>
+      <span class="dashboard-stat-label">Total Milestones</span>
+    </div>
+    <div class="dashboard-stat">
+      <span class="dashboard-stat-value">789</span>
+      <span class="dashboard-stat-label">Total Activities</span>
+    </div>
+  </div>
+    <div class="dashboard-section">
+    <div class="dashboard-stat">
+      <span class="dashboard-stat-value">21</span>
+      <span class="dashboard-stat-label">Currently Active Participants</span>
+    </div>
+    <div class="dashboard-stat">
+      <span class="dashboard-stat-value">5</span>
+      <span class="dashboard-stat-label">Total Milestones Acheived</span>
+    </div>
+    <div class="dashboard-stat">
+      <span class="dashboard-stat-value">35</span>
+      <span class="dashboard-stat-label">Total Activities Completed</span>
+    </div>
+  </div>
+
+   <h1>Pie Chart</h1>
+    <div class="piechart"></div>
+
+  <h1 class="dashboard-header"> Project Status </h1>
+  <div class="dashboard">
+    <div class="dashboard-card">
+      <h3>Project Status</h3>
+      <p>Behind Schedule by X%; Over budgert by XX% </p>
+      <button>Check Status</button>
+    </div>
+    <div class="dashboard-card">
+      <h3>Recommendation</h3>
+      <p>Monitor these milestones: 23, 45, 87 and these activities; 5, 78, 44, 45, 34, 78, 8, 43 </p>
+      <button>Reanalyze</button>
+    </div>
+    <div class="dashboard-card">
+      <h3>Projected completion</h3>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus euismod eros at est mollis, ut aliquet diam semper.</p>
+      <button>Generate more forecasts</button>
+    </div>
+  </div>
+
+
+  <div class="dashboard-section">
+    <canvas id="salesChart" class="dashboard-chart"></canvas>
+  </div>
+  <div class="dashboard-section">
+    <table class="dashboard-table">
+      <tr>
+        <th>Username</th>
+        <th>Email</th>
+        <th>Signup Date</th>
+      </tr>
+      <tr>
+        <td>user1</td>
+        <td>user1@email.com</td>
+        <td>01/01/2019</td>
+      </tr>
+      <tr>
+        <td>user2</td>
+        <td>user2@email.com</td>
+        <td>01/02/2019</td>
+      </tr>
+      <tr>
+        <td>user3</td>
+        <td>user3@email.com</td>
+        <td>01/03/2019</td>
+      </tr>
+    </table>
+  </div>
+  <div class="dashboard-section">
+    <button class="dashboard-button">Export Data</button>
+  </div>
+
+<br />
+<div class="dashboard-section">
+<div class="gantt-chart1">
+
+  <div class="gantt-bar" style="left: 50px; width: 100px;">
+    <div class="gantt-bar-label">Task 1</div>
+  </div>
+  <br />
+  <div class="gantt-bar" style="left: 150px; width: 200px;">
+    <div class="gantt-bar-label">Task 2</div>
+  </div>
+
+  <br />  
+  <div class="gantt-bar" style="left: 350px; width: 150px;">
+    <div class="gantt-bar-label">Task 3</div>
+  </div>
+  <div class="gantt-today-marker" style="left: 400px;"></div>
+  <div class="gantt-date-label">Date</div>
+</div>
+</div>
+
+<br />
+  <h1 class="dashboard-header">Futuristic Bar Chart</h1>
+  <div class="dashboard-section">
+    <div class="chart">
+      <div class="bar" style="width: 100px;">
+        <div class="bar-label">Data 1</div>
+      </div>
+      <div class="bar" style="width: 75px;">
+        <div class="bar-label">Data 2</div>
+      </div>
+      <div class="bar" style="width: 150px;">
+        <div class="bar-label">Data 3</div>
+      </div>
+    </div>
+    <div class="chart-today-marker" style="left: 200px;"></div>
+    <div class="chart-axis">Data</div>
+  </div>
+
+<div class="dashboard-section">
+<div class="gantt-chart">
+  <!-- Dummy GANTT chart data -->
+
+
+        <table class="dashboard-table">
+      <tr>
+        <td>Activity1</td>
+        <td>user1@email.com</td>
+        <td>01/01/2019</td>
+        <td><div class="gantt-bar" style="left:0px;width:100px"></div><div class="gantt-bar-label">Activity 1</div></td>
+      </tr>
+      <tr>
+        <td>user1</td>
+        <td>user1@email.com</td>
+        <td>01/01/2019</td>
+      </tr>
+      <tr>
+        <td>user2</td>
+        <td>user2@email.com</td>
+        <td>01/02/2019</td>
+      </tr>
+      <tr>
+        <td>user3</td>
+        <td>user3@email.com</td>
+        <td>01/03/2019</td>
+      </tr>
+    </table>
+<br />
+  <div class="gantt-bar" style="left:0px;width:100px">
+    <div class="gantt-bar-label">Activity 1</div>
+  </div>
+  <div class="gantt-bar" style="left:100px;width:200px">
+    <div class="gantt-bar-label">Activity 2</div>
+  </div>
+  <div class="gantt-bar" style="left:300px;width:150px">
+    <div class="gantt-bar-label">Activity 3</div>
+  </div>
+  <div class="gantt-bar" style="left:450px;width:250px">
+    <div class="gantt-bar-label">Activity 4</div>
+  </div>
+  <div class="gantt-bar" style="left:700px;width:200px">
+    <div class="gantt-bar-label">Activity 5</div>
+  </div>
+  <div class="gantt-bar" style="left:900px;width:100px">
+    <div class="gantt-bar-label">Activity 6</div>
+  </div>
+  <div class="gantt-bar" style="left:1000px;width:150px">
+    <div class="gantt-bar-label">Activity 7</div>
+  </div>
+</div>
+</div>
+

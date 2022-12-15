@@ -1,0 +1,31 @@
+﻿<html>
+<head>
+    <title>Cosmos DB Gantt Chart</title>
+</head>
+<body>
+    <h1>Cosmos DB Gantt Chart</h1>
+
+    <!-- Load the required libraries for the Gantt chart -->
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="https://unpkg.com/d3-gantt"></script>
+
+    <!-- Create a container element for the Gantt chart -->
+    <div id="gantt-chart"></div>
+
+    <!-- Connect to the Cosmos DB and retrieve the data -->
+    <script>
+      // TODO: Add code to connect to the Cosmos DB and retrieve the data
+
+      // Create the Gantt chart using the data from the Cosmos DB
+      var ganttChart = d3.gantt()
+        .taskTypes(["Task A", "Task B", "Task C"])
+        .taskStatus(["In Progress", "Complete"])
+        .tickFormat("%Y-%m-%d");
+
+      // Bind the data to the Gantt chart and draw it
+      d3.select("#gantt-chart")
+        .datum(data)
+        .call(ganttChart);
+    </script>
+</body>
+</html>

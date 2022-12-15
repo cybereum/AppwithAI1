@@ -1,0 +1,60 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Sci-Fi Movie Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1 class="dashboard-header">Sci-Fi Movie Production Schedule</h1>
+    <div class="dashboard-section">
+        <div class="gantt-chart">
+            <!-- GANTT chart bars and labels will be generated here using data from Cosmos DB -->
+        </div>
+        <div class="gantt-today-marker"></div>
+        <div class="gantt-date-label">Date</div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@azure/cosmosdb-query-js/dist/cosmosdb-query-js.umd.min.js"></script>
+    <script>
+        // Connect to Cosmos DB and generate GANTT chart
+        var endpoint = "https://mycosmosdbaccount.documents.azure.com:443/";
+        var key = "mycosmosdbkey";
+        var client = new CosmosClient(endpoint, key);
+        var querySpec = {
+            query: "SELECT * FROM movies"
+        };
+
+        client
+            .database("mydatabase")
+            .container("mycontainer")
+            .items.query(querySpec, { enableCrossPartitionQuery: true })
+            .fetchAll()
+            .then(function (results) {
+                var movies = results.resources;
+                for (var i = 0; i < movies.length; i++) {
+                    var movie = movies[i];
+                    var start = movie.startDate;
+                    var end = movie.endDate;
+                    var width = end - start;
+                    var left = start;
+                    var bar = $("<div>", {
+                        class: "gantt-bar",
+                        css: {
+                            left: left + "px",
+                            width: width + "px"
+                        }
+                    });
+                    var label = $("<div>", {
+                        class: "gantt-bar-label",
+                        text: movie.name
+                    });
+                    bar.append(label);
+                    $(".gantt-chart").append(bar);
+                }
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    </script>
+</body>
+</html>
