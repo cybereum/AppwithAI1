@@ -292,6 +292,51 @@ button:active, a.button:active {
     border-left: 3px solid rgba(255, 255, 255, 0.5);
 }
 
+/* Set the background color of the form to a dark blue */
+form {
+    background-color: #0e2d46;
+}
+
+/* Set the font for the form to the Orbitron font */
+form {
+    font-family: "Orbitron", sans-serif;
+}
+
+    /* Style the form's input fields with a futuristic look */
+    form input[type="text"],
+    form input[type="password"],
+    form textarea {
+        /* Add some padding and a white border */
+        padding: 12px;
+        border: 1px solid white;
+        /* Set the text color to white */
+        color: white;
+        /* Add a hover effect that changes the border color to blue */
+        transition: border-color 0.2s ease-in-out;
+        &:hover
+
+{
+    border-color: #00bfff;
+}
+
+}
+
+/* Style the form's submit button with a futuristic look */
+form input[type="submit"] {
+    /* Add some padding and a white border */
+    padding: 12px;
+    border: 1px solid white;
+    /* Set the text color to white and the background color to a dark blue */
+    color: white;
+    background-color: #123c64;
+    /* Add a hover effect that changes the background color to a lighter blue */
+    transition: background-color 0.2s ease-in-out;
+    &:hover
+
+{
+    background-color: #00bfff;
+}
+}
 
 
 
