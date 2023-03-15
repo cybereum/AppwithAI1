@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using AppwithAI1.Data;
 using static AppwithAI1.Pages.UploadJsonModel;
+using AppwithAI1.Services;
 
 namespace AppwithAI1
 {
@@ -32,6 +33,15 @@ namespace AppwithAI1
                 .AddEntityFrameworkStores<AppwithAI1Context>();
 
             services.AddTransient<UploadJsonPageModel>();
+
+            services.AddServerSideBlazor();
+            //services.AddScoped<GraphService>();
+
+            //services.AddScoped<GraphService>(provider => new GraphService("gremtest1.gremlin.cosmosdb.azure.com", 443, "lja6Gkeuf5nsnEg9TYyC79N1fvt4v1ZBb9JwkbWPNiNC1tEeBOSVu8vBHQZeKnSFguIKz9ziKjVEiPAjRAuf3w==", "graphdb", "Graph7"));
+            services.AddScoped<GraphService>(s => new GraphService(Configuration["CosmosDb:Hostname"], Configuration.GetValue<int>("CosmosDb:Port"), Configuration["CosmosDb:AuthKey"], Configuration["CosmosDb:Database"], Configuration["CosmosDb:Collection"]));
+
+
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -58,6 +68,8 @@ namespace AppwithAI1
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();
+                endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapBlazorHub();
             });
         }
     }

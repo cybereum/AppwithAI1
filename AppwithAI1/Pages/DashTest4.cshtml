@@ -1,0 +1,488 @@
+﻿@page
+<html>
+<head>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <style>
+        .node {
+            fill: #fff;
+            stroke: steelblue;
+            stroke-width: 1.5px;
+        }
+
+        .link {
+            stroke: #d2fbff;
+            stroke-opacity: 0.9;
+        }
+
+        path.link {
+            fill: none;
+            stroke: #666;
+            stroke-width: 1.5px;
+        }
+
+        circle {
+            fill: #ccc;
+            stroke: #fff;
+            stroke-width: 2.5px;
+        }
+
+        text {
+            fill: #000;
+            font: 10px sans-serif;
+            pointer-events: none;
+        }
+
+        div.status {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 500px;
+            border: 3px solid #5f8a8b;
+            opacity: 0.8;
+        }
+
+        div.test {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 300px;
+            border: 3px solid #5f8a8b;
+            opacity: 0.8;
+        }
+
+        div.test2 {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 300px;
+            border: 3px solid #5f8a8b;
+            opacity: 0.8;
+        }
+
+        div.test3 {
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            width: 300px;
+            border: 3px solid #5f8a8b;
+            opacity: 0.8;
+        }
+
+        div.test4 {
+            position: absolute;
+            left: 32.0%;
+            top: 200px;
+            width: 800px;
+            border: 5px solid #6e7f80;
+            text-align: center;
+            opacity: 0.6;
+        }
+
+        div.head1 {
+            position: absolute;
+            left: 45%;
+            top: 155px;
+            text-align: center;
+            width: 400px;
+            opacity: 0.5;
+            // border: 3px solid #6e7f80;
+        }
+
+        div.container {
+            position: absolute;
+            left: 45%;
+            top: 1px;
+            text-align: center;
+            width: 400px;
+            opacity: 0.8;
+            // border: 3px solid #73AD21;
+        }
+
+        img {
+            // width: 100%;
+            height: auto;
+            opacity: 0.4;
+        }
+    </style>
+</head>
+<body>
+    <div class="status" style="background-color:lightblue">Milestone node name:-&gt;   102  Wind Tunnel Model Test Report - IFR</div>
+    <div class="test" style="background-color:lightblue">Degree:-&gt;   4</div>
+    <div class="test2" style="background-color:lightblue">Index (internal):-&gt;   96</div>
+    <div class="test3" style="background-color:lightblue">Block name:-&gt;   102.json</div>
+    <div class="test4" style="background-color:lightblue"><p>
+        </p><table style="width:100%">
+            <tbody>
+                <tr>
+                    <th>| Critical Paths and lenghts: <a href="https://cybereum.io/wp-content/uploads/2018/11/path-weights.txt"><font color="red"><u>Open</u></font></a> |  </th>
+                    <th>| Degree Centrality: <a href="https://cybereum.io/wp-content/uploads/2018/11/Degree_Centrality.txt"><font color="red"><u>Open</u></font></a> |  </th>
+                    <th>| PageRank: <a href="https://cybereum.io/wp-content/uploads/2018/11/Pagerank.txt"><font color="red"><u>Open</u></font></a> |  </th>
+                </tr>
+            </tbody>
+        </table>
+        <p></p>
+    </div>
+    <div class="head1" style="background-color:lightblue"><p>Offshore Platform - Project Network Blockchain</p></div>
+    <div class="container"><p><a href="http://cybereum.io/"><img src="/Blue_Logo.png" width="150" height="100"></a></p></div>
+    <a href="http://cybereum.io/"></a>
+    <svg></svg>
+    
+   
+    <script>
+        function uploadFile(event) {
+            var input = event.target;
+            var reader = new FileReader();
+            reader.onload = function () {
+                var text = reader.result;
+                var data = d3.csvParse(text);
+                generateGraph(data);
+            };
+            reader.readAsText(input.files[0]);
+        }
+
+        function generateGraph(data) {
+
+            var nodes = [];
+            var links = [];
+            data.forEach(function (d) {
+                var sourceNode = nodes.find(function (n) {
+                    return n.name === d.source;
+                });
+                if (!sourceNode) {
+                    sourceNode = { name: d.source, degree: 0 };
+                    nodes.push(sourceNode);
+                }
+                var targetNode = nodes.find(function (n) {
+                    return n.name === d.target;
+                });
+                if (!targetNode) {
+                    targetNode = { name: d.target, degree: 0 };
+                    nodes.push(targetNode);
+                }
+                sourceNode.degree++;
+                targetNode.degree++;
+                links.push({ source: sourceNode, target: targetNode, value: d.value });
+            });
+            var width = 2000,
+                height = 1500;
+
+            var toggle = 0;
+
+            var colors = d3.scale.category20();
+
+            var radiusScale = d3.scale.sqrt()
+                .range([0, 300]);
+
+            // After I've read in my data I can get the maximum
+            //var max = d3.max(data, function(d) { return d.value });
+            // Now it will know the inputs are between 0 and the max value
+            //radiusScale.domain([0, max]);
+
+            var force = d3.layout.force()
+                .nodes(nodes)
+                .links(links)
+                .size([width, height])
+                .linkDistance(function (d) { return d.value; })
+                // .charge(-500)
+                .charge(function (d) { return (d.weight * -750) - 1000; })
+                // .chargeDistance(function(d) { return (200+(d.weight/10000000)); })
+                .chargeDistance(350)
+                .gravity(0.3)
+                // .gravity(function(d) { return (0.1+d.weight/10000); })
+                .friction(0.75)
+                .on("tick", tick)
+                .start();
+
+            var svg = d3.select("body").append("svg")
+                .attr("width", width)
+                .attr("height", height);
+
+            // add the links and the arrows
+            var path = svg.append("svg:g").selectAll("path")
+                .data(force.links())
+                .enter().append("svg:path")
+                // .attr("class", function(d) { return "link " + d.type; })
+                .attr("class", "link")
+                // Below sets stroke-width as per value
+                // .style("stroke-width", function (d) { return Math.sqrt(d.value); })
+                .style("stroke", function (d) { return colors(d.value); })
+                .attr("marker-end", "url(#end)")
+                .style({ opacity: '0.99' });
+            // define the nodes
+
+            var node = svg.selectAll(".node")
+                .data(force.nodes())
+                .enter().append("g")
+                .attr("class", "node")
+                .call(force.drag);
+            // add the nodes
+
+            node.append("circle")
+                //    .attr("r", 7)
+                // d3.weight property which can be used to count the number of links and associate with radius attribute of the circle
+                .attr("r", function (d) {
+                    var minRadius = 10;
+                    return minRadius + (d.weight / 2);
+                })
+                //	Using the scale to set the radius
+                //    .attr("r", function(d) { return radiusScale(d.value); })
+                .style("fill", function (d) { return colors(d.weight); })
+                //    .attr("xlink:href", "http://en.wikipedia.org/wiki/"+word)
+                .style({ opacity: '0.6' })
+                .on("mouseover", handleMouseOver)
+                .on("mouseout", handleMouseOut)
+                .on("click", handleClick);
+            // add the text
+            node.append("text")
+                .attr("x", -10)
+                .attr("dy", "1.9em")
+                .attr("font-size", "10px")
+                .attr("class", "shadow")
+                .text(function (d) { return d.name; })
+                .on("mouseover", handleMouseOver)
+                .on("mouseout", handleMouseOut)
+                .on("click", handleClick);
+
+            node.append("text")
+                .attr("class", "aa")
+                .attr("x", -1)
+                .attr("y", "0.4em")
+                .attr("font-size", "10px")
+                .text(function (d) { return "Degree: " + d.degree; });
+            function handleMouseOver(d) {
+                d3.select(this).style({ opacity: '1' });
+                d3.select(this).attr("r", function (d) {
+                    var minRadius = 10;
+                    return minRadius + (d.weight / 2) + 5;
+                });
+                toggle++;
+                if (toggle === 1) {
+                    d3.select(".status").text("Node name:- " + d.name + " | Degree:- " + d.degree);
+                } else {
+                    toggle = 0;
+                    d3.select(".status").text("Milestone node name:- " + "102  Wind Tunnel Model Test Report - IFR");
+                }
+            }
+
+            function handleMouseOut(d) {
+                d3.select(this).style({ opacity: '0.6' });
+                d3.select(this).attr("r", function (d) {
+                    var minRadius = 10;
+                    return minRadius + (d.weight / 2);
+                });
+            }
+
+            function handleClick(d) {
+                var blockName = d.name + ".json";
+                d3.select(".test2").text("Index (internal):- " + d.index);
+                d3.select(".test3").text("Block name:- " + blockName);
+                d3.select(".test4").text("Critical Paths and lengths: | Degree Centrality: | PageRank: ");
+                d3.select(".status").text("Selected node:- " + d.name + " | Degree:- " + d.degree);
+            }
+
+            // add the curvy lines
+            function tick() {
+                path.attr("d", function (d) {
+                    var dx = d.target.x - d.source.x,
+                        dy = d.target.y - d.source.y,
+                        dr = Math.sqrt(dx * dx + dy * dy);
+                    return "M" +
+                        d.source.x + "," +
+                        d.source.y + "A" +
+                        dr + "," + dr + " 0 0,1 " +
+                        d.target.x + "," +
+                        d.target.y;
+                });
+                // recalculate and back off the distance
+                path.attr("d", function (d) {
+
+                    // length of current path
+                    var pl = this.getTotalLength(),
+                        // radius of circle plus marker head
+                        //r = (d.target.weight) * 4 + 16.97, //16.97 is the "size" of the marker Math.sqrt(12**2 + 12 **2)
+                        r = 20 + (d.target.weight) / 2,
+                        // position close to where path intercepts circle
+                        m = this.getPointAtLength(pl - r);
+
+                    var dx = m.x - d.source.x,
+                        dy = m.y - d.source.y,
+                        dr = Math.sqrt(dx * dx + dy * dy);
+
+                    return "M" + d.source.x + "," + d.source.y + "A" + dr + "," + dr + " 0 0,1 " + m.x + "," + m.y;
+                });
+                node
+                    .attr("transform", function (d) {
+                        return "translate(" + d.x + "," + d.y + ")";
+                    });
+            }
+            // build the arrow.
+
+            svg.append("svg:defs").selectAll("marker")
+                .data(["end"])      // Different link/path types can be defined here
+                .enter().append("svg:marker")    // This section adds in the arrows
+                .attr("id", String)
+                .attr("viewBox", "0 -5 10 10")
+                //    .attr("refX", graph.links(function(l) {
+                //        var r1 = 24;
+                //    var r2 = 1+l.weight;
+                //    var r3 =r2.weight;
+                //        return r1 + r2/5;
+                //      }))
+                //    .attr("refX", 20)
+                //    .attr("refY", -1.2)
+                .attr("refX", 0)
+                .attr("refY", 0)
+                .attr("markerWidth", 7)
+                .attr("markerHeight", 10)
+                .attr("orient", "auto")
+                .append("svg:path")
+                .attr("d", "M0,-5L10,0L0,5");
+
+            // Return all nodes **not working
+            d3.selection.prototype.nodes = function (d) {
+                var nodes = new Array(this.size()), i = -1;
+                this.each(function () { nodes[++i] = this; });
+                return nodes;
+            }
+
+            function handleClick(d, i) {  // Add interactivity
+                var str1 = d.name
+                var res = str1.split(" ");
+                var res2 = 'https://cybereum.io/wp-content/uploads/2018/11/' + res[0] + '.' + 'txt'
+                d3.select('.test3').text(res2);
+                //    window.location.href='http://google.com';
+                window.location.href = res2;
+            }
+
+            //Create an array logging what is connected to what
+            var linkedByIndex = {};
+            for (i = 0; i < d3GraphData.nodes.length; i++) {
+                linkedByIndex[i + "," + i] = 1;
+            };
+            d3GraphData.links.forEach(function (d) {
+                linkedByIndex[d.source.index + "," + d.target.index] = 1;
+            });
+            //This function looks up whether a pair are neighbours
+            function neighboring(a, b) {
+                return linkedByIndex[a.index + "," + b.index];
+            }
+
+            // Create Event Handlers for mouse
+            function handleMouseOver(d, i) {  // Add interactivity
+                var str1 = d.name
+                var res = str1.split(" ");
+                var res2 = res[0] + '.' + 'json'
+
+                d = d3.select(this).node().__data__;
+                node.style("opacity", function (o) {
+                    return neighboring(d, o) | neighboring(o, d) ? 1 : 0.99;
+                });
+
+                // Use D3 to select element, change color and size
+                d3.select(this).attr("r", function (d) {
+                    var minRadius = 10;
+                    return minRadius + (d.weight * 1.1);
+                })
+                    .style('font', '20px times')
+                    .style({ opacity: '1' })
+                    .style({ stroke: '#333' })
+                    .style('stroke-width', '3.5px');
+                //  stroke: #666;
+
+                //  stroke-width: 1.5px;
+
+                d3.select('.status')
+                    .text('Milestone node name:->   ' + d.name);
+                //    d3.select('.test').text(connectedNodes());
+
+                //    connectedNodes();
+                //    d3.select('.test').text(linkedByIndex);
+
+                d3.select('.test2')
+                    .text('Index (internal):->   ' + d.index);
+                d3.select('.test').text('Degree:->   ' + d.weight);
+                d3.select('.test3').text('Block name:->   ' + res2);
+                // Specify where to put label of text
+                //   function() { this.parentNode.appendChild(this);}
+
+                //    d3.select('.test2').text(linkedByIndex);
+
+                div.transition()
+                    .duration(500)
+                    .style("opacity", 0);
+                div.transition()
+                    .duration(200)
+                    .style("opacity", .9);
+                div.html(
+                    '<a href= "http://google.com">' + // The first <a> tag
+                    formatTime(d.date) +
+                    "</a>" +                          // closing </a> tag
+                    "<br/>" + d.close)
+                    .style("left", (d3.event.pageX) + "px")
+                    .style("top", (d3.event.pageY - 28) + "px");
+
+                var nodeSelection = d3.select(this).node.append("text").style({ opacity: '1' });
+                nodeSelection.select("text").style({ opacity: '0.1' });
+                d3.select(this).append("text")
+                    .attr(id, d.name + "-" + "1" + i)
+                    .attr("x", 100)
+
+                    .attr("dy", ".35em")
+                    .style('font', '20px times')
+                    .text(function (d) { return d.name; });
+            }
+
+            function handleMouseOut(d, i) {
+                // Use D3 to select element, change color back to normal
+                //d3.select(this).attr({fill: "black",r: 7});
+                d3.select(this).attr("r", function (d) {
+                    var minRadius = 10;
+                    return minRadius + (d.weight / 2);
+                })
+                    .style('font', '10px times')
+                    .style("opacity", 0.6)
+                    .style({ stroke: '#fff' })
+                    .style('stroke-width', '2.5px');
+                // Select text by id and then remove
+                d3.select(d.name + "-" + "1" + i).remove();  // Remove text location
+            }
+
+            //
+            var linkedByIndex = {};
+            for (i = 0; i < graph.nodes.length; i++) {
+                linkedByIndex[i + "," + i] = 1;
+            };
+            graph.links.forEach(function (d) {
+                linkedByIndex[d.source.index + "," + d.target.index] = 1;
+            });
+
+            function neighboring(a, b) {
+                return linkedByIndex[a.index + "," + b.index];
+            }
+
+            function connectedNodes() {
+                if (toggle == 0) {
+                    d = d3.select(this).node().__data__;
+                    node.style("opacity", function (o) {
+                        return neighboring(d, o) | neighboring(o, d) ? 1 : 0.15;
+                    });
+                    toggle = 1;
+                } else {
+                    node.style("opacity", 1);;
+                    toggle = 0;
+                }
+                //
+            }
+            d3.select('.test')
+                .text(linkedByIndex);
+            d3.select('.test2').text(function (d) {
+                var minRadius = 10;
+                return minRadius + (d.weight / 2.5);
+            });
+        });
+    </script>
+    <div>
+        <input type="file" onchange="uploadFile(event)">
+    </div>
+</body>
+</html>

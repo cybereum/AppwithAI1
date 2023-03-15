@@ -1,0 +1,45 @@
+﻿@page
+@using Gremlin.Net.Driver
+@using Gremlin.Net.Structure.IO.GraphSON
+@using System.Web
+@using Microsoft.JSInterop
+@model AppwithAI1.Pages.DashTest8Model
+@{
+    string name = "John";
+    int age = 30;
+}
+
+<html>
+<head>
+    <title>D3 Example</title>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+</head>
+<body>
+    <button id="generateRectangles">Generate Rectangles</button>
+    <div id="d3-example"></div>
+    <script>
+        function generateRectangles() {
+            const data = [1, 2, 3, 4, 5];
+
+            const svg = d3.select('#d3-example')
+                .append('svg')
+                .attr('width', 500)
+                .attr('height', 100);
+
+            svg.selectAll('rect')
+                .data(data)
+                .enter()
+                .append('rect')
+                .attr('x', (d, i) => i * 50)
+                .attr('y', 50)
+                .attr('width', 40)
+                .attr('height', 40)
+                .attr('fill', 'steelblue');
+        }
+
+        document.getElementById('generateRectangles').addEventListener('click', generateRectangles);
+    </script>
+
+</body>
+</html>
+

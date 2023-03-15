@@ -1,0 +1,362 @@
+﻿@page
+@model AppwithAI1.Pages.DashTest1Model
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0">
+
+
+
+<!-- Web fonts -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway:200,300,400,600,700&Open+Sans:300,400,600,700">
+
+<!-- Bootstrap and Ares CSS -->
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<link rel="stylesheet" href="css/animate.min.css">
+<link rel="stylesheet" href="css/style.css">
+
+ <!-- Include the AnyChart library and the custom CSS file -->
+        <script src="https://cdn.anychart.com/releases/v8/js/anychart-base.min.js"></script>
+        <script src="https://cdn.anychart.com/releases/v8/js/anychart-ui.min.js"></script>
+        <script src="https://cdn.anychart.com/releases/v8/js/anychart-exports.min.js"></script>
+        <script src="https://cdn.anychart.com/releases/v8/js/anychart-gantt.min.js"></script>
+        <script src="https://cdn.anychart.com/releases/v8/js/anychart-data-adapter.min.js"></script>
+
+
+        <!-- Include the Materialize CSS library -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+        <!-- Page Container -->
+
+        <style>
+            /* Add the Materialize grid classes to the containers */
+
+            #container {
+                display: flex;
+                flex-direction: column;
+                width: 100%;
+                height: 100%;
+                /* Add the Materialize grid class */
+                class ="container"
+            }
+        </style>
+
+        <div id="page-container">
+            <!-- Header -->
+            <header id="page-header">
+                <div class="h3 text-right pull-right hidden-xs">
+                    <div class="text-crystal font-w300">USER_LOGGED_IN</div>
+                </div>
+                <h1 class="h3 font-w200">
+                    <span class="text-crystal">//</span> <a class="link-sf font-w300" href="index.html">PROJECT_DASHBOARD</a>
+                </h1>
+                <div class="logo-container"><img src="https://cybereum.io/wp-content/uploads/2018/08/cropped-cropped-cropped-top-logo-2-4-300x300.png" alt="cybereum" width="100" height="100"></div>
+
+            </header>
+            <!-- END Header -->
+            <!-- Main Content -->
+            <main id="page-main">
+                <!-- Columns -->
+                <div class="row">
+                    <div class="col-lg-6 col-lg-push-3 overflow-hidden push-0">
+                        <h2 class="text-white-op font-weight-bold">GANTT Chart</h2>
+                        <div class="circles push-10">
+                            
+                        <div id="container" style="width: 120%;"></div>
+                            
+                            <script>
+
+                                anychart.onDocumentReady(function () {
+                                    // The data used in this sample can be obtained from the CDN
+                                    // https://cdn.anychart.com/samples/gantt-charts/activity-oriented-chart/data.js
+                                    anychart.data.loadJsonFile(
+                                        'https://cdn.anychart.com/samples/gantt-charts/activity-oriented-chart/data.json',
+                                        function (data) {
+                                            // create data tree
+                                            var treeData = anychart.data.tree(data, 'as-table');
+
+                                            // create project gantt chart
+                                            var chart = anychart.ganttProject();
+
+                                            // set data for the chart
+                                            chart.data(treeData);
+
+                                            // set start splitter position settings
+                                            chart.splitterPosition(370);
+
+                                            // get chart data grid link to set column settings
+                                            var dataGrid = chart.dataGrid();
+
+                                            // set first column settings
+                                            dataGrid
+                                                .column(0)
+                                                .title('#')
+                                                .width(30)
+                                                .labels({ hAlign: 'center' });
+
+                                            // set second column settings
+                                            dataGrid.column(1).labels().hAlign('left').width(180);
+
+                                            // set third column settings
+                                            dataGrid
+                                                .column(2)
+                                                .title('Start Time')
+                                                .width(70)
+                                                .labels()
+                                                .hAlign('right')
+                                                .format(function () {
+                                                    var date = new Date(this.actualStart);
+                                                    var month = date.getUTCMonth() + 1;
+                                                    var strMonth = month > 9 ? month : '0' + month;
+                                                    var utcDate = date.getUTCDate();
+                                                    var strDate = utcDate > 9 ? utcDate : '0' + utcDate;
+                                                    return date.getUTCFullYear() + '.' + strMonth + '.' + strDate;
+                                                });
+
+                                            // set fourth column settings
+                                            dataGrid
+                                                .column(3)
+                                                .title('End Time')
+                                                .width(80)
+                                                .labels()
+                                                .hAlign('right')
+                                                .format(function () {
+                                                    var date = new Date(this.actualEnd);
+                                                    var month = date.getUTCMonth() + 1;
+                                                    var strMonth = month > 9 ? month : '0' + month;
+                                                    var utcDate = date.getUTCDate();
+                                                    var strDate = utcDate > 9 ? utcDate : '0' + utcDate;
+                                                    return date.getUTCFullYear() + '.' + strMonth + '.' + strDate;
+                                                });
+
+                                            // set container id for the chart
+                                            chart.container('container');
+
+                                            // initiate chart drawing
+                                            chart.draw();
+
+                                            // zoom chart to specified date
+                                            chart.zoomTo(951350400000, 954201600000);
+                                        }
+                                    );
+                                });
+
+                            </script>
+                        </div>
+                    </div>
+
+
+
+
+
+                    <!-- Left Column -->
+                    <div class="col-sm-6 col-lg-3 col-lg-pull-6">
+                        <!-- Environment -->
+                        <div class="block">
+                            <div class="block-header overflow-hidden">
+                                <h2 class="block-title visibility-hidden" data-toggle="appear" data-class="animated fadeInDown">Project Core KPIs</h2>
+                            </div>
+                            <div class="block-content">
+                                <div class="row items-push overflow-hidden">
+                                    <div class="col-xs-4 text-center visibility-hidden" data-toggle="appear" data-class="animated fadeInLeft" data-timeout="100">
+                                        <div class="js-pie-chart pie-chart" data-percent="65" data-line-width="5" data-size="65" data-bar-color="rgba(255, 255, 255, .2)" data-track-color="rgba(255, 255, 255, .1)">
+                                            <span class="font-s16 font-w600">Ratio</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-8 visibility-hidden" data-toggle="appear" data-class="animated fadeInRight" data-timeout="400">
+                                        <div class="text-uppercase font-w600 text-white-op">Budget</div>
+                                        <div class="font-s36 font-w300">0.65</div>
+                                    </div>
+                                </div>
+                                <div class="row items-push overflow-hidden">
+                                    <div class="col-xs-4 text-center visibility-hidden" data-toggle="appear" data-class="animated fadeInLeft" data-timeout="200">
+                                        <div class="js-pie-chart pie-chart" data-percent="45.5" data-line-width="5" data-size="65" data-bar-color="rgba(255, 255, 255, .2)" data-track-color="rgba(255, 255, 255, .1)">
+                                            <span class="font-s16 font-w600">%</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-8 visibility-hidden" data-toggle="appear" data-class="animated fadeInRight" data-timeout="500">
+                                        <div class="text-uppercase font-w600 text-white-op">Schedule</div>
+                                        <div class="font-s36 font-w300">45.5</div>
+                                    </div>
+                                </div>
+                                <div class="row items-push overflow-hidden">
+                                    <div class="col-xs-4 text-center visibility-hidden" data-toggle="appear" data-class="animated fadeInLeft" data-timeout="300">
+                                        <div class="js-pie-chart pie-chart" data-percent="35" data-line-width="5" data-size="65" data-bar-color="rgba(255, 255, 255, .2)" data-track-color="rgba(255, 255, 255, .1)">
+                                            <span class="font-s16 font-w600">Ratio;</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-8 visibility-hidden" data-toggle="appear" data-class="animated fadeInRight" data-timeout="600">
+                                        <div class="text-uppercase font-w600 text-white-op">Scope</div>
+                                        <div class="font-s36 font-w300">0.35</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- END Environment -->
+                        <!-- Planets -->
+                        <div class="block">
+                            <div class="block-header overflow-hidden">
+                                <h2 class="block-title visibility-hidden" data-toggle="appear" data-class="animated fadeInDown">Key Deliverables</h2>
+                            </div>
+                            <div class="block-content">
+                                <div class="row items-push overflow-hidden">
+                                    <div class="col-xs-4 text-center visibility-hidden" data-toggle="appear" data-class="animated fadeInLeft" data-timeout="100">
+                                        <div class="js-pie-chart pie-chart" data-percent="65" data-line-width="20" data-size="45" data-bar-color="rgba(255, 255, 255, .2)" data-track-color="#c07635">
+                                            <span class="font-s16 font-w600"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-8 visibility-hidden" data-toggle="appear" data-class="animated fadeInRight" data-timeout="400">
+                                        <div class="text-uppercase font-w600 text-white-op">Project Execution Plan</div>
+                                        <div class="font-s36 font-w300">1.67 <span class="font-s16 font-w400 text-crystal">L.Y.</span></div>
+                                    </div>
+                                </div>
+                                <div class="row items-push overflow-hidden">
+                                    <div class="col-xs-4 text-center visibility-hidden" data-toggle="appear" data-class="animated fadeInLeft" data-timeout="200">
+                                        <div class="js-pie-chart pie-chart" data-percent="30" data-line-width="22" data-size="50" data-bar-color="rgba(255, 255, 255, .2)" data-track-color="#3673cc">
+                                            <span class="font-s16 font-w600"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-8 visibility-hidden" data-toggle="appear" data-class="animated fadeInRight" data-timeout="500">
+                                        <div class="text-uppercase font-w600 text-white-op">Design Loads Report</div>
+                                        <div class="font-s36 font-w300">1.62 <span class="font-s16 font-w400 text-crystal">L.Y.</span></div>
+                                    </div>
+                                </div>
+                                <div class="row items-push overflow-hidden">
+                                    <div class="col-xs-4 text-center visibility-hidden" data-toggle="appear" data-class="animated fadeInLeft" data-timeout="300">
+                                        <div class="js-pie-chart pie-chart" data-percent="10" data-line-width="30" data-size="70" data-bar-color="rgba(255, 255, 255, .2)" data-track-color="#f7c880">
+                                            <span class="font-s16 font-w600"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-8 visibility-hidden" data-toggle="appear" data-class="animated fadeInRight" data-timeout="600">
+                                        <div class="text-uppercase font-w600 text-white-op">Procurement Plan</div>
+                                        <div class="font-s36 font-w300">2.22 <span class="font-s16 font-w400 text-crystal">L.Y.</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- END Planets -->
+                    </div>
+                    <!-- END Left Column -->
+                    <!-- Right Column -->
+                    <div class="col-sm-6 col-lg-3">
+                        <!-- HQ_COMS -->
+                        <div class="block">
+                            <div class="block-header overflow-hidden">
+                                <h2 class="block-title visibility-hidden" data-toggle="appear" data-class="animated fadeInDown">HQ_COMS</h2>
+                            </div>
+                            <div class="block-content overflow-hidden">
+                                <div class="row items-push">
+                                    <div class="col-xs-6 visibility-hidden" data-toggle="appear" data-class="animated fadeIn" data-timeout="300">
+                                        <div class="font-s24 font-w300 text-white-op">C1 [<span class="text-success">40</span>]</div>
+                                    </div>
+                                    <div class="col-xs-6 visibility-hidden" data-toggle="appear" data-class="animated fadeIn" data-timeout="500">
+                                        <div class="font-s24 font-w300 text-white-op">C2 [<span class="text-success">60</span>]</div>
+                                    </div>
+                                    <div class="col-xs-6 visibility-hidden" data-toggle="appear" data-class="animated fadeIn" data-timeout="700">
+                                        <div class="font-s24 font-w300 text-white-op">C3 [<span class="text-success">80</span>]</div>
+                                    </div>
+                                    <div class="col-xs-6 visibility-hidden" data-toggle="appear" data-class="animated fadeIn" data-timeout="900">
+                                        <div class="font-s24 font-w300 text-white-op">C4 [<span class="text-success">90</span>]</div>
+                                    </div>
+                                    <div class="col-xs-6 visibility-hidden" data-toggle="appear" data-class="animated fadeIn" data-timeout="1100">
+                                        <div class="font-s24 font-w300 text-white-op">C5 [<span class="text-success">20</span>]</div>
+                                    </div>
+                                    <div class="col-xs-6 visibility-hidden" data-toggle="appear" data-class="animated fadeIn" data-timeout="1300">
+                                        <div class="font-s24 font-w300 text-white-op">C6 [<span class="text-success">30</span>]</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- END HQ_COMS -->
+                        <!-- Milestone Progress -->
+                        <div class="block">
+                            <div class="block-header overflow-hidden">
+                                <h2 class="block-title visibility-hidden" data-toggle="appear" data-class="animated fadeInDown">MILESTONES</h2>
+                            </div>
+                            <div class="block-content block-content-full overflow-hidden">
+                                <div class="font-w600 text-white-op push-5 visibility-hidden" data-toggle="appear" data-class="animated fadeInRight" data-timeout="100">Milestone1: 95</div>
+                                <div class="progress visibility-hidden" data-toggle="appear" data-class="animated fadeInLeft" data-timeout="100">
+                                    <div class="progress-bar progress-bar-sf progress-bar-striped active" role="progressbar" aria-valuenow="95" aria-valuemin="0" aria-valuemax="100" style="width: 95%"></div>
+                                </div>
+                                <div class="font-w600 text-white-op push-5 visibility-hidden" data-toggle="appear" data-class="animated fadeInRight" data-timeout="300">Milestone2: 49</div>
+                                <div class="progress visibility-hidden" data-toggle="appear" data-class="animated fadeInLeft" data-timeout="300">
+                                    <div class="progress-bar progress-bar-sf progress-bar-striped active" role="progressbar" aria-valuenow="49" aria-valuemin="0" aria-valuemax="100" style="width: 49%"></div>
+                                </div>
+                                <div class="font-w600 text-white-op push-5 visibility-hidden" data-toggle="appear" data-class="animated fadeInRight" data-timeout="500">Milestone3: 59</div>
+                                <div class="progress visibility-hidden" data-toggle="appear" data-class="animated fadeInLeft" data-timeout="500">
+                                    <div class="progress-bar progress-bar-sf progress-bar-striped active" role="progressbar" aria-valuenow="59" aria-valuemin="0" aria-valuemax="100" style="width: 59%"></div>
+                                </div>
+                                <div class="font-w600 text-white-op push-5 visibility-hidden" data-toggle="appear" data-class="animated fadeInRight" data-timeout="700">Milestone4: +60</div>
+                                <div class="progress visibility-hidden" data-toggle="appear" data-class="animated fadeInLeft" data-timeout="700">
+                                    <div class="progress-bar progress-bar-sf progress-bar-striped active" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- END POS_TRACKING -->
+                        <!-- DATA_STREAM -->
+                        <div class="block">
+                            <div class="block-header overflow-hidden">
+                                <h2 class="block-title visibility-hidden" data-toggle="appear" data-class="animated fadeInDown">DATA_STREAM</h2>
+                            </div>
+                            <div class="block-content">
+                                <div class="row items-push">
+                                    <div class="col-xs-4 visibility-hidden" data-toggle="appear" data-class="animated fadeIn" data-timeout="100">
+                                        <div class="font-s12 text-white-op">AT1</div>
+                                        <div class="font-s18 text-success" data-toggle="countTo" data-to="148" data-speed="4000"></div>
+                                    </div>
+                                    <div class="col-xs-4 visibility-hidden" data-toggle="appear" data-class="animated fadeIn" data-timeout="300">
+                                        <div class="font-s12 text-white-op">SR1</div>
+                                        <div class="font-s18 text-success" data-toggle="countTo" data-to="30" data-speed="4000"></div>
+                                    </div>
+                                    <div class="col-xs-4 visibility-hidden" data-toggle="appear" data-class="animated fadeIn" data-timeout="500">
+                                        <div class="font-s12 text-white-op">AF1</div>
+                                        <div class="font-s18 text-success" data-toggle="countTo" data-to="123" data-speed="4000"></div>
+                                    </div>
+                                    <div class="col-xs-4 visibility-hidden" data-toggle="appear" data-class="animated fadeIn" data-timeout="700">
+                                        <div class="font-s12 text-white-op">AT2</div>
+                                        <div class="font-s18 text-success" data-toggle="countTo" data-to="180" data-speed="4000"></div>
+                                    </div>
+                                    <div class="col-xs-4 visibility-hidden" data-toggle="appear" data-class="animated fadeIn" data-timeout="900">
+                                        <div class="font-s12 text-white-op">SR2</div>
+                                        <div class="font-s18 text-success" data-toggle="countTo" data-to="680" data-speed="4000"></div>
+                                    </div>
+                                    <div class="col-xs-4 visibility-hidden" data-toggle="appear" data-class="animated fadeIn" data-timeout="1100">
+                                        <div class="font-s12 text-white-op">AF2</div>
+                                        <div class="font-s18 text-success" data-toggle="countTo" data-to="15" data-speed="4000"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- END DATA_STREAM -->
+                    </div>
+                    <!-- END Right Column -->
+                </div>
+                <!-- END Columns -->
+                <!-- Page Footer -->
+                <div class="block">
+                    <div class="block-content block-content-full font-s12 text-center visibility-hidden" data-toggle="appear" data-class="animated fadeIn" data-timeout="1000">
+                        <a class="link-sf" href="https://cybereum.io/">cybereum</a>
+                    </div>
+                </div>
+                <!-- END Page Footer -->
+            </main>
+            <!-- END Main Content -->
+        </div>
+        <!-- END Page Container -->
+        <!-- Scripts -->
+        <script src="assets/js/core/jquery.min.js"></script>
+        <script src="assets/js/plugins/jquery.appear.min.js"></script>
+        <script src="assets/js/plugins/jquery.countTo.min.js"></script>
+        <script src="assets/js/plugins/jquery.easypiechart.min.js"></script>
+        <script src="assets/js/ares.js"></script>
+
+        <!-- Page JS Code -->
+        <script>
+            jQuery(function () {
+                // Init page helpers (Appear + CountTo + Easy Pie Chart plugins)
+                Ares.initHelpers(['appear', 'appear-countTo', 'easy-pie-chart']);
+            });
+        </script>

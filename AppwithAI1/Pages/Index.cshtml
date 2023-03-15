@@ -3,6 +3,8 @@
 @{
     ViewData["Title"] = "Home page";
 }
+<script src="/_framework/blazor.server.js"></script>
+
 
 <div class="text-center">
     <img src="/Blue_Logo.png" style="width:150px;height:150px;" />
@@ -15,85 +17,38 @@
         
     <p><button type="button" onclick="location.href='https://localhost:7050/GANTT_Chart'">Sample GANTT<br><h6>using DHTMLX library</h6></button></p>
     
+    <p><button type="button" onclick="location.href='https://localhost:7050/d3-GANTT_Chart'">Sample GANTT<br><h6>using d3.js</h6></button></p>
+
+    <p><button type="button" onclick="location.href='https://localhost:7050/d3-GANTT_Chart1'">Fancier GANTT<br><h6>using d3.js</h6></button></p>
+
+    <p><button type="button" onclick="location.href='https://localhost:7050/d3-GANTT_Chart2'">Sample GANTT-2<br><h6>upload XML & d3.js</h6></button></p>
+
+    <p><button type="button" onclick="location.href='https://localhost:7050/d3_GANTT_Chart3'">Sample GANTT-3<br><h6>upload XML & d3.js</h6></button></p>
+
     <p><button type="button" onclick="location.href='https://localhost:7050/CreateGraph'">Upload_JSON<br><h6>upload exisiting project schedule to Gremlin</h6></button></p>
 
     <p><button type="button" onclick="location.href='https://localhost:7050/Read_JSON'">Upload_JSON<br><h6>upload exisiting project schedule to Gremlin</h6></button></p>
+    
+    <p><button type="button" onclick="location.href='https://localhost:7050/DashTest1'">Dashboard1<br><h6>Dash1</h6></button></p>
+
+    <p><button type="button" onclick="location.href='https://localhost:7050/DashTest2'">Dashboard2<br><h6>Dash2</h6></button></p>
+
+    <p><button type="button" onclick="location.href='https://localhost:7050/DashTest3'">Dashboard3<br><h6>Dash3</h6></button></p>
+    
+    <p><button type="button" onclick="location.href='https://localhost:7050/DashTest4'">Dashboard4<br><h6>Dash4</h6></button></p>
+
+    <p><button type="button" onclick="location.href='https://localhost:7050/DashTest5'">Dashboard5<br><h6>Dash5</h6></button></p>
+    
+    <p><button type="button" onclick="location.href='https://localhost:7050/Dash_Test6'">Dashboard6<br><h6>Dash6</h6></button></p>
+
+    <p><button type="button" onclick="location.href='https://localhost:7050/DashTest8'">Dashboard6<br><h6>Dash8</h6></button></p>
 
 </div>
+
 
 <h1>/* Testing */</h1>
 <h2>DHTMLGANTT</h2>
-<script src="https://cdn.dhtmlx.com/gantt/edge/dhtmlxgantt.js"></script>
 
-<div id="gantt_here" style='width:100%; height:100%;'></div>
-<script>
-    gantt.init("gantt_here");
-
-    // Create an array of 20 tasks for the GANTT chart
-    var tasks = [];
-    for (var i = 0; i < 20; i++) {
-        // Pad the day and month with leading zeroes to ensure correct formatting
-        var day = (i + 1).toString().padStart(2, "0");
-        var month = "12".padStart(2, "0");
-        tasks.push({
-            id: i + 1,
-            text: "Task " + (i + 1),
-            start_date: "2022-" + month + "-" + day,
-            duration: 3,
-            progress: 0.4
-        });
-    }
-
-    // Enable interactive features for the GANTT chart
-    gantt.config.drag_move = true;
-    gantt.config.drag_progress = true;
-    gantt.config.drag_resize = true;
-    gantt.config.details_on_dblclick = true;
-    gantt.config.select_task = true;
-
-    // Parse the tasks array to generate the GANTT chart
-    gantt.parse(tasks);
-</script>
-
-
-<h2>DHTMLGANTT</h2>
-
-<form id="form1" runat="server">
-    <div>
-      <h1>Project Gantt Chart</h1>
-      <p>Please enter the following details to create a Gantt chart for your project:</p>
-        <table>
-    <tr>
-      <td>Project Name:</td>
-      <td>
-        <asp:TextBox ID="txtProjectName" runat="server" />
-      </td>
-    </tr>
-    <tr>
-      <td>Project Description:</td>
-      <td>
-        <asp:TextBox ID="txtProjectDescription" runat="server" TextMode="MultiLine" Rows="4" Columns="50" />
-      </td>
-    </tr>
-    <tr>
-      <td>Start Date:</td>
-      <td>
-        <asp:TextBox ID="txtStartDate" runat="server" />
-      </td>
-    </tr>
-    <tr>
-      <td>End Date:</td>
-      <td>
-        <asp:TextBox ID="txtEndDate" runat="server" />
-      </td>
-    </tr>
-  </table>
-
-  <p>
-    <asp:Button ID="btnCreateGanttChart" runat="server" Text="Create Gantt Chart" OnClick="btnCreateGanttChart_Click" />
-  </p>
-</div>
-</form>
 
 
   <h1 class="dashboard-header">Project Dashboard</h1>

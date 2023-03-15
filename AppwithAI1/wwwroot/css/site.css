@@ -167,6 +167,8 @@ p {
 }
 
 .dashboard-table {
+    display: flex;
+    flex-direction: row;
     width: 100%;
     border-collapse: collapse;
     color: #d2fcff;
@@ -182,13 +184,25 @@ p {
     .dashboard-table th {
         font-weight: bold;
         background-color: rgba(255, 255, 255, 0.1);
+        min-width: 100px;
+        max-width: 200px;
     }
 
     .dashboard-table tr:nth-child(even) {
         background-color: rgba(255, 255, 255, 0.05);
     }
 
+.container {
+    display: flex;
+}
 
+#gantt-chart {
+    flex: 1;
+}
+
+#task-list-container {
+    flex: 1;
+}
 
 /* 
 button:before {
@@ -294,6 +308,7 @@ button:active, a.button:active {
 
 /* Set the background color of the form to a dark blue */
 form {
+    color: white;
     background-color: #0e2d46;
 }
 
@@ -313,13 +328,14 @@ form {
         color: white;
         /* Add a hover effect that changes the border color to blue */
         transition: border-color 0.2s ease-in-out;
-        &:hover
+    }
 
-{
-    border-color: #00bfff;
-}
+        form input[type="text"]:hover,
+        form input[type="password"]:hover,
+        form textarea:hover {
+            border-color: #00bfff;
+        }
 
-}
 
 /* Style the form's submit button with a futuristic look */
 form input[type="submit"] {
@@ -331,12 +347,36 @@ form input[type="submit"] {
     background-color: #123c64;
     /* Add a hover effect that changes the background color to a lighter blue */
     transition: background-color 0.2s ease-in-out;
-    &:hover
-
-{
-    background-color: #00bfff;
-}
 }
 
+    form input[type="submit"]:hover {
+        background-color: #2d5b9e;
+    }
+
+/* Style for form labels */
+.form-label {
+    padding-bottom: 10px;
+}
+
+.form-button {
+    background-color: #d2fcff; /* light blue color */
+    color: #fff; /* white text color */
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    /* Add a sci-fi looking background image */
+    background: url("https://cybereum.io/wp-content/uploads/2022/12/But3.png") no-repeat;
+    background-size: 100%; /* To fill the dimensions of container (button), or */
+    height: 114px;
+    width: 300px;
+}
+
+    /* Style form button on hover */
+    .form-button:hover {
+        background-color: #3c6e9c; /* dark blue color on hover */
+    }
 
 

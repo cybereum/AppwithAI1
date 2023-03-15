@@ -1,0 +1,420 @@
+﻿@page
+@model AppwithAI1.Pages.d3_GANTT_Chart1Model
+@{
+    ViewData["Title"] = "d3_GANTT_Chart1";
+}
+
+<style>
+  .task-row {
+    display: table;
+    width: 100%;
+        border-bottom: 1px solid white; /* Add a border at the bottom of each row */
+  }
+  .task-row > div {
+    display: table-cell;
+    vertical-align: top;
+  }
+</style>
+
+
+
+<style>
+    .bar {
+        fill: #d2fcff;
+    }
+
+    .tick text {
+        fill: white;
+    }
+</style>
+
+<h1>GANTT Chart using d3.js</h1>
+
+<!-- Add slider element to adjust flex value -->
+<input type="range" min="1" max="100" value="50" class="slider" id="flex-slider">
+
+<div class="dashboard-table">
+    <div id="gantt-chart"></div>
+    <div id="task-list-container">
+        <!-- Add tooltip element -->
+        <div id="tooltip" class="hidden">
+            <p><strong>Task:</strong> <span id="task"></span></p>
+            <p><strong>Start:</strong> <span id="start"></span></p>
+            <p><strong>End:</strong> <span id="end"></span></p>
+        </div>
+
+        <h2>Task List</h2>
+        <div id="task-list" class="dashboard-table">
+            <!-- Add rows for each task -->
+            <div id="task-rows"></div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script src="https://d3js.org/d3.v5.min.js"></script>
+
+
+
+<script>
+    // Bind the value of the slider to a variable
+    var flexValue = document.getElementById("flex-slider").value;
+
+    // Set the flex value of the .dashboard-table element
+    document.querySelector(".dashboard-table").style.flex = flexValue;
+
+    // Add an event listener to update the flex value when the slider is moved
+    document.getElementById("flex-slider").addEventListener("input", function () {
+        flexValue = this.value;
+        document.querySelector(".dashboard-table").style.flex = flexValue;
+    });
+</script>
+
+<script>
+var data = [
+            { task: "Task 1", start: "2020-01-01", end: "2020-01-05" },
+            { task: "Task 2", start: "2020-01-06", end: "2020-01-10" },
+            { task: "Task 3", start: "2020-01-11", end: "2020-01-15" },
+            { task: "Task 4", start: "2020-01-16", end: "2020-01-20" },
+            { task: "Task 5", start:"2020-01-21", end: "2020-01-25" },
+            { task: "Task 6", start: "2020-01-26", end: "2020-01-30" },
+            { task: "Task 7", start: "2020-02-01", end: "2020-02-05" },
+            { task: "Task 8", start: "2020-02-06", end: "2020-02-10" },
+            { task: "Task 9", start: "2020-02-11", end: "2020-02-15" },
+            { task: "Task 10", start: "2020-02-16", end: "2020-02-20" },
+            { task: "Task 11", start: "2020-02-21", end: "2020-02-25" },
+            { task: "Task 12", start: "2020-02-26", end: "2020-03-01" },
+            { task: "Task 13", start: "2020-03-02", end: "2020-03-06" },
+            { task: "Task 14", start: "2020-03-07", end: "2020-03-11" },
+            { task: "Task 15", start: "2020-03-12", end: "2020-03-16" },
+            { task: "Task 16", start: "2020-03-17", end: "2020-03-21" },
+            { task: "Task 17", start: "2020-03-22", end: "2020-03-26" },
+            { task: "Task 18", start: "2020-03-27", end: "2020-03-31" },
+            { task: "Task 19", start: "2020-04-01", end: "2020-04-05" },
+            { task: "Task 20", start: "2020-04-06", end: "2020-04-10" },
+            { task: "Task 21", start: "2020-04-11", end: "2020-04-15" },
+            { task: "Task 22", start: "2020-04-16", end: "2020-04-20" },
+            { task: "Task 23", start: "2020-04-21", end: "2020-04-25" },
+            { task: "Task 24", start: "2020-04-26", end: "2020-04-30" },
+            { task: "Task 25", start: "2020-05-01", end: "2020-05-05" }
+    ];
+     drawChart();
+    // Set the dimensions and margins of the chart
+    var margin = { top: 20, right: 20, bottom: 50, left: 80 },
+    width = 960 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
+
+    // Parse the date / time
+    var parseTime = d3.timeParse("%Y-%m-%d");
+
+    // Set the ranges
+    var x = d3.scaleTime().range([0, width]);
+    var y = d3.scaleLinear().range([height, 0]);
+
+    // Define the axes
+    var xAxis = d3.axisBottom(x).ticks(7).tickFormat(d3.timeFormat("%b %d"));
+    var yAxis = d3.axisLeft(y).ticks(5);
+
+    // Define the line
+    var valueline = d3.line()
+        .x(function (d) { return x(d.date); })
+        .y(function (d) { return y(d.close); });
+
+    // Adds the svg canvas
+    var svg = d3.select("#gantt-chart")
+        .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform",
+            "translate(" + margin.left + "," + margin.top + ")");
+
+    // Add the X Axis
+    svg.append("g")
+        .attr("class", "x axis")
+        .attr("transform", "translate(0," + height + ")")
+        .call(xAxis);
+
+    // Add the Y Axis
+    svg.append("g")
+        .attr("class", "y axis")
+        .call(yAxis);
+
+    // Add a clipPath: everything out of this area won't be drawn.
+    var clip = svg.append("defs").append("svg:clipPath")
+        .attr("id", "clip")
+        .append("svg:rect")
+        .attr("width", width)
+        .attr("height", height)
+        .attr("x", 0)
+        .attr("y", 0);
+
+    // Add brushing rectangles
+    svg.selectAll(".bar")
+        .data(data)
+        .enter().append("rect")
+        .attr("class", "bar")
+        .attr("x", function (d) { return x(d.start); })
+        .attr("width", function (d) {
+            return x(d.end) - x(d.start);
+        })
+        .attr("y", function (d) {
+            return y(d.task);
+        })
+        .attr("height", function (d) {
+            return y.bandwidth();
+        });
+
+    // Add the X gridlines
+    svg.append("g")
+        .attr("class", "grid")
+        .attr("transform", "translate(0," + height + ")")
+        .call(make_x_gridlines()
+            .tickSize(-height)
+            .tickFormat("")
+        )
+    // Add the Y gridlines
+    svg.append("g")
+        .attr("class", "grid")
+        .call(make_y_gridlines()
+            .tickSize(-width)
+            .tickFormat("")
+        )
+
+    // Add a label for the X axis
+    svg.append("text")
+        .attr("x", width / 2)
+        .attr("y", height + margin.bottom)
+        .style("text-anchor", "middle")
+        .text("Date");
+
+    // Add a label for the Y axis
+    svg.append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("y", 0 - margin.left)
+        .attr("x", 0 - (height / 2))
+        .attr("dy", "1em")
+        .style("text-anchor", "middle")
+        .text("Task");
+
+    // Add a label for the chart title
+    svg.append("text")
+        .attr("x", width / 2)
+        .attr("y", 0 - (margin.top / 2))
+        .style("text-anchor", "middle")
+        .style("font-size", "16px")
+        .style("text-decoration", "underline")
+        .text("GANTT Chart");
+
+    // Add hover interaction
+    var hoverRect = svg.append("rect")
+        .attr("class", "overlay")
+        .attr("width", width)
+        .attr("height", height)
+        .on("mouseover", function () {
+            document.getElementById("tooltip").classList.remove("hidden");
+        })
+        .on("mouseout", function () {
+            document.getElementById("tooltip").classList.add("hidden");
+        })
+        .on("mousemove", function () {
+            var xPos = d3.mouse(this)[0] - 15;
+            var yPos = d3.mouse(this)[1] - 25;
+            document.getElementById("tooltip").style.top = yPos + "px";
+            document.getElementById("tooltip").style.left = xPos + "px";
+        });
+
+    // Add hover text
+    var taskLabel = svg.append("text")
+        .attr("class", "task-label hidden")
+        .attr("x", width - 5)
+        .attr("y", function (d) {
+            return y(d.task) + y.bandwidth() / 2;
+        });
+
+    // Add hover lines
+    var hoverLineX = svg.append("line")
+        .attr("class", "overlay hidden")
+        .attr("y1", 0)
+        .attr("y2", height);
+
+    var hoverLineY = svg.append("line")
+        .attr("class", "overlay hidden")
+        .attr("x1", 0)
+        .attr("x2", width);
+
+    // Function to update the chart when the slider is moved
+    function updateChart() {
+        // Get the value of the slider
+        var value = document.getElementById("flex-slider").value;
+        // Set the flex value of the .dashboard-table element
+        document.querySelector(".dashboard-table").style.flex = value;
+
+        // Re-draw the chart
+        drawChart();
+    }
+
+    // Add an event listener to update the chart when the slider is moved
+    document.getElementById("flex-slider").addEventListener("input", updateChart);
+
+    // Add the data rows to the task list
+    data.forEach(function (d) {
+        var taskRow = document.createElement("div");
+        taskRow.className = "task-row";
+        var taskCell = document.createElement("div");
+        taskCell.innerHTML = d.task;
+        taskRow.appendChild(taskCell);
+
+        var startCell = document.createElement("div");
+        startCell.innerHTML = d.start;
+        taskRow.appendChild(startCell);
+
+        var endCell = document.createElement("div");
+        endCell.innerHTML = d.end;
+        taskRow.appendChild(endCell);
+
+        document.getElementById("task-rows").appendChild(taskRow);
+    });
+
+    // Draw the initial chart
+    drawChart();
+
+    // Function to draw the chart
+    function drawChart() {
+        // Set the dimensions and margins of the chart
+        var margin = { top: 20, right: 20, bottom: 30, left: 50 },
+            width = 960 - margin.left - margin.right,
+            height = 500 - margin.top - margin.bottom;
+
+        // Set the ranges
+        var x = d3.scaleTime().range([0, width]);
+        var y = d3.scaleBand().range([height, 0]);
+
+        // Define the axis
+        var xAxis = d3.axisBottom(x).tickFormat(d3.timeFormat("%b %d"));
+        var yAxis = d3.axisLeft(y);
+
+        // Define the line
+        var valueline = d3.line()
+            .x(function (d) { return x(d.date); })
+            .y(function (d) { return y(d.close); });
+
+        // Define the div for the tooltip
+        var div = d3.select("body").append("div")
+            .attr("class", "tooltip")
+            .style("opacity", 0);
+
+        // Add the SVG element
+        var svg = d3.select("#gantt-chart")
+            .append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+        // Scale the range of the data
+        x.domain([d3.min(data, function (d) { return d.start; }), d3.max(data, function (d) { return d.end; })]);
+        y.domain(data.map(function (d) { return d.task; }));
+
+        // Select the bars and bind the data
+        var bars = svg.selectAll(".bar")
+            .data(data);
+        // Enter the data
+        bars.enter().append("rect")
+            .attr("class", "bar")
+            .attr("x", function (d) { return x(d.start); })
+            .attr("width", function (d) {
+                return x(d.end) - x(d.start);
+            })
+            .attr("y", function (d) {
+                return y(d.task);
+            })
+            .attr("height", y.bandwidth())
+            .on("mouseover", function (d) {
+                // Show the tooltip
+                div.transition()
+                    .duration(200)
+                    .style("opacity", .9);
+                div.html(d.task + "<br>" + d.start + " - " + d.end)
+                    .style("left", (d3.event.pageX) + "px")
+                    .style("top", (d3.event.pageY - 28) + "px");
+            })
+            .on("mouseout", function (d) {
+                // Hide the tooltip
+                div.transition()
+                    .duration(500)
+                    .style("opacity", 0);
+            });
+
+        // Add the X Axis
+        svg.append("g")
+            .attr("class", "x axis")
+            .attr("transform", "translate(0," + height + ")")
+            .call(xAxis);
+
+        // Add the Y Axis
+        svg.append("g")
+            .attr("class", "y axis")
+            .call(yAxis);
+
+        // Add rows to the task list
+        data.forEach(function (d) {
+            var taskRow = document.createElement("div");
+            taskRow.setAttribute("class", "task-row");
+            var taskCell = document.createElement("div");
+            taskCell.innerHTML = d.task;
+            taskRow.appendChild(taskCell);
+            var startCell = document.createElement("div");
+            startCell.innerHTML = d.start;
+            taskRow.appendChild(startCell);
+            var endCell = document.createElement("div");
+            endCell.innerHTML = d.end;
+            taskRow.appendChild(endCell);
+            document.getElementById("task-rows").appendChild(taskRow);
+        });
+}
+
+    // Initial draw of the chart
+    drawChart();
+
+    // Add hover interaction
+    var hoverRect = svg.append("rect")
+        .attr("class", "overlay")
+        .attr("width", width)
+        .attr("height", height)
+        .on("mouseover", function () {
+            document.getElementById("tooltip").classList.remove("hidden");
+        })
+        .on("mouseout", function () {
+            document.getElementById("tooltip").classList.add("hidden");
+        })
+        .on("mousemove", function () {
+            var xPos = d3.mouse(this)[0] - 15;
+            var yPos = d3.mouse(this)[1] - 25;
+            document.getElementById("tooltip").style.top = yPos + "px";
+            document.getElementById("tooltip").style.left = xPos + "px";
+        });
+
+    // Add hover interaction for each bar
+    svg.selectAll(".bar")
+        .on("mouseover", function (d) {
+            // Show the tooltip
+            document.getElementById("tooltip").classList.remove("hidden");
+            // Populate the tooltip with data
+            document.getElementById("task").innerHTML = d.task;
+            document.getElementById("start").innerHTML = d.start;
+            document.getElementById("end").innerHTML = d.end;
+        })
+        .on("mouseout", function () {
+            // Hide the tooltip
+            document.getElementById("tooltip").classList.add("hidden");
+        });
+
+    window.onload = function () {
+        drawChart();
+    }
+
+});
+</script>
+}
+
