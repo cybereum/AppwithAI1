@@ -3,227 +3,68 @@
 @{
     ViewData["Title"] = "Home page";
 }
-<script src="/_framework/blazor.server.js"></script>
 
+<script src="/_framework/blazor.server.js" async></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js" async></script>
+<link href="https://visjs.github.io/vis-network/styles/vis-network.min.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<script type="text/javascript" src="https://visjs.github.io/vis-network/standalone/umd/vis-network.min.js" async></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js" async integrity="sha512-gtIg5lHp5C5vSTOF+wvEzMSBoMp5b8oyTvO6F3Dm9eZKs/qb5M+U8QgEJV5weJEV1eZu7GfXrDmfb3P7dRFdYA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-<div class="text-center">
-    <img src="/Blue_Logo.png" style="width:150px;height:150px;" />
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://cybereum.io">building projects with cybereum</a>.</p>
-    <p>
-        <button type="button" onclick="location.href='https://localhost:7050/Privacy'">Login<br><h6>Assume Identity</h6></button>
-    </p>
-    <p><button type="button" onclick="location.href='https://cybereum.io'">Get Login<br><h6>Obtain Identity</h6></button></p>
-        
-    <p><button type="button" onclick="location.href='https://localhost:7050/GANTT_Chart'">Sample GANTT<br><h6>using DHTMLX library</h6></button></p>
-    
-    <p><button type="button" onclick="location.href='https://localhost:7050/d3-GANTT_Chart'">Sample GANTT<br><h6>using d3.js</h6></button></p>
+<!-- Include Flatpickr CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 
-    <p><button type="button" onclick="location.href='https://localhost:7050/d3-GANTT_Chart1'">Fancier GANTT<br><h6>using d3.js</h6></button></p>
+<!-- Include Flatpickr JS -->
+<script src="https://cdn.jsdelivr.net/npm/flatpickr" async></script>
 
-    <p><button type="button" onclick="location.href='https://localhost:7050/d3-GANTT_Chart2'">Sample GANTT-2<br><h6>upload XML & d3.js</h6></button></p>
+<style>
+    .center-screen {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
 
-    <p><button type="button" onclick="location.href='https://localhost:7050/d3_GANTT_Chart3'">Sample GANTT-3<br><h6>upload XML & d3.js</h6></button></p>
+    .form-signin {
+        width: 100%;
+        max-width: 330px;
+        padding: 15px;
+        margin: auto;
+    }
 
-    <p><button type="button" onclick="location.href='https://localhost:7050/CreateGraph'">Upload_JSON<br><h6>upload exisiting project schedule to Gremlin</h6></button></p>
+    .center-logo {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+</style>
 
-    <p><button type="button" onclick="location.href='https://localhost:7050/Read_JSON'">Upload_JSON<br><h6>upload exisiting project schedule to Gremlin</h6></button></p>
-    
-    <p><button type="button" onclick="location.href='https://localhost:7050/DashTest1'">Dashboard1<br><h6>Dash1</h6></button></p>
-
-    <p><button type="button" onclick="location.href='https://localhost:7050/DashTest2'">Dashboard2<br><h6>Dash2</h6></button></p>
-
-    <p><button type="button" onclick="location.href='https://localhost:7050/DashTest3'">Dashboard3<br><h6>Dash3</h6></button></p>
-    
-    <p><button type="button" onclick="location.href='https://localhost:7050/DashTest4'">Dashboard4<br><h6>Dash4</h6></button></p>
-
-    <p><button type="button" onclick="location.href='https://localhost:7050/DashTest5'">Dashboard5<br><h6>Dash5</h6></button></p>
-    
-    <p><button type="button" onclick="location.href='https://localhost:7050/Dash_Test6'">Dashboard6<br><h6>Dash6</h6></button></p>
-
-    <p><button type="button" onclick="location.href='https://localhost:7050/DashTest8'">Dashboard6<br><h6>Dash8</h6></button></p>
-
+<div class="center-screen">
+    <div class="center-logo">
+        <img src="/Blue_Logo.png" style="width:150px;height:150px;" />
+    </div>
+    <form id="loginForm" class="form-signin">
+        <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+        <label for="inputEmail" class="sr-only">Email address</label>
+        <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+        <label for="inputPassword" class="sr-only">Password</label>
+        <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+        <button type="submit" class="btn btn-lg btn-primary btn-block">Login to Project Portfolio</button>
+    </form>
 </div>
 
+<script>
+    // Get the form
+    var form = document.getElementById("loginForm");
 
-<h1>/* Testing */</h1>
-<h2>DHTMLGANTT</h2>
+    // Handle form submission
+    form.onsubmit = function (event) {
+        event.preventDefault();
 
+        // Perform login actions
+        // Redirect to the portfolio page
+        window.location.href = 'https://localhost:7050/Portfolio';
+    }
+</script>
 
-
-  <h1 class="dashboard-header">Project Dashboard</h1>
-  <div class="dashboard-section">
-    <div class="dashboard-stat">
-      <span class="dashboard-stat-value">123</span>
-      <span class="dashboard-stat-label">Total Project Participants</span>
-    </div>
-    <div class="dashboard-stat">
-      <span class="dashboard-stat-value">45</span>
-      <span class="dashboard-stat-label">Total Milestones</span>
-    </div>
-    <div class="dashboard-stat">
-      <span class="dashboard-stat-value">789</span>
-      <span class="dashboard-stat-label">Total Activities</span>
-    </div>
-  </div>
-    <div class="dashboard-section">
-    <div class="dashboard-stat">
-      <span class="dashboard-stat-value">21</span>
-      <span class="dashboard-stat-label">Currently Active Participants</span>
-    </div>
-    <div class="dashboard-stat">
-      <span class="dashboard-stat-value">5</span>
-      <span class="dashboard-stat-label">Total Milestones Acheived</span>
-    </div>
-    <div class="dashboard-stat">
-      <span class="dashboard-stat-value">35</span>
-      <span class="dashboard-stat-label">Total Activities Completed</span>
-    </div>
-  </div>
-
-   <h1>Pie Chart</h1>
-    <div class="piechart"></div>
-
-  <h1 class="dashboard-header"> Project Status </h1>
-  <div class="dashboard">
-    <div class="dashboard-card">
-      <h3>Project Status</h3>
-      <p>Behind Schedule by X%; Over budgert by XX% </p>
-      <button>Check Status</button>
-    </div>
-    <div class="dashboard-card">
-      <h3>Recommendation</h3>
-      <p>Monitor these milestones: 23, 45, 87 and these activities; 5, 78, 44, 45, 34, 78, 8, 43 </p>
-      <button>Reanalyze</button>
-    </div>
-    <div class="dashboard-card">
-      <h3>Projected completion</h3>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus euismod eros at est mollis, ut aliquet diam semper.</p>
-      <button>Generate more forecasts</button>
-    </div>
-  </div>
-
-
-  <div class="dashboard-section">
-    <canvas id="salesChart" class="dashboard-chart"></canvas>
-  </div>
-  <div class="dashboard-section">
-    <table class="dashboard-table">
-      <tr>
-        <th>Username</th>
-        <th>Email</th>
-        <th>Signup Date</th>
-      </tr>
-      <tr>
-        <td>user1</td>
-        <td>user1@email.com</td>
-        <td>01/01/2019</td>
-      </tr>
-      <tr>
-        <td>user2</td>
-        <td>user2@email.com</td>
-        <td>01/02/2019</td>
-      </tr>
-      <tr>
-        <td>user3</td>
-        <td>user3@email.com</td>
-        <td>01/03/2019</td>
-      </tr>
-    </table>
-  </div>
-  <div class="dashboard-section">
-    <button class="dashboard-button">Export Data</button>
-  </div>
-
-<br />
-<div class="dashboard-section">
-<div class="gantt-chart1">
-
-  <div class="gantt-bar" style="left: 50px; width: 100px;">
-    <div class="gantt-bar-label">Task 1</div>
-  </div>
-  <br />
-  <div class="gantt-bar" style="left: 150px; width: 200px;">
-    <div class="gantt-bar-label">Task 2</div>
-  </div>
-
-  <br />  
-  <div class="gantt-bar" style="left: 350px; width: 150px;">
-    <div class="gantt-bar-label">Task 3</div>
-  </div>
-  <div class="gantt-today-marker" style="left: 400px;"></div>
-  <div class="gantt-date-label">Date</div>
-</div>
-</div>
-
-<br />
-  <h1 class="dashboard-header">Futuristic Bar Chart</h1>
-  <div class="dashboard-section">
-    <div class="chart">
-      <div class="bar" style="width: 100px;">
-        <div class="bar-label">Data 1</div>
-      </div>
-      <div class="bar" style="width: 75px;">
-        <div class="bar-label">Data 2</div>
-      </div>
-      <div class="bar" style="width: 150px;">
-        <div class="bar-label">Data 3</div>
-      </div>
-    </div>
-    <div class="chart-today-marker" style="left: 200px;"></div>
-    <div class="chart-axis">Data</div>
-  </div>
-
-<div class="dashboard-section">
-<div class="gantt-chart">
-  <!-- Dummy GANTT chart data -->
-
-
-        <table class="dashboard-table">
-      <tr>
-        <td>Activity1</td>
-        <td>user1@email.com</td>
-        <td>01/01/2019</td>
-        <td><div class="gantt-bar" style="left:0px;width:100px"></div><div class="gantt-bar-label">Activity 1</div></td>
-      </tr>
-      <tr>
-        <td>user1</td>
-        <td>user1@email.com</td>
-        <td>01/01/2019</td>
-      </tr>
-      <tr>
-        <td>user2</td>
-        <td>user2@email.com</td>
-        <td>01/02/2019</td>
-      </tr>
-      <tr>
-        <td>user3</td>
-        <td>user3@email.com</td>
-        <td>01/03/2019</td>
-      </tr>
-    </table>
-<br />
-  <div class="gantt-bar" style="left:0px;width:100px">
-    <div class="gantt-bar-label">Activity 1</div>
-  </div>
-  <div class="gantt-bar" style="left:100px;width:200px">
-    <div class="gantt-bar-label">Activity 2</div>
-  </div>
-  <div class="gantt-bar" style="left:300px;width:150px">
-    <div class="gantt-bar-label">Activity 3</div>
-  </div>
-  <div class="gantt-bar" style="left:450px;width:250px">
-    <div class="gantt-bar-label">Activity 4</div>
-  </div>
-  <div class="gantt-bar" style="left:700px;width:200px">
-    <div class="gantt-bar-label">Activity 5</div>
-  </div>
-  <div class="gantt-bar" style="left:900px;width:100px">
-    <div class="gantt-bar-label">Activity 6</div>
-  </div>
-  <div class="gantt-bar" style="left:1000px;width:150px">
-    <div class="gantt-bar-label">Activity 7</div>
-  </div>
-</div>
-</div>
 

@@ -1,197 +1,1289 @@
 ﻿@page
-@inject AppwithAI1.Services.GraphService GraphService
-<html>
-<head>
-    <script src="https://d3js.org/d3.v5.min.js"></script>
-    <style>
-        .node {
-            fill: #fff;
-            stroke: steelblue;
-            stroke-width: 1.5px;
-        }
+@model AppwithAI1.Pages.DashTest1Model
+@{
+    ViewData["Title"] = "Dashboard";
+}
 
-        .link {
-            stroke: #d2fbff;
-            stroke-opacity: 0.9;
-        }
-    </style>
-</head>
-<body>
-    <script>
-        
-        function uploadFile(event) {
-            var input = event.target;
-            var reader = new FileReader();
-            reader.onload = function () {
-                var text = reader.result;
-                var data = d3.csvParse(text);
-                generateGraph(data);
-            };
-            reader.readAsText(input.files[0]);
-        }
-        
-      
-        //var graphService = new GraphService("gremtest1.gremlin.cosmosdb.azure.com", 443, "lja6Gkeuf5nsnEg9TYyC79N1fvt4v1ZBb9JwkbWPNiNC1tEeBOSVu8vBHQZeKnSFguIKz9ziKjVEiPAjRAuf3w==", "graphdb", "Graph7");
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0">
 
-        graphService.GetGraphDataAsync().then(function (graphData) {
-            generateGraph(graphData);
-        });
-        
-        function generateGraph(data) {
-            //var nodes = graphData.Nodes;
-            //var links = graphData.Links;
-            var nodes = [];
-            var links = [];
-            data.forEach(function (d) {
-                var sourceNode = nodes.find(function (n) {
-                    return n.name === d.source;
-                });
-                if (!sourceNode) {
-                    sourceNode = { name: d.source, degree: 0 };
-                    nodes.push(sourceNode);
-                }
-                var targetNode = nodes.find(function (n) {
-                    return n.name === d.target;
-                });
-                if (!targetNode) {
-                    targetNode = { name: d.target, degree: 0 };
-                    nodes.push(targetNode);
-                }
-                sourceNode.degree++;
-                targetNode.degree++;
-                links.push({ source: sourceNode, target: targetNode, value: d.value });
-            });
-            var maxDegree = d3.max(nodes, function (d) { return d.degree; });
-            var minRadius = 5;
-            var maxRadius = 30;
-            var radiusScale = d3.scaleLinear()
-                .domain([1, maxDegree])
-                .range([minRadius, maxRadius]);
 
-            var width = 2000, height = 1500;
-            var svg = d3.select("body").append("svg")
-                .attr("width", width)
-                .attr("height", height);
-            var simulation = d3.forceSimulation(nodes)
-                .force("link", d3.forceLink(links).id(function (d) { return d.name; }).strength(0.5).distance(100))
-                .force("charge", d3.forceManyBody().strength(-200))
-                .force("center", d3.forceCenter(width / 2, height / 2))
-                .force("collide", d3.forceCollide().radius(15))
-                .force("link", d3.forceLink(links).id(function (d) { return d.name; }).distance(function (d) { return d.value; }))
 
-            var linkForce = d3.forceLink(links)
-                .id(function (d) { return d.name; })
-                .distance(function (d) {
-                    var dist = d.value + 100; // add 50 to distance to increase space between links
-                    return dist;
+<!-- Web fonts -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway:200,300,400,600,700&Open+Sans:300,400,600,700">
+
+<!-- Bootstrap and Ares CSS -->
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<link rel="stylesheet" href="css/animate.min.css">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+
+ <!-- Include the AnyChart library and the custom CSS file -->
+        <script src="https://cdn.anychart.com/releases/v8/js/anychart-base.min.js"></script>
+        <script src="https://cdn.anychart.com/releases/v8/js/anychart-ui.min.js"></script>
+        <script src="https://cdn.anychart.com/releases/v8/js/anychart-exports.min.js"></script>
+        <script src="https://cdn.anychart.com/releases/v8/js/anychart-gantt.min.js"></script>
+        <script src="https://cdn.anychart.com/releases/v8/js/anychart-data-adapter.min.js"></script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <link href="https://unpkg.com/vis-network@7.6.2/dist/vis-network.min.css" rel="stylesheet" type="text/css"/>
+        <script type="text/javascript" src="https://unpkg.com/vis-network@7.6.2/dist/vis-network.min.js"></script>
+
+        <script src="https://d3js.org/d3.v6.min.js"></script>
+
+
+
+        <!-- Include the Materialize CSS library -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+        <!-- Page Container -->
+
+        <style>
+            /* Add the Materialize grid classes to the containers */
+
+            <svg xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="Gradient" x1="0" x2="1" y1="0" y2="0">
+                <stop offset="0%" stop-color="#d2fbff" />
+                <stop offset="25%" stop-color="#62d0f0" />
+                <stop offset="50%" stop-color="#0b3c62" />
+                <stop offset="75%" stop-color="#0C2337" />
+                <stop offset="100%" stop-color="#3DA2D7" />
+              </linearGradient>
+            </defs>
+            </svg>
+
+
+            #container {
+                display: flex;
+                flex-direction: column;
+                width: 100%;
+                height: 100%;
+                /* Add the Materialize grid class */
+                class ="container"
+            }
+
+            .chart-size {
+                width: 20px;
+                height: 20px;
+            }
+
+            .gantt-chart {
+                position: relative;
+                height: 200px;
+                background: #0C2337;
+                border: 1px solid #206C9D;
+                padding: 20px;
+            }
+
+            .gantt-row {
+                position: relative;
+                height: 20px;
+                margin-bottom: 5px;
+            }
+
+            .gantt-task {
+                position: absolute;
+                height: 100%;
+                background-color: #3DA2D7;
+                line-height: 20px;
+                text-align: center;
+                color: #D5FAFE;
+                border-radius: 3px;
+            }
+            #activityNetwork {
+                width: 100%;
+                height: 800px;
+                border: 1px solid #0b3c62;
+            }
+
+            .project-overview {
+                background-color: #0C2337;
+                color: #3DA2D7;
+                border: 1px solid #0b3c62;
+                border-radius: 5px;
+                font-family: 'Orbitron', sans-serif; /* Orbitron is a sci-fi style Google font */
+            }
+
+
+            .project-stats, .project-phases, .project-forecasts, .upcoming-milestones, .project-risks, .project-lead {
+                margin-top: 20px;
+            }
+
+            .stat-item, .phase, .forecast-item, .milestone-item, .risk-item, .lead-info {
+                display: flex;
+                align-items: center;
+                margin-bottom: 10px;
+            }
+
+            .stat-icon, .forecast-icon, .milestone-icon, .risk-icon, .lead-icon {
+                font-size: 1.5em;
+                margin-right: 10px;
+            }
+
+            .progress {
+                height: 20px;
+                background-color: #0b3c62;
+                border: 1px solid #0C2337;
+                border-radius: 3px;
+                overflow: hidden;
+                margin-bottom: 10px;
+            }
+
+            .progress-bar {
+                height: 100%;
+                background-color: #62d0f0; /* blue color for progress */
+                line-height: 20px;
+                color: #0C2337; /* dark background color for text on progress bar */
+                text-align: center;
+            }
+
+            .progress-bar h4, .progress-bar h5 {
+                margin: 0;
+                padding: 0;
+                font-size: 1em;
+            }
+
+            .progress-bar span {
+                display: block;
+                background-color: #3DA2D7;
+                height: 100%;
+                position: absolute;
+                line-height: 20px;
+                text-align: center;
+                z-index: 1;
+            }
+
+            .planned, .actual {
+                position: relative;
+                height: 20px;
+                margin-bottom: 5px;
+            }
+
+            .planned::before {
+                content: 'Planned';
+                position: absolute;
+                left: 0;
+                top: -20px;
+                z-index: 2;
+                font-size: 0.8em;
+            }
+
+            .actual::before {
+                content: 'Actual';
+                position: absolute;
+                left: 0;
+                top: -20px;
+                z-index: 2;
+                font-size: 0.8em;
+            }
+
+            .actual span {
+                background-color: #206C9D;
+            }
+
+            .project-stats, .upcoming-milestones, .project-risks {
+                list-style: none;
+                padding-left: 0;
+            }
+
+            .project-lead img {
+                margin-right: 10px;
+                float: left;
+            }
+
+        </style>
+
+
+        <div id="page-container">
+            <!-- Header -->
+            <header id="page-header">
+                <div class="h3 text-right pull-right hidden-xs">
+                    <div class="text-crystal font-w300">USER_LOGGED_IN</div>
+                </div>
+                <h1 class="h3 font-w200">
+                    <span class="text-crystal">//</span> <a class="link-sf font-w300" href="index.html">PROJECT_SCHEDULE_DASHBOARD [Master_DLTl]</a>
+                </h1>
+                <div class="text-center">
+                    <img src="/Blue_Logo.png" style="width:150px;height:150px;" />
+                    <h1 class="display-4">cybereum</h1>
+                </div>
+
+            </header>
+            <!-- END Header -->
+            <!-- Main Content -->
+            <main id="page-main">
+                <!-- Columns -->
+
+                <!-- PROJECT OVERVIEW BLOCK -->
+                <div class="block project-overview">
+                    <h3>Project Overview</h3>
+
+                <!-- Progress Bar for Planned Progress -->
+                <div class="progress tooltip" title="Planned Progress: 85%">
+                    <div class="progress-bar" role="progressbar" style="width: 85%; background: linear-gradient(to right, #3498db, #2ecc71);" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <!-- Progress Bar for Actual Progress -->
+                <div class="progress tooltip" title="Actual Progress: 75%">
+                    <div class="progress-bar" role="progressbar" style="width: 75%; background: linear-gradient(to right, #3498db, #2ecc71);" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+
+                    <!-- Project Statistics -->
+                    <div class="project-stats">
+                        <h4>Project Statistics</h4>
+                        <div class="stat-item">
+                            <span class="stat-icon"><i class="fas fa-calendar-alt"></i></span>
+                            <span class="stat-info">
+                                <span><strong>Start Date:</strong> Jan 1, 2023</span>
+                                <span><strong>Estimated End Date:</strong> Dec 31, 2023</span>
+                            </span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-icon"><i class="fas fa-users"></i></span>
+                            <span class="stat-info"><strong>Participants:</strong> 10 companies</span>
+                        </div>
+                    </div>
+
+                    <!-- Project Performance Chart -->
+                    <div class="project-chart">
+                        <h4>Project Performance</h4>
+                        <canvas id="performanceChart"></canvas>
+                    </div>
+                    <script>
+                    var ctx = document.getElementById('performanceChart').getContext('2d');
+                    var performanceChart = new Chart(ctx, {
+                        type: 'line', // or 'bar', 'pie', etc.
+                        data: {
+                            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                            datasets: [{
+                                label: 'Planned Progress',
+                                data: [10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
+                                backgroundColor: 'rgba(0, 255, 0, 0.1)',
+                                borderColor: '#62d0f0',
+                                borderWidth: 2
+                            }, {
+                                label: 'Actual Progress',
+                                data: [10, 15, 25, 35, 45, 50, 60, 65, 70, 75],
+                                backgroundColor: 'rgba(255, 0, 0, 0.1)',
+                                borderColor: '#0b3c62',
+                                borderWidth: 2
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+                    </script>
+
+
+                    <!-- Project Phases -->
+                    <div class="project-phases">
+                        <h4>Project Phases</h4>
+                        <div class="phase">
+                            <span class="phase-name"><strong>Design:</strong></span>
+                            <span class="phase-status">Completed</span>
+                            <div class="progress">
+                                <div class="progress-bar" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">100% Planned</div>
+                                <div class="progress-bar" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">100% Actual</div>
+                            </div>
+                        </div>
+                        <div class="phase">
+                            <span class="phase-name"><strong>Construction:</strong></span>
+                            <span class="phase-status">In Progress</span>
+                            <div class="progress">
+                                <div class="progress-bar" role="progressbar" style="width: 75%;" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">75% Planned</div>
+                                <div class="progress-bar" role="progressbar" style="width: 60%;" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100">60% Actual</div>
+                            </div>
+                        </div>
+                        <div class="phase">
+                            <span class="phase-name"><strong>Testing &amp; Commissioning:</strong></span>
+                            <span class="phase-status">Upcoming</span>
+                            <div class="progress">
+                                <div class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0% Planned</div>
+                                <div class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0% Actual</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project Forecasts -->
+                    <div class="project-forecasts">
+                        <h4>Project Forecasts</h4>
+                        <div class="forecast-item">
+                            <span class="forecast-icon"><i class="fas fa-calendar-check"></i></span>
+                            <span class="forecast-info"><strong>Expected Completion Date:</strong> Jan 15, 2024 <i class="fas fa-arrow-right"></i></span>
+                        </div>
+                        <div class="forecast-item">
+                            <span class="forecast-icon"><i class="fas fa-chart-line"></i></span>
+                            <span class="forecast-info"><strong>Performance Index:</strong> 0.88 <i class="fas fa-arrow-up"></i></span>
+                        </div>
+                    </div>
+
+
+                    <!-- Project Statistics 2 -->
+                    <div class="project-stats">
+                        <h4>Budget Statistics</h4>
+                        <div class="stat-item">
+                            <span class="stat-icon"><i class="fas fa-wallet"></i></span>
+                            <span class="stat-info">
+                                <span><strong>Budget:</strong> $1,000,000</span>
+                                <span><strong>Spent:</strong> $650,000</span>
+                                <span><strong>Remaining Budget:</strong> $350,000</span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Upcoming Milestones -->
+                    <div class="upcoming-milestones">
+                        <h4>Upcoming Milestones</h4>
+                        <div class="milestone-item">
+                            <span class="milestone-icon"><i class="fas fa-flag"></i></span>
+                            <span class="milestone-info"><strong>Aug 20, 2023:</strong> Finish foundation work</span>
+                        </div>
+                        <div class="milestone-item">
+                            <span class="milestone-icon"><i class="fas fa-flag"></i></span>
+                            <span class="milestone-info"><strong>Sep 15, 2023:</strong> Complete electrical wiring</span>
+                        </div>
+                        <div class="milestone-item">
+                            <span class="milestone-icon"><i class="fas fa-flag"></i></span>
+                            <span class="milestone-info"><strong>Oct 10, 2023:</strong> Complete plumbing installations</span>
+                        </div>
+                    </div>
+
+                    <!-- Project Risks -->
+                    <div class="project-risks">
+                        <h4>Project Risks</h4>
+                        <div class="risk-item">
+                            <span class="risk-icon"><i class="fas fa-exclamation-triangle"></i></span>
+                            <span class="risk-info"><strong>Weather Delays:</strong> Possible storms in September</span>
+                        </div>
+                        <div class="risk-item">
+                            <span class="risk-icon"><i class="fas fa-exclamation-triangle"></i></span>
+                            <span class="risk-info"><strong>Supply Shortages:</strong> Possible shortages of construction materials</span>
+                        </div>
+                    </div>
+
+                    <!-- Project Lead Details -->
+                    <div class="project-leads">
+                        <h4>Project Leads</h4>
+    
+                        <div class="lead-info">
+                            <span class="lead-icon"><i class="fas fa-user"></i></span>
+                            <span class="lead-details">
+                                <p><strong>Company:</strong> Company A</p>
+                                <p><strong>Name:</strong> John Doe</p>
+                                <p><strong>Email:</strong> john.doe@example.com</p>
+                                <p><strong>Phone:</strong> (123) 456-7890</p>
+                            </span>
+                        </div>
+
+                        <div class="lead-info">
+                            <span class="lead-icon"><i class="fas fa-user"></i></span>
+                            <span class="lead-details">
+                                <p><strong>Company:</strong> Company B</p>
+                                <p><strong>Name:</strong> Jane Smith</p>
+                                <p><strong>Email:</strong> jane.smith@example.com</p>
+                                <p><strong>Phone:</strong> (321) 654-0987</p>
+                            </span>
+                        </div>
+
+                        <div class="lead-info">
+                            <span class="lead-icon"><i class="fas fa-user"></i></span>
+                            <span class="lead-details">
+                                <p><strong>Company:</strong> Company C</p>
+                                <p><strong>Name:</strong> Alex Johnson</p>
+                                <p><strong>Email:</strong> alex.johnson@example.com</p>
+                                <p><strong>Phone:</strong> (987) 123-4567</p>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+
+       <!-- PROJECT OVERVIEW BLOCK END -->
+        <!-- PROJECT KEY TASKS -->
+
+        <div class="block" style="background-color: #D5FAFE;">
+            <div class="block-header">
+                <h2 class="block-title" style="color: #0C2337;">Project Key Tasks</h2>
+            </div>
+            <svg xmlns="http://www.w3.org/2000/svg" id="chart"></svg>
+
+            <script>
+                const tasksData = [
+                    { company: 'Company A', tasks: 40, completed: 20 },
+                    { company: 'Company B', tasks: 70, completed: 35 },
+                    { company: 'Company C', tasks: 120, completed: 60 },
+                    { company: 'Company D', tasks: 85, completed: 42 },
+                    { company: 'Company E', tasks: 50, completed: 25 },
+                    { company: 'Stakeholders', tasks: 30, completed: 15 }
+                ];
+
+                const svg = d3.select("#chart")
+                    .attr("width", "100%")
+                    .attr("height", 30 * tasksData.length);
+
+                const color = d3.scaleOrdinal()
+                    .domain(tasksData.map(d => d.company))
+                    .range(['#d2fbff', '#62d0f0', '#0b3c62', '#0C2337', '#3DA2D7', '#206C9D', '#D5FAFE', '#6CD4FD']);
+
+                const x = d3.scaleLinear()
+                    .domain([0, d3.max(tasksData, d => d.tasks)])
+                    .range([0, svg.node().getBoundingClientRect().width]);
+
+                const bars = svg.selectAll("rect")
+                    .data(tasksData)
+                    .join("rect")
+                    .attr("y", (d, i) => i * 30)
+                    .attr("width", d => x(d.tasks))
+                    .attr("height", 20)
+                    .style("fill", d => color(d.company));
+
+                const completedBars = svg.selectAll(".completed")
+                    .data(tasksData)
+                    .join("rect")
+                    .attr("class", "completed")
+                    .attr("y", (d, i) => i * 30)
+                    .attr("width", d => x(d.completed))
+                    .attr("height", 20)
+                    .style("fill", "green");  // or any other color you prefer
+
+                // add labels
+                const labels = svg.selectAll("text")
+                    .data(tasksData)
+                    .join("text")
+                    .attr("x", d => x(d.tasks) + 5)
+                    .attr("y", (d, i) => i * 30 + 15)
+                    .text(d => `${d.company}: ${d.tasks}`)
+                    .style("font-size", "12px")
+                    .style("fill", "#0C2337");
+
+                // add tooltips
+                const tooltip = d3.select("body").append("div")
+                    .attr("class", "tooltip")
+                    .style("opacity", 0);
+
+                bars.on("mouseover", (event, d) => {
+                    tooltip.transition()
+                        .duration(200)
+                        .style("opacity", .9);
+                    tooltip.html(`${d.company}: ${d.tasks} tasks`)
+                        .style("left", (event.pageX) + "px")
+                        .style("top", (event.pageY - 28) + "px");
                 })
-                .strength(0.5);
+                    .on("mouseout", (d) => {
+                        tooltip.transition()
+                            .duration(500)
+                            .style("opacity", 0);
+                    });
 
-            var link = svg.selectAll(".link")
-                .data(links)
-                .enter().append("line")
-                .attr("class", "link")
-                .attr("marker-end", "url(#end)")
-                .style("stroke-width", function (d) { return Math.sqrt(d.value) / 2; });
+                window.addEventListener('resize', () => {
+                    const width = svg.node().getBoundingClientRect().width;
+                    x.range([0, width]);
+                    bars.attr('width', d => x(d.tasks));
+                    completedBars.attr('width', d => x(d.completed));
+                    labels.attr('x', d => x(d.tasks) + 5);
+                });
+            </script>
+        </div>
 
+        <!-- PROJECT KEY TASKS END -->
 
-            linkForce.distance(function (d) {
-                var dx = d.target.x - d.source.x;
-                var dy = d.target.y - d.source.y;
-                var distance = Math.sqrt(dx * dx + dy * dy);
-                // If the distance is too small, set it to a minimum value to avoid collisions
-                if (distance < 30) {
-                    distance = 30;
+        <!-- Project Performance Chart -->
+        <!-- Completion Rate by Phase -->
+        <!-- Container for bar and pie charts -->
+        <div style="display: flex; justify-content: space-between;">
+            <!-- Completion Rate by Phase -->
+            <div class="project-chart" style="width: 50%;">
+                <h4>Completion Rate by Phase</h4>
+                <canvas id="completionChart"></canvas>
+            </div>
+
+            <!-- Pie chart for task distribution -->
+            <div class="project-chart" style="position: relative; width: 50%; height: 50%;">
+                <h4>Task Distribution by Company</h4>
+                <canvas id="myChart"></canvas>
+                <div id="chart-center-text" style="position: absolute; top: 60%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
+                    <h5>50% Completed</h5>
+                    <p>Out of 240 tasks</p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Time Spent by Phase -->
+        <div class="project-chart">
+            <h4>Time Spent by Phase</h4>
+            <canvas id="timeSpentChart"></canvas>
+        </div>
+        <script>
+            // Bar chart for Completion Rate
+            var ctx = document.getElementById('completionChart').getContext('2d');
+            var completionChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Design', 'Construction', 'Procurement', 'QA & Testing', 'Management', 'Commissioning', 'Handover & Closeout'],
+                    datasets: [{
+                        label: 'Completion Rate',
+                        data: [0.5, 0.6, 0.7, 0.8, 0.9, 1, 0.95],
+                        backgroundColor: ['#d2fbff', '#62d0f0', '#0b3c62', '#0C2337', '#3DA2D7', '#206C9D', '#6CD4FD'],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 1
+                        }
+                    }
                 }
-                return distance;
             });
-            simulation.force("link", linkForce);
-
-            var node = svg.selectAll(".node")
-                .data(nodes)
-                .enter().append("circle")
-                .attr("class", "node")
-                .attr("r", function (d) { return radiusScale(d.degree); })
-                .call(d3.drag()
-                    .on("start", dragstarted)
-                    .on("drag", dragged)
-                    .on("end", dragended));
-
-            node.append("title")
-                .attr("x", -10)
-                .attr("dy", "1.9em")
-                .attr("font-size", "10px")
-                .attr("class", "shadow")
-                .text(function (d) { return d.name; });
-            node.append("text")
-                .attr("class", "aa")
-                .attr("x", -1)
-                .attr("dy", ".35em")
-                .attr("font-size", "8px")
-                .attr("class", "shadow")
-                .attr("text-anchor", "middle")
-                //.text(function (d) { var str1 = d.name; var res = str1.split(" "); var res2 = res[0]; return res2; })
-                .text("aa")
-                .style({ opacity: '0.8' })
-
-            simulation.on("tick", function () {
-                link.attr("x1", function (d) { return d.source.x; })
-                    .attr("y1", function (d) { return d.source.y; })
-                    .attr("x2", function (d) { return d.target.x; })
-                    .attr("y2", function (d) { return d.target.y; });
-                node.attr("cx", function (d) { return d.x; })
-                    .attr("cy", function (d) { return d.y; });
+            // Line chart for Time Spent
+            var ctx = document.getElementById('timeSpentChart').getContext('2d');
+            var timeSpentChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                    datasets: [
+                        {
+                            label: 'Design',
+                            data: [10, 15, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110],
+                            borderColor: '#d2fbff',
+                            fill: false
+                        },
+                        {
+                            label: 'Construction',
+                            data: [15, 20, 25, 35, 45, 55, 65, 75, 85, 95, 105, 115],
+                            borderColor: '#62d0f0',
+                            fill: false
+                        },
+                        {
+                            label: 'Procurement',
+                            data: [5, 10, 15, 25, 35, 45, 55, 65, 75, 85, 95, 105],
+                            borderColor: '#0b3c62',
+                            fill: false
+                        },
+                        {
+                            label: 'QA & Testing',
+                            data: [3, 6, 9, 12, 15, 18, 21, 24, 27, 30, 33, 36],
+                            borderColor: '#0C2337',
+                            fill: false
+                        },
+                        {
+                            label: 'Management',
+                            data: [7, 14, 21, 28, 35, 42, 49, 56, 63, 70, 77, 84],
+                            borderColor: '#3DA2D7',
+                            fill: false
+                        },
+                        {
+                            label: 'Commissioning',
+                            data: [2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24],
+                            borderColor: '#206C9D',
+                            fill: false
+                        },
+                        {
+                            label: 'Handover & Closeout',
+                            data: [0, 0, 0, 0, 2, 4, 6, 8, 10, 15, 20, 25],
+                            borderColor: '#6CD4FD',
+                            fill: false
+                        }
+                    ]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+            // Pie chart for Task Distribution
+            var ctx = document.getElementById('myChart').getContext('2d');
+            var companyTaskChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Company A', 'Company B', 'Company C', 'Company D', 'Company E', 'Stakeholders'],
+                    datasets: [{
+                        data: [50, 90, 30, 20, 10, 40],
+                        backgroundColor: ['#d2fbff', '#62d0f0', '#0b3c62', '#0C2337', '#3DA2D7', '#206C9D'],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    cutoutPercentage: 50
+                }
             });
 
-            simulation
-                .force("link", linkForce)
-                .on("tick", ticked);
+        </script>
 
-            function ticked() {
-                link
-                    .attr("x1", function (d) { return d.source.x; })
-                    .attr("y1", function (d) { return d.source.y; })
-                    .attr("x2", function (d) { return d.target.x; })
-                    .attr("y2", function (d) { return d.target.y; });
 
-                node
-                    .attr("transform", function (d) {
-                        return "translate(" + d.x + "," + d.y + ")";
-                    })
-            }
+        <!-- MASTER GANTT -->
+        <!-- Load Google's Visualization API -->
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
-            function dragstarted(d) {
-                if (!d3.event.active) simulation.alphaTarget(0.3).restart();
-                d.fx = d.x;
-                d.fy = d.y;
-            }
+        <div class="block master-schedule">
+            <h3>Master Schedule</h3>
+            <!-- Create a div where the Gantt chart will be drawn -->
+            <div id="gantt_chart"></div>
 
-            function dragged(d) {
-                d.fx = d3.event.x;
-                d.fy = d3.event.y;
-            }
+            <script type="text/javascript">
+                google.charts.load('current', { 'packages': ['gantt'] });
+                google.charts.setOnLoadCallback(drawChart);
 
-            function dragended(d) {
-                if (!d3.event.active) simulation.alphaTarget(0);
-                d.fx = null;
-                d.fy = null;
-            }
+                function drawChart() {
+                    var data = new google.visualization.DataTable();
+                    data.addColumn('string', 'Task ID');
+                    data.addColumn('string', 'Task Name');
+                    data.addColumn('string', 'Resource');
+                    data.addColumn('date', 'Start Date');
+                    data.addColumn('date', 'End Date');
+                    data.addColumn('number', 'Duration');
+                    data.addColumn('number', 'Percent Complete');
+                    data.addColumn('string', 'Dependencies');
 
-            // build the arrow.
-            svg.append("svg:defs").selectAll("marker")
-                .data(["end"])      // Different link/path types can be defined here
-                .enter().append("svg:marker")    // This section adds in the arrows
-                .attr("id", String)
-                .attr("viewBox", "0 -5 10 10")
-                .attr("refX", function (d) { return 20 + 1; })   // use a function to calculate the offset based on circle radius
-                .attr("refY", 0)
-                .attr("markerWidth", 3)
-                .attr("markerHeight", 4)
-                .attr("orient", "auto")
-                .append("svg:path")
-                .attr("d", "M0,-5L10,0L0,5");
-        }
-    </script>
-    <input type="file" accept=".csv" onchange="uploadFile(event)">
-    </body>
-</html>
+                    data.addRows([
+                        ['Start', 'Start', 'Company 1', new Date(2023, 0, 1), new Date(2023, 0, 1), null, 100, null],
+                        ['Task A', 'Site Preparation', 'Company 1 - Team A', new Date(2023, 0, 2), new Date(2023, 0, 15), null, 100, 'Start'],
+                        ['Task B', 'Material Procurement', 'Company 2 - Team B', new Date(2023, 0, 16), new Date(2023, 1, 5), null, 90, 'Task A'],
+                        ['M1', 'Milestone 1', 'Company 2', new Date(2023, 1, 6), new Date(2023, 1, 6), null, 90, 'Task B'],
+                        ['Task C', 'Foundation Construction', 'Company 3 - Team C', new Date(2023, 1, 7), new Date(2023, 2, 2), null, 75, 'M1'],
+                        ['Task D', 'Superstructure Construction', 'Company 4 - Team D', new Date(2023, 2, 3), new Date(2023, 2, 14), null, 60, 'M1'],
+                        ['M2', 'Milestone 2', 'Company 3', new Date(2023, 2, 15), new Date(2023, 2, 15), null, 60, 'Task C, Task D'],
+                        ['Task E', 'Interior Finishing', 'Company 1 - Team E', new Date(2023, 2, 16), new Date(2023, 3, 13), null, 50, 'M2'],
+                        ['Task F', 'Exterior Finishing', 'Company 2 - Team F', new Date(2023, 3, 14), new Date(2023, 4, 11), null, 40, 'M2'],
+                        ['M3', 'Milestone 3', 'Company 2', new Date(2023, 4, 12), new Date(2023, 4, 12), null, 40, 'Task E, Task F'],
+                        ['Task G', 'Landscaping', 'Company 3 - Team G', new Date(2023, 4, 13), new Date(2023, 4, 31), null, 30, 'M3'],
+                        ['End', 'End', 'Company 3', new Date(2023, 5, 1), new Date(2023, 5, 1), null, 0, 'Task G']
+                    ]);
+
+                    var options = {
+                        height: 600,
+                        gantt: {
+                            trackHeight: 30
+                        }
+                    };
+
+                    var chart = new google.visualization.Gantt(document.getElementById('gantt_chart'));
+                    chart.draw(data, options);
+                }
+            </script>
+        </div>
+
+
+
+
+        <!-- MASTER GANTT END -->
+
+        <!-- MASTER MILESTONE NETWORK -->
+        <div class="block">
+            <div class="block-header">
+                <h2 class="block-title text-white">Critical Activity-Group Network Visualization</h2>
+            </div>
+            <div class="block-content">
+                <div id="activityNetwork"></div>
+                <script>
+                    var nodes = new vis.DataSet([
+                        { id: 1, label: 'Start\nOwner: Company 1\nContractor: Company 2\nVerifier: Company 3\nStart Date: 01/01/2023\nEnd Date: 01/01/2023\nDuration: 0 days' },
+                        { id: 2, label: 'Task A\nOwner: Company 1\nContractor: Company 2\nVerifier: Company 3\nStart Date: 02/01/2023\nEnd Date: 15/01/2023\nDuration: 14 days' },
+                        { id: 3, label: 'Task B\nOwner: Company 2\nContractor: Company 3\nVerifier: Company 4\nStart Date: 16/01/2023\nEnd Date: 05/02/2023\nDuration: 21 days' },
+                        { id: 4, label: 'M1\nOwner: Company 2\nContractor: Company 3\nVerifier: Company 4\nStart Date: 06/02/2023\nEnd Date: 06/02/2023\nDuration: 0 days' },
+                        { id: 5, label: 'Task C\nOwner: Company 3\nContractor: Company 4\nVerifier: Company 1\nStart Date: 07/02/2023\nEnd Date: 02/03/2023\nDuration: 24 days' },
+                        { id: 6, label: 'Task D\nOwner: Company 4\nContractor: Company 1\nVerifier: Company 2\nStart Date: 03/03/2023\nEnd Date: 14/03/2023\nDuration: 12 days' },
+                        { id: 7, label: 'M2\nOwner: Company 3\nContractor: Company 4\nVerifier: Company 1\nStart Date: 15/03/2023\nEnd Date: 15/03/2023\nDuration: 0 days' },
+                        { id: 8, label: 'Task E\nOwner: Company 1\nContractor: Company 2\nVerifier: Company 3\nStart Date: 16/03/2023\nEnd Date: 13/04/2023\nDuration: 29 days' },
+                        { id: 9, label: 'Task F\nOwner: Company 2\nContractor: Company 3\nVerifier: Company 4\nStart Date: 14/04/2023\nEnd Date: 11/05/2023\nDuration: 28 days' },
+                        { id: 10, label: 'M3\nOwner: Company 2\nContractor: Company 3\nVerifier: Company 4\nStart Date: 12/05/2023\nEnd Date: 12/05/2023\nDuration: 0 days' },
+                        { id: 11, label: 'Task G\nOwner: Company 3\nContractor: Company 4\nVerifier: Company 1\nStart Date: 13/05/2023\nEnd Date: 31/05/2023\nDuration: 19 days' },
+                        { id: 12, label: 'End\nOwner: Company 3\nContractor: Company 4\nVerifier: Company 1\nStart Date: 01/06/2023\nEnd Date: 01/06/2023\nDuration: 0 days' },
+                    ]);
+
+                    var edges = new vis.DataSet([
+                        { from: 1, to: 2, arrows: 'to', label: 'Task A: 15%\nOwner: Company 1\nContractor: Company 2', font: { align: 'middle' } },
+                        { from: 2, to: 3, arrows: 'to', label: 'Task B: 20%\nOwner: Company 2\nContractor: Company 3', font: { align: 'middle' } },
+                        { from: 3, to: 4, arrows: 'to', label: 'M1: 0%\nOwner: Company 2\nContractor: Company 3', font: { align: 'middle' } },
+                        { from: 4, to: 5, arrows: 'to', label: 'Task C: 25%\nOwner: Company 3\nContractor: Company 4', font: { align: 'middle' } },
+                        { from: 4, to: 6, arrows: 'to', label: 'Task D: 30%\nOwner: Company 4\nContractor: Company 1', font: { align: 'middle' } },
+                        { from: 5, to: 7, arrows: 'to', label: 'M2: 0%\nOwner: Company 3\nContractor: Company 4', font: { align: 'middle' } },
+                        { from: 6, to: 7, arrows: 'to', label: 'M2: 0%\nOwner: Company 3\nContractor: Company 4', font: { align: 'middle' } },
+                        { from: 7, to: 8, arrows: 'to', label: 'Task E: 15%\nOwner: Company 1\nContractor: Company 2', font: { align: 'middle' } },
+                        { from: 7, to: 9, arrows: 'to', label: 'Task F: 20%\nOwner: Company 2\nContractor: Company 3', font: { align: 'middle' } },
+                        { from: 8, to: 10, arrows: 'to', label: 'M3: 0%\nOwner: Company 2\nContractor: Company 3', font: { align: 'middle' } },
+                        { from: 9, to: 10, arrows: 'to', label: 'M3: 0%\nOwner: Company 2\nContractor: Company 3', font: { align: 'middle' } },
+                        { from: 10, to: 11, arrows: 'to', label: 'Task G: 20%\nOwner: Company 3\nContractor: Company 4', font: { align: 'middle' } },
+                        { from: 11, to: 12, arrows: 'to', label: 'End: 0%\nOwner: Company 3\nContractor: Company 4', font: { align: 'middle' } }
+                    ]);
+
+                    var container = document.getElementById('activityNetwork');
+                    var data = {
+                        nodes: nodes,
+                        edges: edges
+                    };
+                    var options = {
+                        nodes: {
+                            shape: 'dot',
+                            size: 30,
+                            font: {
+                                size: 12,
+                                color: '#ffffff',
+                                multi: true,
+                                vadjust: -15
+                            },
+                            borderWidth: 2
+                        },
+                        edges: {
+                            width: 2
+                        },
+                        physics: {
+                            solver: 'forceAtlas2Based',
+                            forceAtlas2Based: {
+                                springLength: 200, // Set your desired spring length here. This can be dynamically adjusted based on the activity duration.
+                            }
+                        }
+                    };
+                    var network = new vis.Network(container, data, options);
+                    network.on("click", function (params) {
+                        if (params.nodes.length > 0) {
+                            var nodeId = params.nodes[0];
+                            var nodeLabel = nodes.get(nodeId).label;
+                            document.getElementById("milestone-status-id").value = nodeId;
+                        }
+                        else if (params.edges.length > 0) {
+                            var edgeId = params.edges[0];
+                            var edgeData = edges.get(edgeId);
+                            alert('Task clicked: ' + edgeData.label);
+                        }
+                    });
+                </script>
+
+            </div>
+        </div>
+
+
+<!-- Milestone Smart Contract Status -->
+            <div class="row mt-5">
+                <div class="col">
+                    <h3>Milestone Smart Contract Status</h3>
+                    <p>Click a milestone node in the network above and then click "Check Status" to see the status of the corresponding milestone smart contract.</p>
+                    <!-- Milestone status form -->
+                    <form>
+                        <div class="form-group">
+                            <label for="milestone-status-id">Milestone ID</label>
+                            <input type="text" class="form-control" id="milestone-status-id" placeholder="Enter milestone ID" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="milestone-start-date">Start Date</label>
+                            <input type="text" class="form-control" id="milestone-start-date" placeholder="Start Date" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="milestone-end-date">End Date</label>
+                            <input type="text" class="form-control" id="milestone-end-date" placeholder="End Date" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="milestone-duration">Duration</label>
+                            <input type="text" class="form-control" id="milestone-duration" placeholder="Duration" readonly>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Check Status</button>
+                    </form>
+                    <div id="milestone-status" class="mt-3">
+                        <!-- Milestone status will be displayed here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- MASTER MILESTONE NETWORK END -->
+
+
+     <!-- MASTER SMART CONTRACTS -->
+             <div class="block smart-contracts">
+                <h3>Smart Contracts</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Contract</th>
+                            <th>Parties</th>
+                            <th>Trigger</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Fund Release on Task Completion</td>
+                            <td>Company A, Company B</td>
+                            <td>Task A Completion</td>
+                            <td>Active</td>
+                        </tr>
+                        <tr>
+                            <td>Dispute Resolution</td>
+                            <td>Company B, Company C</td>
+                            <td>Task E Completion</td>
+                            <td>Pending</td>
+                        </tr>
+                        <tr>
+                            <td>Release of Final Payment</td>
+                            <td>Company C, Company A</td>
+                            <td>Task H Completion</td>
+                            <td>Active</td>
+                        </tr>
+                        <tr>
+                            <td>Extra Work Order</td>
+                            <td>Company D, Company A</td>
+                            <td>Task D Completion</td>
+                            <td>Resolved</td>
+                        </tr>
+                        <tr>
+                            <td>Quality Assurance</td>
+                            <td>Company E, Company B</td>
+                            <td>Task F Completion</td>
+                            <td>Active</td>
+                        </tr>
+                        <tr>
+                            <td>Time Extension Request</td>
+                            <td>Company F, Company C</td>
+                            <td>Task G Delay</td>
+                            <td>Pending</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+     <!-- MASTER SMART CONTRACTS END-->
+
+     <!-- MASTER SMART CONTRACTS NETWORK -->
+             <div class="block smart-contracts-network">
+                <h3>Smart Contracts Network</h3>
+                <div id="network" style="width: 1000px; height: 600px;"></div>
+                <script>
+                    // define nodes
+                    var nodes = new vis.DataSet([
+                        {id: 1, label: 'Company A'},
+                        {id: 2, label: 'Company B'},
+                        {id: 3, label: 'Company C'},
+                        {id: 4, label: 'Company D'},
+                        {id: 5, label: 'Company E'},
+                        {id: 6, label: 'Company F'}
+                    ]);
+
+                    // define edges 
+                    var edges = new vis.DataSet([
+                        {from: 1, to: 2, arrows: 'to', label: 'Fund Release on Task Completion', font: {align: 'middle'}},
+                        {from: 2, to: 3, arrows: 'to', label: 'Dispute Resolution', font: {align: 'middle'}},
+                        {from: 3, to: 1, arrows: 'to', label: 'Release of Final Payment', font: {align: 'middle'}},
+                        {from: 4, to: 1, arrows: 'to', label: 'Extra Work Order', font: {align: 'middle'}},
+                        {from: 5, to: 2, arrows: 'to', label: 'Quality Assurance', font: {align: 'middle'}},
+                        {from: 6, to: 3, arrows: 'to', label: 'Time Extension Request', font: {align: 'middle'}}
+                    ]);
+
+                    // create a network
+                    var container = document.getElementById('network');
+                    var data = {
+                        nodes: nodes,
+                        edges: edges
+                    };
+
+                    var options = {
+                        nodes: {
+                            shape: 'dot',
+                            size: 30,
+                            font: {
+                                size: 32,
+                                color: '#ffffff'
+                            },
+                            borderWidth: 2
+                        },
+                        edges: {
+                            width: 2,
+                            arrows: {
+                              to: {enabled: true, scaleFactor:1, type:'arrow'}
+                            }
+                        },
+                        interaction: {
+                            hover: true
+                        },
+                        physics: {
+                            enabled: false
+                        }
+                    };
+
+                    // initialize your network!
+                    var network = new vis.Network(container, data, options);
+                </script>
+            </div>
+
+     <!-- MASTER SMART CONTRACTS NETWORK END-->
+
+     <!-- DISPUTE RESOLUTION END-->
+            <div class="block dispute-resolution">
+                                <h3>Dispute Resolution</h3>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="block">
+                                            <h4>Dispute Resolution</h4>
+                                            <p>Dispute Resolution is a smart contract that is triggered when a dispute arises between two parties. The smart contract will then trigger a dispute resolution process that will be handled by a third party. The third party will then decide on the outcome of the dispute and the smart contract will then execute the outcome.</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="block">
+                                            <h4>Dispute Resolution Process</h4>
+                                            <p>Dispute Resolution Process is a smart contract that is triggered when a dispute arises between two parties. The smart contract will then trigger a dispute resolution process that will be handled by a third party. The third party will then decide on the outcome of the dispute and the smart contract will then execute the outcome.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div><div class="block dispute-resolution">
+                <h3>Dispute Resolution</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Dispute ID</th>
+                            <th>Parties</th>
+                            <th>Description</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>DR001</td>
+                            <td>Company C, Company D</td>
+                            <td>Delayed Payment</td>
+                            <td>Resolved</td>
+                        </tr>
+                        <tr>
+                            <td>DR002</td>
+                            <td>Company A, Company E</td>
+                            <td>Quality Assurance Issue</td>
+                            <td>Under Investigation</td>
+                        </tr>
+                        <tr>
+                            <td>DR003</td>
+                            <td>Company B, Company F</td>
+                            <td>Scope Change Request</td>
+                            <td>Active</td>
+                        </tr>
+                        <tr>
+                            <td>DR004</td>
+                            <td>Company D, Company E</td>
+                            <td>Contractual Obligation</td>
+                            <td>Resolved</td>
+                        </tr>
+                        <tr>
+                            <td>DR005</td>
+                            <td>Company A, Company C</td>
+                            <td>Delayed Delivery</td>
+                            <td>Under Investigation</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+     <!-- DISPUTE RESOLUTION END-->
+        <!-- SMART CONTRACT TRANSACTIONS -->
+        <div class="block">
+            <!-- DLT-Based Milestone Management -->
+            <h2 class="text-center">DLT-Based Milestone Management</h2>
+            <p>Propose, accept, and validate project milestones with DLT-based smart contracts.</p>
+
+            <!-- Propose Milestone Smart Contract -->
+            <div class="row mt-5">
+                <div class="col">
+                    <h3>DLT Milestone Smart Contract</h3>
+                    <p>Proposal of a new milestone smart contract in DLT.</p>
+
+                    <!-- Milestone Proposal form -->
+                    <form id="milestone-proposal-form">
+                        <div class="form-group">
+                            <label for="proposer-id">Proposer ID</label>
+                            <input type="text" class="form-control" id="proposer-id">
+                        </div>
+                        <div class="form-group">
+                            <label for="milestone-title">Milestone Title</label>
+                            <input type="text" class="form-control" id="milestone-title">
+                        </div>
+                        <div class="form-group">
+                            <label for="milestone-description">Milestone Description</label>
+                            <textarea class="form-control" id="milestone-description"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="milestone-participants">Participants</label>
+                            <div id="participants-container">
+                                <!-- Empty container to hold participant input fields -->
+                            </div>
+                            <button type="button" class="btn btn-secondary mt-2" id="add-participant-button">Add Participant</button>
+                        </div>
+                        <div class="form-group">
+                            <label for="milestone-date">Estimated Completion Date</label>
+                            <input type="date" class="form-control" id="milestone-date">
+                        </div>
+                        <div class="form-group">
+                            <label for="milestone-planned-date">Planned Date of Achievement</label>
+                            <input type="date" class="form-control" id="milestone-planned-date">
+                        </div>
+                        <div class="form-group">
+                            <label for="milestone-budget">Milestone Budget</label>
+                            <input type="number" class="form-control" id="milestone-budget" min="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="milestone-attachments">Attachments</label>
+                            <input type="file" multiple class="form-control" id="milestone-attachments">
+                        </div>
+
+                        <button type="submit" id="proposal-submit">Propose Milestone</button>
+                        <button type="reset" id="proposal-reset">Reset Form</button>
+                    </form>
+
+                    <script>
+                        // Add new participant field
+                        document.getElementById('add-participant-button').addEventListener('click', function () {
+                            var participantInput = document.createElement('input');
+                            participantInput.type = 'text';
+                            participantInput.className = 'form-control mt-2';
+                            participantInput.placeholder = 'Participant ID';
+                            document.getElementById('participants-container').appendChild(participantInput);
+
+                            var participantRole = document.createElement('select');
+                            participantRole.className = 'form-control mt-2';
+                            participantRole.options.add(new Option('Participant Role', ''));
+                            participantRole.options.add(new Option('Proposer', 'proposer'));
+                            participantRole.options.add(new Option('Validator', 'validator'));
+                            participantRole.options.add(new Option('Contractor', 'contractor'));
+                            document.getElementById('participants-container').appendChild(participantRole);
+                        });
+
+                        // Validate and submit form
+                        document.getElementById('milestone-proposal-form').addEventListener('submit', function (e) {
+                            e.preventDefault();
+
+                            var title = document.getElementById('milestone-title').value;
+                            var description = document.getElementById('milestone-description').value;
+                            var date = document.getElementById('milestone-date').value;
+
+                            if (!title || !description || !date || document.getElementById('participants-container').childNodes.length === 0) {
+                                alert('All fields must be filled and at least one participant must be added!');
+                                return;
+                            }
+
+                            // TODO: Add logic to propose the milestone smart contract using DLT technology
+                        });
+                    </script>
+                </div>
+            </div>
+
+            <!-- Validate Milestone Smart Contract -->
+            <div class="row mt-5">
+                <div class="col">
+                    <h3>Validate Milestone Smart Contract</h3>
+                    <p>Validate the completion of a milestone.</p>
+                    <!-- Milestone validation form -->
+                    <form id="milestone-validation-form">
+                        <div class="form-group">
+                            <label for="validator-id">Validator ID</label>
+                            <input type="text" class="form-control" id="validator-id" placeholder="Enter validator ID">
+                        </div>
+                        <div class="form-group">
+                            <label for="milestone-id">Milestone ID</label>
+                            <input type="text" class="form-control" id="milestone-id" placeholder="Enter milestone ID">
+                        </div>
+                        <div class="form-group">
+                            <label for="validation-comment">Validation Comment</label>
+                            <textarea class="form-control" id="validation-comment" placeholder="Enter your validation comment"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="proposed-milestone-title">Proposed Milestone Title</label>
+                            <input type="text" class="form-control" id="proposed-milestone-title" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="proposed-milestone-description">Proposed Milestone Description</label>
+                            <textarea class="form-control" id="proposed-milestone-description" readonly></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="proposed-milestone-participants">Proposed Participants</label>
+                            <input type="text" class="form-control" id="proposed-milestone-participants" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="proposed-milestone-date">Proposed Estimated Completion Date</label>
+                            <input type="date" class="form-control" id="proposed-milestone-date" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="proposed-milestone-planned-date">Proposed Planned Date of Achievement</label>
+                            <input type="date" class="form-control" id="proposed-milestone-planned-date" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="proposed-milestone-budget">Proposed Milestone Budget</label>
+                            <input type="number" class="form-control" id="proposed-milestone-budget" min="0" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="proposed-changes">Propose Changes</label>
+                            <textarea class="form-control" id="proposed-changes"></textarea>
+                        </div>
+
+                        <div class="form-group form-check">
+                            <input type="checkbox" class="form-check-input" id="reject-milestone">
+                            <label class="form-check-label" for="reject-milestone">Reject this Milestone</label>
+                        </div>
+
+                        <button type="submit" id="validation-submit">Validate Milestone</button>
+                        <button type="reset" id="validation-reset">Reset Form</button>
+                    </form>
+
+                    <script>
+                        document.getElementById('milestone-validation-form').addEventListener('submit', function (e) {
+                            e.preventDefault();
+
+                            var validatorId = document.getElementById('validator-id').value;
+                            var milestoneId = document.getElementById('milestone-id').value;
+                            var comment = document.getElementById('validation-comment').value;
+                            var rejectMilestone = document.getElementById('reject-milestone').checked;
+
+                            if (!validatorId || !milestoneId || (!comment && !rejectMilestone)) {
+                                alert('All fields must be filled!');
+                                return;
+                            }
+
+                            // TODO: Add logic to validate the milestone smart contract using DLT technology
+                        });
+
+                    </script>
+                </div>
+            </div>
+
+        </div>
+
+     <!-- SMART CONTRACT TRANSACTIONS END-->
+
+     <!-- SMART CONTRACT EXECUTION-->
+            <!-- Propose Milestone Completion -->
+            <div class="row mt-5">
+                <div class="col">
+                    <h3>Propose Milestone Completion</h3>
+                    <p>Propose the completion of a milestone and attach relevant signed documents.</p>
+                    <!-- Milestone completion proposal form -->
+                    <form>
+                        <div class="form-group">
+                            <label for="milestone-id-completion">Milestone ID</label>
+                            <input type="text" class="form-control" id="milestone-id-completion" placeholder="Enter milestone ID">
+                        </div>
+                        <div class="form-group">
+                            <label for="current-contract-state">Current Contract State</label>
+                            <input type="text" class="form-control" id="current-contract-state" placeholder="Enter current contract state">
+                        </div>
+                        <div class="form-group">
+                            <label for="proposed-contract-state">Proposed Contract State</label>
+                            <input type="text" class="form-control" id="proposed-contract-state" placeholder="Enter proposed contract state">
+                        </div>
+                        <div class="form-group">
+                            <label for="completion-doc">Upload Signed Document</label>
+                            <input type="file" class="form-control-file" id="completion-doc">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Propose Completion</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Approve/Reject Milestone Completion -->
+            <div class="row mt-5">
+                <div class="col">
+                    <h3>Approve/Reject Milestone Completion</h3>
+                    <p>Review a proposed milestone completion and approve or reject it.</p>
+                    <!-- Milestone completion approval form -->
+                    <form>
+                        <div class="form-group">
+                            <label for="milestone-id-approval">Milestone ID</label>
+                            <input type="text" class="form-control" id="milestone-id-approval" placeholder="Enter milestone ID">
+                        </div>
+                        <div class="form-group">
+                            <label for="approval-doc">Sign Document</label>
+                            <input type="file" class="form-control-file" id="approval-doc">
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="approvalRadios" id="approveRadio" value="approve" checked>
+                            <label class="form-check-label" for="approveRadio">Approve</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="approvalRadios" id="rejectRadio" value="reject">
+                            <label class="form-check-label" for="rejectRadio">Reject</label>
+                        </div>
+                        <div class="form-group">
+                            <label for="participant-role">Your Role</label>
+                            <input type="text" class="form-control" id="participant-role" placeholder="Enter your role in the project">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit Review</button>
+                    </form>
+                </div>
+            </div>
+
+<!-- SMART CONTRACT EXECUTION END-->
+
+     <!-- TRANSACTION HISTORY -->
+              <div class="block transaction-history">
+                <h3>Transaction History</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Transaction ID</th>
+                            <th>Sender</th>
+                            <th>Receiver</th>
+                            <th>Amount</th>
+                            <th>Timestamp</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>TX001</td>
+                            <td>Company A</td>
+                            <td>Company B</td>
+                            <td>$100,000</td>
+                            <td>2023-01-01 12:00:00</td>
+                        </tr>
+                        <tr>
+                            <td>TX002</td>
+                            <td>Company C</td>
+                            <td>Company D</td>
+                            <td>$200,000</td>
+                            <td>2023-01-05 14:30:00</td>
+                        </tr>
+                        <tr>
+                            <td>TX003</td>
+                            <td>Company E</td>
+                            <td>Company F</td>
+                            <td>$50,000</td>
+                            <td>2023-01-10 16:00:00</td>
+                        </tr>
+                        <tr>
+                            <td>TX004</td>
+                            <td>Company B</td>
+                            <td>Company C</td>
+                            <td>$300,000</td>
+                            <td>2023-01-20 09:00:00</td>
+                        </tr>
+                        <tr>
+                            <td>TX005</td>
+                            <td>Company D</td>
+                            <td>Company A</td>
+                            <td>$150,000</td>
+                            <td>2023-01-25 11:30:00</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+
+     <!-- TRANSACTION HISTORY END-->
+
+                                            <!-- END Columns -->
+                <!-- Page Footer -->
+                <div class="block">
+                    <div class="block-content block-content-full font-s12 text-center visibility-hidden" data-toggle="appear" data-class="animated fadeIn" data-timeout="1000">
+                        <a class="link-sf" href="https://cybereum.io/">cybereum</a>
+                    </div>
+                </div>
+                <!-- END Page Footer -->
+            </main>
+            <!-- END Main Content -->
+        </div>
+        <!-- END Page Container -->
+        <!-- Scripts -->

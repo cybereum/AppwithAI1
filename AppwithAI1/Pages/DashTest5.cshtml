@@ -1,153 +1,286 @@
-﻿@page "/DashTest5"
-@using Gremlin.Net.Process.Traversal
-@using Gremlin.Net.Driver
-@using Gremlin.Net.Structure.IO.GraphSON
-@using System.Web
-@using Microsoft.JSInterop
-@using Newtonsoft.Json
-@using System.IO
-@model AppwithAI1.Pages.DashTest5Model
-@inject IJSRuntime JSRuntime
+﻿@page
+@model AppwithAI1.Pages.DashTest1Model
+@{
+    ViewData["Title"] = "Dashboard";
+}
 
-<html>
-<head>
-    <script src="https://d3js.org/d3.v5.min.js"></script>
-    <style>
-        .node {
-            fill: #fff;
-            stroke: steelblue;
-            stroke-width: 1.5px;
-        }
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0">
 
-        .link {
-            stroke: #d2fbff;
-            stroke-opacity: 0.9;
-        }
-    </style>
-</head>
-<body>
-    <button id="loadGraphBtn">Load Graph</button>
-    <svg id="graphSvg"></svg>
-    <button id="generateRectangles">Generate Rectangles</button>
-    <div id="d3-example"></div>
-    <script>
-        async function generateGraph() {
-            var graphData = await DotNet.invokeMethodAsync("AppwithAI1", "GetGraphData");
-            var nodes = graphData.nodes;
-            var links = graphData.links;
-            var maxDegree = d3.max(links, function (d) { return d.value; });
-            var minRadius = 5;
-            var maxRadius = 30;
-            var radiusScale = d3.scaleLinear()
-                .domain([1, maxDegree])
-                .range([minRadius, maxRadius]);
-            var svg = d3.select("body")
-                .append("svg")
-                .attr("width", 500)
-                .attr("height", 500);
+<!-- Web fonts -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway:200,300,400,600,700&Open+Sans:300,400,600,700">
 
-            var simulation = d3.forceSimulation()
-                .force("link", d3.forceLink().id(function (d) { return d.id; }))
-                .force("charge", d3.forceManyBody())
-                .force("center", d3.forceCenter(250, 250));
-            var link = svg.append("g")
-                .attr("class", "links")
-                .selectAll("line")
-                .data(links)
-                .enter()
-                .append("line")
-                .attr("stroke-width", function (d) { return Math.sqrt(d.value); });
+<!-- Bootstrap and Ares CSS -->
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<link rel="stylesheet" href="css/animate.min.css">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
-            var node = svg.append("g")
-                .attr("class", "nodes")
-                .selectAll("circle")
-                .data(nodes)
-                .enter()
-                .append("circle")
-                .attr("r", function (d) { return radiusScale(1); })
-                .attr("fill", "steelblue")
-                .attr("stroke", "white")
-                .attr("stroke-width", 1)
-                .call(d3.drag()
-                    .on("start", dragstarted)
-                    .on("drag", dragged)
-                    .on("end", dragended));
+<!-- Include the AnyChart library and the custom CSS file -->
+<script src="https://cdn.anychart.com/releases/v8/js/anychart-base.min.js"></script>
+<script src="https://cdn.anychart.com/releases/v8/js/anychart-ui.min.js"></script>
+<script src="https://cdn.anychart.com/releases/v8/js/anychart-exports.min.js"></script>
+<script src="https://cdn.anychart.com/releases/v8/js/anychart-gantt.min.js"></script>
+<script src="https://cdn.anychart.com/releases/v8/js/anychart-data-adapter.min.js"></script>
 
-            var label = svg.selectAll(null)
-                .data(nodes)
-                .enter()
-                .append("text")
-                .attr("dy", ".35em")
-                .attr("text-anchor", "middle")
-                .attr("font-size", "8px")
-                .text(function (d) { return d.name; });
-            node.append("title")
-                .text(function (d) { return d.name; });
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link href="https://unpkg.com/vis-network@7.6.2/dist/vis-network.min.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="https://unpkg.com/vis-network@7.6.2/dist/vis-network.min.js"></script>
 
-            simulation
-                .nodes(nodes)
-                .on("tick", ticked);
+<script src="https://d3js.org/d3.v6.min.js"></script>
 
-            simulation.force("link")
-                .links(links);
+<!-- Include the Materialize CSS library -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
 
-            function ticked() {
-                link
-                    .attr("x1", function (d) { return d.source.x; })
-                    .attr("y1", function (d) { return d.source.y; })
-                    .attr("x2", function (d) { return d.target.x; })
-                    .attr("y2", function (d) { return d.target.y; });
+<!-- Page Container -->
+<style>
+    /* Add the Materialize grid classes to the containers */
+    body {
+        
+    }
 
-                node
-                    .attr("cx", function (d) { return d.x; })
-                    .attr("cy", function (d) { return d.y; });
+    .logo-center {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 10; /* The logo will now appear in front of the blocks */
+        width: 100px;
+        height: 100px;
+    }
 
-                label
-                    .attr("x", function (d) { return d.x; })
-                    .attr("y", function (d) { return d.y + 6; });
-            }
+    .d-flex.flex-wrap {
+        height: 100vh; /* Sets the height of the container to the full viewport height */
+        position: relative; /* Allows the absolute positioning of the logo */
+    }
 
-            function dragstarted(d) {
-                if (!d3.event.active) simulation.alphaTarget(0.3).restart();
-                d.fx = d.x;
-                d.fy = d.y;
-            }
+    .p-2.w-50.h-50.overflow-auto {
+        width: 50%;
+        height: 50%; /* Sets the height of the block to 50% of the container's height */
+        overflow-y: auto;
+        box-sizing: border-box;
+        border: 2px solid white; /* Adds a white border to create a separation */
+        background-color: rgba(17, 52, 100, 0.7); /* Adds a semi-transparent background to improve visibility */
+        padding: 20px;
+    }
+</style>
 
-            function dragged(d) {
-                d.fx = d3.event.x;
-                d.fy = d3.event.y;
-            }
+<div id="page-container">
+    <!-- Header -->
+    <header id="page-header">
+        <div class="h3 text-right pull-right hidden-xs">
+            <div class="text-crystal font-w300">USER_LOGGED_IN</div>
+        </div>
+        <h1 class="h3 font-w200">
+            <span class="text-crystal">//</span> <a class="link-sf font-w300" href="index.html">MASTER_DASHBOARD</a>
+        </h1>
+    </header>
+    <!-- END Header -->
+    <!-- Main Content -->
+    <main id="page-main">
+        <!-- Columns -->
 
-            function dragended(d) {
-                if (!d3.event.active) simulation.alphaTarget(0);
-                d.fx = null;
-                d.fy = null;
-            }
-        }
+        <div class="d-flex flex-wrap">
+            <img href="https://cybereum.io" src="https://cybereum.io/wp-content/uploads/2022/12/cropped-circle6.png" class="logo-center">
+            <div class="p-2 w-50 h-50 overflow-auto">
+                <!-- Master Milestone Network -->
+                <a href="https://localhost:7050/DashTest3">
+                <h3 class="text-center">Master Project Status [external]</h3>
+                <p>Displays the DLT related master schedule and other metrics for the entire project to the entire project network as the single trusted source of truth.</p>
 
-        document.getElementById("loadGraphBtn").addEventListener("click", function () {
-            generateGraph();
-        });
+                <div class="row">
+                    <!-- Progress chart -->
+                    <div class="col-md-6">
+                        <h4>Project Progress</h4>
+                        <div id="progressChart" style="height: 300px;"></div>
+                    </div>
 
-        function generateRectangles() {
-            var dataset = [80, 100, 56, 120, 180, 30, 40, 120, 160];
-            d3.select("#d3-example")
-                .selectAll("div")
-                .data(dataset)
-                .enter()
-                .append("div")
-                .attr("class", "bar")
-                .style("height", function (d) {
-                    var barHeight = d * 5;
-                    return barHeight + "px";
-                });
-        }
+                    <!-- Task status chart -->
+                    <div class="col-md-6">
+                        <h4>Task Status</h4>
+                        <div id="statusChart" style="height: 300px;"></div>
+                    </div>
+                </div>
 
-        document.getElementById("generateRectangles").addEventListener("click", function () {
-            generateRectangles();
-        });
-    </script>
-</body>
-</html>
+                <!-- JavaScript code for the charts -->
+                <script>
+                    anychart.onDocumentReady(function () {
+                        // Progress data
+                        var progressData = [
+                            { x: "Completed", value: 40 },
+                            { x: "In progress", value: 35 },
+                            { x: "Not started", value: 25 }
+                        ];
 
+                        // Creating the progress chart
+                        var progressChart = anychart.pie();
+                        progressChart.data(progressData);
+                        progressChart.title("Project Progress");
+                        progressChart.container('progressChart');
+                        progressChart.draw();
 
+                        // Task status data
+                        var statusData = [
+                            { x: "Completed", value: 100 },
+                            { x: "In progress", value: 75 },
+                            { x: "Not started", value: 50 },
+                            { x: "Blocked", value: 5 }
+                        ];
+
+                        // Creating the task status chart
+                        var statusChart = anychart.pie();
+                        statusChart.data(statusData);
+                        statusChart.title("Task Status");
+                        statusChart.container('statusChart');
+                        statusChart.draw();
+                    });
+                </script>
+            </div>
+
+            <div class="p-2 w-50 h-50 overflow-auto">
+                <!-- Gantt Chart -->
+                <a href="https://localhost:7050/DashTest1">
+                <h3 class="text-center">Detailed Project Planning [internal]</h3>
+                <p>The scheduling system and Gantt chart for detailed planning for individual project participants connecting to a cloud graph database backend.</p>
+
+                <div id="ganttChartContainer" style="height: 600px;"></div>
+
+                <!-- JavaScript code for the Gantt chart -->
+                <script>
+                    anychart.onDocumentReady(function () {
+                        // Project tasks data
+                        var treeData = anychart.data.tree(getData(), 'as-table');
+
+                        // Creating the Gantt chart
+                        var chart = anychart.ganttProject();
+                        chart.data(treeData);
+                        chart.container('ganttChartContainer');
+                        chart.draw();
+                    });
+
+                    // Function to generate Gantt chart data
+                    function getData() {
+                        return [
+                            { id: '1', name: 'Start project', actualStart: Date.UTC(2023, 7, 1), actualEnd: Date.UTC(2023, 7, 2) },
+                            { id: '2', name: 'Planning', actualStart: Date.UTC(2023, 7, 2), actualEnd: Date.UTC(2023, 7, 5) },
+                            { id: '3', name: 'Design', actualStart: Date.UTC(2023, 7, 6), actualEnd: Date.UTC(2023, 7, 10) },
+                            { id: '4', name: 'Development', actualStart: Date.UTC(2023, 7, 11), actualEnd: Date.UTC(2023, 8, 10) },
+                            { id: '5', name: 'Testing', actualStart: Date.UTC(2023, 8, 11), actualEnd: Date.UTC(2023, 8, 20) },
+                            { id: '6', name: 'Deployment', actualStart: Date.UTC(2023, 8, 21), actualEnd: Date.UTC(2023, 8, 30) }
+                        ];
+                    }
+                </script>
+            </div>
+
+            <div class="p-2 w-50 h-50 overflow-auto">
+                <!-- Advanced Metrics -->
+                <a href="https://localhost:7050/DashTest4">
+                <h3 class="text-center">Advanced Metrics [internal]</h3>
+                <p>A dashboard for advanced metrics and forecasting using detailed data analytics and machine learning at the detailed planning level for individual participants. It is connected to the Gantt chart in the other quadrant.</p>
+
+                <div class="row">
+                    <div class="col">
+                        <canvas id="tasksChart"></canvas>
+                    </div>
+                    <div class="col">
+                        <canvas id="resourcesChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- JavaScript code for the charts -->
+                <script>
+                    // Bar chart - Completed tasks vs Total tasks
+                    var ctxTasks = document.getElementById('tasksChart').getContext('2d');
+                    var tasksChart = new Chart(ctxTasks, {
+                        type: 'bar',
+                        data: {
+                            labels: ['Task 1', 'Task 2', 'Task 3', 'Task 4', 'Task 5'],
+                            datasets: [{
+                                label: 'Completed Tasks',
+                                data: [12, 19, 3, 5, 2],
+                                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                borderColor: 'rgba(75, 192, 192, 1)',
+                                borderWidth: 1
+                            }, {
+                                label: 'Total Tasks',
+                                data: [20, 25, 10, 15, 10],
+                                backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                                borderColor: 'rgba(153, 102, 255, 1)',
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+
+                    // Pie chart - Resource Utilization
+                    var ctxResources = document.getElementById('resourcesChart').getContext('2d');
+                    var resourcesChart = new Chart(ctxResources, {
+                        type: 'pie',
+                        data: {
+                            labels: ['Resource 1', 'Resource 2', 'Resource 3', 'Resource 4'],
+                            datasets: [{
+                                data: [10, 20, 30, 40],
+                                backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(153, 102, 255, 0.2)']
+                            }]
+                        }
+                    });
+                </script>
+            </div>
+
+            <div class="p-2 w-50 h-50 overflow-auto">
+                <!-- DLT-Based Interactive Control Systems -->
+                <a href="https://localhost:7050/DashTest8">
+                <h3 class="text-center">Communication Hub [external]</h3>
+                <p>A communication and collaboration hub integrating document management and DLT-based master schedule.</p>
+
+                <!-- Collaboration Hub -->
+                <div class="row">
+                    <div class="col">
+                        <h4>DLT Enhanced Collaboration Hub</h4>
+                        <p>DLT-enabled chat, discussion forums, file sharing, and team activity tracking.</p>
+                        <!-- Basic chat widget -->
+                        <div class="card">
+                            <div class="card-body">
+                                <div id="chat" style="height:180px; border:1px solid #ccc; padding:10px; overflow:auto;"></div>
+                                <textarea id="chat-input" style="width:100%; height:40px;"></textarea>
+                            </div>
+                        </div>
+                        <button id="chat-send" class="btn btn-primary mt-2">Send</button>
+                        <script>
+                            document.getElementById('chat-send').addEventListener('click', function () {
+                                var chat = document.getElementById('chat');
+                                var input = document.getElementById('chat-input');
+                                chat.innerHTML += '<p>' + input.value + '</p>';
+                                input.value = '';
+                                chat.scrollTop = chat.scrollHeight;
+                            });
+                        </script>
+                    </div>
+                </div>
+
+                <!-- DLT Document Management System -->
+                <div class="row mt-5">
+                    <div class="col">
+                        <h4>DLT Document Management System</h4>
+                        <p>DLT-enabled uploading, downloading, version control, and tamper-proof storage of documents.</p>
+                        <!-- File upload form -->
+                        <form>
+                            <div class="form-group">
+                                <label for="file">Upload a document:</label>
+                                <input type="file" class="form-control-file" id="file">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Upload</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>

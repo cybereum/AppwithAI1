@@ -1,0 +1,239 @@
+﻿@page
+@model PortfolioModel
+@{
+    ViewData["Title"] = "Project Portfolio Dashboard";
+}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+    body {
+        color: #cdfaff;
+        background-color: #113464;
+        font-family: 'Orbitron', sans-serif;
+    }
+
+    .table-dark th,
+    .table-dark td,
+    .table-dark thead th {
+        border-color: #3292cd;
+    }
+
+    .table-dark tr {
+        background-color: #102d50;
+    }
+
+
+    .btn-outline-light {
+        border-color: #3292cd;
+        color: #3292cd;
+    }
+
+        .btn-outline-light:hover {
+            background-color: #3292cd;
+            color: white;
+        }
+
+    .btn-primary {
+        background-color: #3292cd;
+        border-color: #3292cd;
+    }
+
+        .btn-primary:hover {
+            background-color: #46b9fa;
+            border-color: #46b9fa;
+        }
+
+    .card {
+        background-color: #102d50;
+        border-color: #3292cd;
+    }
+
+    .my-lg-0 {
+        margin-bottom: 20px !important;
+    }
+
+    /* Add a cool glow effect to the inputs and buttons on hover */
+    input:hover, button:hover, a.btn:hover {
+        outline: none;
+        box-shadow: 0 0 5px #8ce6ff;
+    }
+
+</style>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet"> <!-- Include a sci-fi font -->
+
+<h1>@ViewData["Title"]</h1>
+
+<form class="form-inline my-2 my-lg-0">
+    <input class="form-control mr-sm-2" type="search" placeholder="Search Projects" aria-label="Search">
+    <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
+</form>
+
+<a href="https://localhost:7050/Dash_Test6" class="btn btn-primary mb-3">Create New Project</a>
+<div class="card">
+    <div class="card-body">
+        <h2 class="mt-4">Project Metrics</h2>
+        <div class="row">
+            <div class="col-md-3">
+                <h5>Project Completion Status by Phase</h5>
+                <div class="chart-container" style="width: 90%; height: 90%;">
+                    <canvas id="phaseStatusChart" width="400" height="400"></canvas>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <h5>Project Risk Levels</h5>
+                <div class="chart-container" style="width: 90%; height: 90%;">
+                    <canvas id="riskLevelChart" width="400" height="400"></canvas>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <h5>Project Completion Status</h5>
+                <div class="chart-container" style="width: 90%; height: 90%;">
+                    <canvas id="completionChart" width="400" height="400"></canvas>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <h5>Project Status Counts</h5>
+                <div class="chart-container" style="width: 90%; height: 90%;">
+                    <canvas id="statusCountChart" width="400" height="400"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            // Chart 1: Project Completion Status by Phase
+            var dataPhaseStatus = {
+                datasets: [{
+                    data: [
+            @Model.Projects.Count(p => p.ProjectPhase == "Initiation"),
+            @Model.Projects.Count(p => p.ProjectPhase == "Planning"),
+            @Model.Projects.Count(p => p.ProjectPhase == "Execution"),
+            @Model.Projects.Count(p => p.ProjectPhase == "Closure"),
+                    ],
+                    backgroundColor: ['#46b9fa', '#3292cd', '#e8e300', '#d90000']
+                }],
+                labels: ['Initiation', 'Planning', 'Execution', 'Closure']
+            };
+            var ctxPhaseStatus = document.getElementById('phaseStatusChart').getContext('2d');
+            new Chart(ctxPhaseStatus, {
+                type: 'doughnut',
+                data: dataPhaseStatus
+            });
+
+            // Chart 2: Project Risk Levels
+            var dataRiskLevel = {
+                labels: ['Low Risk', 'Medium Risk', 'High Risk', 'Critical Risk'],
+                datasets: [{
+                    data: [
+            @Model.Projects.Count(p => p.ProjectRiskLevel == "Low Risk"),
+            @Model.Projects.Count(p => p.ProjectRiskLevel == "Medium Risk"),
+            @Model.Projects.Count(p => p.ProjectRiskLevel == "High Risk"),
+            @Model.Projects.Count(p => p.ProjectRiskLevel == "Critical Risk"),
+                    ],
+                    backgroundColor: ['#cdfaff', '#46b9fa', '#e8e300', '#d90000']
+                }]
+            };
+            var ctxRiskLevel = document.getElementById('riskLevelChart').getContext('2d');
+            new Chart(ctxRiskLevel, {
+                type: 'bar',
+                data: dataRiskLevel,
+                options: {
+                    indexAxis: 'y',
+                }
+            });
+
+            // Chart 3: Project Completion Status
+            var dataCompletion = {
+                labels: ['Completed', 'Not Completed'],
+                datasets: [{
+                    data: [
+            @Model.Projects.Count(p => p.CompletionStatus == "100%"),
+            @Model.Projects.Count(p => p.CompletionStatus != "100%"),
+                    ],
+                    backgroundColor: ['#cdfaff', '#d90000']
+                }]
+            };
+            var ctxCompletion = document.getElementById('completionChart').getContext('2d');
+            new Chart(ctxCompletion, {
+                type: 'pie',
+                data: dataCompletion
+            });
+
+            // Chart 4: Project Status Counts
+            var dataStatusCount = {
+                labels: ['Active', 'On Hold', 'Completed', 'Cancelled'],
+                datasets: [{
+                    data: [
+            @Model.Projects.Count(p => p.ProjectStatus == "Active"),
+            @Model.Projects.Count(p => p.ProjectStatus == "On Hold"),
+            @Model.Projects.Count(p => p.ProjectStatus == "Completed"),
+            @Model.Projects.Count(p => p.ProjectStatus == "Cancelled"),
+                    ],
+                    backgroundColor: ['#cdfaff', '#46b9fa', '#e8e300', '#d90000']
+                }]
+            };
+            var ctxStatusCount = document.getElementById('statusCountChart').getContext('2d');
+            new Chart(ctxStatusCount, {
+                type: 'bar',
+                data: dataStatusCount,
+                options: {
+                    indexAxis: 'y',
+                }
+            });
+        </script>
+
+
+    </div>
+</div>
+
+<div class="card mt-4">
+    <div class="card-body">
+        <table class="table table-dark table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Project ID</th>
+                    <th>Project Name</th>
+                    <th>Project Description</th>
+                    <th>Project Manager</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Project Status</th>
+                    <th>Phase</th> <!-- Added Phase column -->
+                    <th>Risk Level</th> <!-- Added Risk Level column -->
+                    <th>Completion Status</th>
+                    <th></th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var project in Model.Projects)
+                {
+                    <tr>
+                        <td>@project.ProjectId</td>
+                        <td>@project.ProjectName</td>
+                        <td>@project.ProjectDescription</td>
+                        <td>@project.ProjectManager</td>
+                        <td>@project.StartDate.ToString("yyyy-MM-dd")</td>
+                        <td>@(project.EndDate != null ? project.EndDate.Value.ToString("yyyy-MM-dd") : "-")</td>
+                        <td>@project.ProjectStatus</td>
+                        <td>@(project.ProjectStatus == "Completed" ? "N/A" : project.ProjectPhase)</td> <!-- Display Phase or N/A -->
+                        <td>@(project.ProjectStatus == "Completed" ? "N/A" : project.ProjectRiskLevel)</td> <!-- Display Risk Level or N/A -->
+                        <td>
+                            <div class="progress">
+                                <div class="progress-bar" role="progressbar" style="width: @project.CompletionStatus;" aria-valuenow="@project.CompletionStatus.TrimEnd('%')" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                            <div>@project.CompletionStatus</div>
+                        </td>
+                        <td>
+                            <a href="https://localhost:7050/Dash_Test6" class="btn btn-sm btn-outline-primary">Edit</a>
+                            <a href="https://localhost:7050/DashTest5" class="btn btn-sm btn-outline-secondary">Open</a>
+                            <a href="@Url.Action("Delete", "Projects", new { id = project.ProjectId })" class="btn btn-sm btn-outline-danger">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+

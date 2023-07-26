@@ -6,8 +6,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using AppwithAI1.Data;
-using static AppwithAI1.Pages.UploadJsonModel;
-using AppwithAI1.Services;
+//using static AppwithAI1.Pages.UploadJsonModel;
+//using AppwithAI1.Services;
 
 namespace AppwithAI1
 {
@@ -32,13 +32,13 @@ namespace AppwithAI1
             services.AddDefaultIdentity<AppwithAI1.Areas.Identity.Data.AppwithAI1User>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<AppwithAI1Context>();
 
-            services.AddTransient<UploadJsonPageModel>();
+            //services.AddTransient<UploadJsonPageModel>();
 
             services.AddServerSideBlazor();
             //services.AddScoped<GraphService>();
 
             //services.AddScoped<GraphService>(provider => new GraphService("gremtest1.gremlin.cosmosdb.azure.com", 443, "lja6Gkeuf5nsnEg9TYyC79N1fvt4v1ZBb9JwkbWPNiNC1tEeBOSVu8vBHQZeKnSFguIKz9ziKjVEiPAjRAuf3w==", "graphdb", "Graph7"));
-            services.AddScoped<GraphService>(s => new GraphService(Configuration["CosmosDb:Hostname"], Configuration.GetValue<int>("CosmosDb:Port"), Configuration["CosmosDb:AuthKey"], Configuration["CosmosDb:Database"], Configuration["CosmosDb:Collection"]));
+            //services.AddScoped<GraphService>(s => new GraphService(Configuration["CosmosDb:Hostname"], Configuration.GetValue<int>("CosmosDb:Port"), Configuration["CosmosDb:AuthKey"], Configuration["CosmosDb:Database"], Configuration["CosmosDb:Collection"]));
 
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);

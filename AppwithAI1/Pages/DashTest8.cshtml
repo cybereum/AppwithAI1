@@ -4,42 +4,164 @@
 @using System.Web
 @using Microsoft.JSInterop
 @model AppwithAI1.Pages.DashTest8Model
-@{
-    string name = "John";
-    int age = 30;
-}
 
+<!DOCTYPE html>
 <html>
 <head>
-    <title>D3 Example</title>
-    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <meta charset="utf-8">
+    <title>EPC Dashboard</title>
+
+    <!-- CSS Libraries -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway:200,300,400,600,700&Open+Sans:300,400,600,700">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/animate.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://unpkg.com/vis-network@7.6.2/dist/vis-network.min.css" rel="stylesheet" type="text/css" />
+
+    <!-- JS Libraries -->
+    <script src="https://cdn.anychart.com/releases/v8/js/anychart-base.min.js"></script>
+    <script src="https://cdn.anychart.com/releases/v8/js/anychart-ui.min.js"></script>
+    <script src="https://cdn.anychart.com/releases/v8/js/anychart-exports.min.js"></script>
+    <script src="https://cdn.anychart.com/releases/v8/js/anychart-gantt.min.js"></script>
+    <script src="https://cdn.anychart.com/releases/v8/js/anychart-data-adapter.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/vis-network@7.6.2/dist/vis-network.min.js"></script>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+
+    <!-- Internal Styles -->
+    <style>
+        .logo-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+            width: 50px;
+            height: 50px;
+        }
+    </style>
 </head>
 <body>
-    <button id="generateRectangles">Generate Rectangles</button>
-    <div id="d3-example"></div>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="dashboard-card">
+                <a href="https://localhost:7050/DashTest1">
+                    <h3 class="text-center">Communication Hub [external]</h3>
+                    <p>A communication and collaboration hub integrating document management and DLT-based master schedule.</p>
+                </a>
+            </div>
+
+            <div class="dashboard-card">
+                <h3>DLT Enhanced Collaboration Hub</h3>
+                <p>DLT-enabled chat, discussion forums, file sharing, and team activity tracking.</p>
+                <div class="card">
+                    <div class="card-body">
+                        <div id="chat" style="height:180px; border:1px solid #ccc; padding:10px; overflow:auto;"></div>
+                        <textarea id="chat-input" style="width:100%; height:40px;"></textarea>
+                    </div>
+                </div>
+                <button id="chat-send" class="btn btn-primary mt-2">Send</button>
+            </div>
+
+            <div class="dashboard-card">
+                <h3>DLT Document Management System</h3>
+                <p>DLT-enabled uploading, downloading, version control, and tamper-proof storage of documents.</p>
+                <form>
+                    <div class="form-group">
+                        <label for="file">Upload a document:</label>
+                        <input type="file" class="form-control-file" id="file">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Upload</button>
+                </form>
+
+                <h3 class="mt-4">Download Documents</h3>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">File Name</th>
+                            <th scope="col">Timestamp</th>
+                            <th scope="col">Version</th>
+                            <th scope="col">Author</th>
+                            <th scope="col">Download</th>
+                        </tr>
+                    </thead>
+                    <tbody id="file-list">
+                        <!-- Files will be populated here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="dashboard-card">
+            <div class="col">
+                <h3>Document Dashboard</h3>
+                <p>View and manage all your project document reviews at a glance.</p>
+                <canvas id="projectChart"></canvas>
+            </div>
+        </div>
+
+       
+
+    
+
     <script>
-        function generateRectangles() {
-            const data = [1, 2, 3, 4, 5];
+        document.getElementById('chat-send').addEventListener('click', function () {
+            var chat = document.getElementById('chat');
+            var input = document.getElementById('chat-input');
+            chat.innerHTML += '<p>' + input.value + '</p>';
+            input.value = '';
+            chat.scrollTop = chat.scrollHeight;
+        });
 
-            const svg = d3.select('#d3-example')
-                .append('svg')
-                .attr('width', 500)
-                .attr('height', 100);
+        // This is a placeholder for actual data
+        var fakeData = {
+            labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+            datasets: [{
+                label: '# of Pending Documents',
+                data: [12, 19, 3, 5, 2, 3],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1
+            }]
+        };
 
-            svg.selectAll('rect')
-                .data(data)
-                .enter()
-                .append('rect')
-                .attr('x', (d, i) => i * 50)
-                .attr('y', 50)
-                .attr('width', 40)
-                .attr('height', 40)
-                .attr('fill', 'steelblue');
-        }
+        new Chart(document.getElementById('projectChart'), {
+            type: 'pie',
+            data: fakeData,
+            options: {
+                responsive: true,
+            }
+        });
 
-        document.getElementById('generateRectangles').addEventListener('click', generateRectangles);
+        // Fake data for file list
+        var fileList = [
+            { name: 'document1.pdf', timestamp: '2023-07-01 12:34', version: '1.0', author: 'John Doe' },
+            { name: 'document2.pdf', timestamp: '2023-07-02 13:45', version: '2.0', author: 'Jane Doe' },
+            // Add more files as needed
+        ];
+
+        var tableBody = document.getElementById('file-list');
+        fileList.forEach(function (file) {
+            var row = document.createElement('tr');
+            row.innerHTML = '<td>' + file.name + '</td><td>' + file.timestamp + '</td><td>' + file.version + '</td><td>' + file.author + '</td><td><button class="btn btn-primary">Download</button></td>';
+            tableBody.appendChild(row);
+        });
     </script>
-
 </body>
 </html>
-

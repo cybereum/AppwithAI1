@@ -1,488 +1,851 @@
 ﻿@page
-<html>
-<head>
-    <script src="https://d3js.org/d3.v5.min.js"></script>
-    <style>
-        .node {
-            fill: #fff;
-            stroke: steelblue;
-            stroke-width: 1.5px;
-        }
+<script src="/_framework/blazor.server.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link href="https://visjs.github.io/vis-network/styles/vis-network.min.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<script type="text/javascript" src="https://visjs.github.io/vis-network/standalone/umd/vis-network.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js" integrity="sha512-gtIg5lHp5C5vSTOF+wvEzMSBoMp5b8oyTvO6F3Dm9eZKs/qb5M+U8QgEJV5weJEV1eZu7GfXrDmfb3P7dRFdYA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-        .link {
-            stroke: #d2fbff;
-            stroke-opacity: 0.9;
-        }
+<!-- Include Flatpickr CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 
-        path.link {
-            fill: none;
-            stroke: #666;
-            stroke-width: 1.5px;
-        }
+<!-- Include Flatpickr JS -->
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
-        circle {
-            fill: #ccc;
-            stroke: #fff;
-            stroke-width: 2.5px;
-        }
+<div class="text-center">
+    <img src="/Blue_Logo.png" style="width:150px;height:150px;" />
+    <h1 class="display-4">cybereum</h1>
+</div>
 
-        text {
-            fill: #000;
-            font: 10px sans-serif;
-            pointer-events: none;
-        }
+<header class="dashboard-header">
+    <h1>Project Dashboard</h1>
+</header>
 
-        div.status {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 500px;
-            border: 3px solid #5f8a8b;
-            opacity: 0.8;
-        }
-
-        div.test {
-            position: fixed;
-            top: 0;
-            right: 0;
-            width: 300px;
-            border: 3px solid #5f8a8b;
-            opacity: 0.8;
-        }
-
-        div.test2 {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 300px;
-            border: 3px solid #5f8a8b;
-            opacity: 0.8;
-        }
-
-        div.test3 {
-            position: fixed;
-            bottom: 0;
-            right: 0;
-            width: 300px;
-            border: 3px solid #5f8a8b;
-            opacity: 0.8;
-        }
-
-        div.test4 {
-            position: absolute;
-            left: 32.0%;
-            top: 200px;
-            width: 800px;
-            border: 5px solid #6e7f80;
-            text-align: center;
-            opacity: 0.6;
-        }
-
-        div.head1 {
-            position: absolute;
-            left: 45%;
-            top: 155px;
-            text-align: center;
-            width: 400px;
-            opacity: 0.5;
-            // border: 3px solid #6e7f80;
-        }
-
-        div.container {
-            position: absolute;
-            left: 45%;
-            top: 1px;
-            text-align: center;
-            width: 400px;
-            opacity: 0.8;
-            // border: 3px solid #73AD21;
-        }
-
-        img {
-            // width: 100%;
-            height: auto;
-            opacity: 0.4;
-        }
-    </style>
-</head>
-<body>
-    <div class="status" style="background-color:lightblue">Milestone node name:-&gt;   102  Wind Tunnel Model Test Report - IFR</div>
-    <div class="test" style="background-color:lightblue">Degree:-&gt;   4</div>
-    <div class="test2" style="background-color:lightblue">Index (internal):-&gt;   96</div>
-    <div class="test3" style="background-color:lightblue">Block name:-&gt;   102.json</div>
-    <div class="test4" style="background-color:lightblue"><p>
-        </p><table style="width:100%">
-            <tbody>
-                <tr>
-                    <th>| Critical Paths and lenghts: <a href="https://cybereum.io/wp-content/uploads/2018/11/path-weights.txt"><font color="red"><u>Open</u></font></a> |  </th>
-                    <th>| Degree Centrality: <a href="https://cybereum.io/wp-content/uploads/2018/11/Degree_Centrality.txt"><font color="red"><u>Open</u></font></a> |  </th>
-                    <th>| PageRank: <a href="https://cybereum.io/wp-content/uploads/2018/11/Pagerank.txt"><font color="red"><u>Open</u></font></a> |  </th>
-                </tr>
-            </tbody>
-        </table>
-        <p></p>
+<!-- Key Statistics -->
+<!-- Key Statistics -->
+<section class="dashboard-section statistics">
+    <h2 class="section-title">Key Statistics</h2>
+    <div class="dashboard-statistics">
+        <div class="dashboard-stat">
+            <span class="dashboard-stat-icon"><i class="fas fa-users"></i></span>
+            <span class="dashboard-stat-value">123</span>
+            <span class="dashboard-stat-label">Total Project Participants</span>
+        </div>
+        <div class="dashboard-stat">
+            <span class="dashboard-stat-icon"><i class="fas fa-flag"></i></span>
+            <span class="dashboard-stat-value">45</span>
+            <span class="dashboard-stat-label">Total Milestones</span>
+        </div>
+        <div class="dashboard-stat">
+            <span class="dashboard-stat-icon"><i class="fas fa-tasks"></i></span>
+            <span class="dashboard-stat-value">789</span>
+            <span class="dashboard-stat-label">Total Activities</span>
+        </div>
+        <div class="dashboard-stat">
+            <span class="dashboard-stat-icon"><i class="fas fa-user-check"></i></span>
+            <span class="dashboard-stat-value">21</span>
+            <span class="dashboard-stat-label">Currently Active Participants</span>
+        </div>
+        <div class="dashboard-stat">
+            <span class="dashboard-stat-icon"><i class="fas fa-medal"></i></span>
+            <span class="dashboard-stat-value">5</span>
+            <span class="dashboard-stat-label">Total Milestones Achieved</span>
+        </div>
+        <div class="dashboard-stat">
+            <span class="dashboard-stat-icon"><i class="fas fa-clock"></i></span>
+            <span class="dashboard-stat-value">3</span>
+            <span class="dashboard-stat-label">Total Milestones Delayed</span>
+        </div>
+        <div class="dashboard-stat">
+            <span class="dashboard-stat-icon"><i class="fas fa-exclamation-triangle"></i></span>
+            <span class="dashboard-stat-value">2</span>
+            <span class="dashboard-stat-label">Total Outside Upsteam Milestones Delayed</span>
+        </div>
+        <div class="dashboard-stat">
+            <span class="dashboard-stat-icon"><i class="fas fa-check-circle"></i></span>
+            <span class="dashboard-stat-value">35</span>
+            <span class="dashboard-stat-label">Total Activities Completed</span>
+        </div>
+        <div class="dashboard-stat">
+            <span class="dashboard-stat-icon"><i class="fas fa-clock"></i></span>
+            <span class="dashboard-stat-value">5</span>
+            <span class="dashboard-stat-label">Total Activities Delayed</span>
+        </div>
+        <div class="dashboard-stat">
+            <span class="dashboard-stat-icon"><i class="fas fa-calendar-alt"></i></span>
+            <span class="dashboard-stat-value">Sep 05, 2023</span>
+            <span class="dashboard-stat-label">Expected Completion Time</span>
+        </div>
+        <div class="dashboard-stat">
+            <span class="dashboard-stat-icon"><i class="fas fa-dollar-sign"></i></span>
+            <span class="dashboard-stat-value">$97,210,000</span>
+            <span class="dashboard-stat-label">Expected Cost at Completion</span>
+        </div>
+        <!-- Add more statistics as needed -->
     </div>
-    <div class="head1" style="background-color:lightblue"><p>Offshore Platform - Project Network Blockchain</p></div>
-    <div class="container"><p><a href="http://cybereum.io/"><img src="/Blue_Logo.png" width="150" height="100"></a></p></div>
-    <a href="http://cybereum.io/"></a>
-    <svg></svg>
-    
-   
-    <script>
-        function uploadFile(event) {
-            var input = event.target;
-            var reader = new FileReader();
-            reader.onload = function () {
-                var text = reader.result;
-                var data = d3.csvParse(text);
-                generateGraph(data);
-            };
-            reader.readAsText(input.files[0]);
+</section>
+
+<!-- Project Status -->
+<section class="dashboard-section project-status">
+    <h2 class="section-title">Project Status</h2>
+    <div class="dashboard-cards">
+
+        <!-- Card 1: Project Schedule -->
+        <div class="dashboard-card">
+            <h3><i class="fas fa-calendar-alt"></i> Project Schedule</h3>
+            <p class="date-today">Today's Date: <span id="date"></span></p>
+            <script>
+                var today = new Date();
+                var dd = String(today.getDate()).padStart(2, '0');
+                var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+                var yyyy = today.getFullYear();
+                today = mm + '/' + dd + '/' + yyyy;
+                document.getElementById('date').innerHTML = today;
+            </script>
+            <label>Planned Schedule</label>
+            <div class="progress-bar">
+                <div class="progress-bar-inner" style="width: 80%; background-color: #4CAF50;" data-percentage="80">
+                    <span class="progress-bar-marker" style="left: 80%;"><i class="fas fa-flag"></i></span>
+                    <span class="progress-bar-text">80% - Planned Progress</span>
+                </div>
+                <span class="progress-bar-completion" style="color: #000;">Planned Completion: Aug 20, 2023</span>
+            </div>
+
+            <label>Actual Schedule</label>
+            <div class="progress-bar">
+                <div class="progress-bar-inner" style="width: 60%; background-color: #F44336;" data-percentage="60">
+                    <span class="progress-bar-marker" style="left: 60%;"><i class="fas fa-flag-checkered"></i></span>
+                    <span class="progress-bar-text">60% - Actual Progress</span>
+                </div>
+                <span class="progress-bar-completion" style="color: #000;">Estimated Completion: Sep 05, 2023</span>
+            </div>
+
+            <p>The project is currently behind the planned schedule. Additional resources and optimization may be needed to get back on track.</p>
+            <button>Check Status</button>
+            <p>Earn <strong>50 points</strong> for every milestone achieved on time. Current points: <strong>250</strong></p>
+        </div>
+
+        <!-- Card 2: Project Cost -->
+        <div class="dashboard-card">
+            <h3><i class="fas fa-dollar-sign"></i> Project Cost</h3>
+
+            <label>Planned Cost</label>
+            <div class="progress-bar">
+                <div class="progress-bar-inner" style="width: 70%; background-color: #4CAF50;" data-percentage="70">
+                    <span class="progress-bar-marker" style="left: 70%;"><i class="fas fa-flag"></i></span>
+                    <span class="progress-bar-text">$50,470,000 - Current Planned Expenditure</span>
+                </div>
+                <span class="progress-bar-completion" style="color: #000;">Planned Cost: $72,100,000</span>
+            </div>
+
+            <label>Actual Cost</label>
+            <div class="progress-bar">
+                <div class="progress-bar-inner" style="width: 90%; background-color: #F44336;" data-percentage="90">
+                    <span class="progress-bar-marker" style="left: 90%;"><i class="fas fa-flag-checkered"></i></span>
+                    <span class="progress-bar-text">$87,489,000 - Current Actual Expenditure</span>
+                </div>
+                <span class="progress-bar-completion" style="color: #000;">Estimated Cost: $97,210,000</span>
+            </div>
+
+            <p>The project is currently over budget. It is recommended to review expenditures and reassess the budget allocation.</p>
+            <button>Reanalyze</button>
+            <p>Earn <strong>50 points</strong> for every milestone achieved within budget. Current points: <strong>200</strong></p>
+        </div>
+
+
+
+        <!-- Card 3: Projected Completion -->
+        <div class="dashboard-card">
+            <h3><i class="fas fa-hourglass-end"></i> Projected Completion</h3>
+            <p>As of the current data, the project is anticipated to be completed by <strong>September 05, 2023</strong>. This estimation is based on current progress and resource allocation. However, it’s important to note that the completion date could vary due to unforeseen challenges or changes in scope. We recommend regular monitoring of the project's milestones and KPIs to identify and mitigate potential delays.</p>
+            <button>Generate More Forecasts</button>
+            <p>Top 3 Project Leaders: <strong>John Doe (500 points), Jane Smith (450 points), Bob Johnson (400 points)</strong></p>
+        </div>
+
+        <!-- Card 4: Earned Value Analysis -->
+        <div class="dashboard-card">
+            <h3><i class="fas fa-chart-line"></i> Earned Value Analysis</h3>
+            <canvas id="evChart" width="400" height="200"></canvas>
+        </div>
+
+        <!-- Card 5: Recommendation -->
+        <div class="dashboard-card">
+            <h3><i class="fas fa-lightbulb"></i> Recommendation</h3>
+            <p>Monitor these milestones: 23, 45, 87 and these activities; 5, 78, 44, 45, 34, 78, 8, 43 </p>
+            <button>Reanalyze</button>
+            <p>Earn a <strong>Proactive Manager Badge</strong> for every 5 recommendations implemented. Current badges: <strong>3</strong></p>
+        </div>
+        <script>
+            var ctx = document.getElementById('evChart').getContext('2d');
+            var chart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Start', '1M', '2M', '3M', '4M', 'End'],
+                    datasets: [{
+                        label: 'AC (Actual Cost)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        data: [0, 20, 45, 65],
+                        fill: false
+                    },
+                    {
+                        label: 'AC Projected (Actual Cost)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        data: [null, null, null, 65, 60, 80],
+                        borderDash: [5, 5], // For projected dashed lines
+                        fill: false
+                    },
+                    {
+                        label: 'PV (Planned Value)',
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        data: [0, 30, 60, 70, 90, 100],
+                        fill: false
+                    },
+                    {
+                        label: 'EV (Earned Value)',
+                        borderColor: 'rgba(153, 102, 255, 1)',
+                        backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                        data: [0, 25, 50, 60],
+                        fill: false
+                    },
+                    {
+                        label: 'EV Projected (Earned Value)',
+                        borderColor: 'rgba(153, 102, 255, 1)',
+                        backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                        data: [null, null, null, 60, 70, 90],
+                        borderDash: [5, 5], // For projected dashed lines
+                        fill: false
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                color: 'white' // Makes the Y-axis ticks white
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.2)' // Makes the grid lines white (you can adjust opacity as needed)
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                color: 'white' // Makes the X-axis ticks white
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.2)' // Makes the grid lines white (you can adjust opacity as needed)
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: 'white' // Makes the legend labels white
+                            }
+                        }
+                    }
+                }
+            });
+        </script>
+    </div>
+</section>
+
+
+
+<!-- Kanban Board -->
+<section class="dashboard-section kanban-board">
+    <h2 class="section-title">Project Kanban Board</h2>
+    <!-- Date Range Picker -->
+    <div class="date-range-picker">
+        <h4>Filter by Date Range:</h4>
+        <input type="text" id="dateRangePicker" placeholder="Select Date Range">
+    </div>
+
+    <!-- Legend -->
+    <div class="kanban-legend">
+
+        <div class="kanban-legend-items" style="display: flex; gap: 20px; color: #d2fbff;">
+            <div class="kanban-legend-item">
+                <i class="fas fa-exclamation-triangle" style="color: orange;"></i> Slightly Late
+            </div>
+            <div class="kanban-legend-item">
+                <i class="fas fa-exclamation-triangle" style="color: red;"></i> Moderately Late
+            </div>
+            <div class="kanban-legend-item">
+                <i class="fas fa-exclamation-triangle" style="color: darkred;"></i> Very Late
+            </div>
+            <div class="kanban-legend-item">
+                <i class="fas fa-star" style="color: yellow;"></i> Slightly Critical
+            </div>
+            <div class="kanban-legend-item">
+                <i class="fas fa-star" style="color: orange;"></i> Moderately Critical
+            </div>
+            <div class="kanban-legend-item">
+                <i class="fas fa-star" style="color: red;"></i> Very Critical
+            </div>
+        </div>
+    </div>
+
+
+    <div class="kanban-columns">
+
+        <!-- Column 1: To Do -->
+        <div class="kanban-column">
+            <h3 class="kanban-column-title">To Do</h3>
+            <div class="kanban-card" data-start-date="2023-07-01" data-due-date="2023-07-10" data-lateness="0" data-criticality="2">
+                <h4>Electrical Wiring</h4>
+                <p>Install the electrical wiring throughout the building.</p>
+                <div class="card-icons">
+                    <span class="due-date-icon"><i class="fas fa-calendar-alt"></i> Due: Jul 10, 2023</span>
+                    <span class="lateness-indicator"></span>
+                    <span class="criticality-indicator"><i class="fas fa-exclamation-circle"></i><i class="fas fa-exclamation-circle"></i></span>
+                </div>
+            </div>
+            <div class="kanban-card" data-start-date="2023-06-01" data-due-date="2023-06-10" data-lateness="2" data-criticality="3">
+                <h4>Plumbing Installation</h4>
+                <p>Install the plumbing systems in the building.</p>
+                <div class="card-icons">
+                    <span class="due-date-icon"><i class="fas fa-calendar-alt"></i> Due: Jun 10, 2023</span>
+                    <span class="lateness-indicator"><i class="fas fa-exclamation-triangle"></i><i class="fas fa-exclamation-triangle"></i></span>
+                    <span class="criticality-indicator"><i class="fas fa-exclamation-circle"></i><i class="fas fa-exclamation-circle"></i><i class="fas fa-exclamation-circle"></i></span>
+                </div>
+            </div>
+            <div class="kanban-card" data-start-date="2023-06-10" data-due-date="2023-06-20" data-status="on-time" data-lateness="1" data-criticality="2">
+                <h4>Site Preparation</h4>
+                <p>Prepare the construction site for the upcoming work.</p>
+                <p>Start Date: June 10, 2023</p>
+                <p>Due Date: June 20, 2023</p>
+                <div class="lateness-indicator"></div>
+                <div class="criticality-indicator"></div>
+            </div>
+            <div class="kanban-card" data-start-date="2023-06-15" data-due-date="2023-06-25" data-status="late" data-lateness="2" data-criticality="3">
+                <h4>Material Procurement</h4>
+                <p>Procure all necessary materials for the initial phase of construction.</p>
+                <p>Start Date: June 15, 2023</p>
+                <p>Due Date: June 25, 2023</p>
+                <div class="lateness-indicator"></div>
+                <div class="criticality-indicator"></div>
+            </div>
+            <div class="kanban-card" data-start-date="2023-06-15" data-due-date="2023-06-25" data-status="late" data-lateness="3" data-criticality="1">
+                <h4>Design Approval</h4>
+                <p>Get the final design approved by the client.</p>
+                <p>Start Date: June 15, 2023</p>
+                <p>Due Date: June 25, 2023</p>
+                <div class="lateness-indicator"></div>
+                <div class="criticality-indicator"></div>
+            </div>
+        </div>
+
+        <!-- Column 2: In Progress -->
+        <div class="kanban-column">
+            <h3 class="kanban-column-title">In Progress</h3>
+            <div class="kanban-card" data-start-date="2023-06-20" data-due-date="2023-07-10" data-status="on-time" data-lateness="1" data-criticality="2">
+                <h4>Foundation Construction</h4>
+                <p>Begin construction on the foundation of the building.</p>
+                <p>Start Date: June 20, 2023</p>
+                <p>Due Date: July 10, 2023</p>
+                <div class="lateness-indicator"></div>
+                <div class="criticality-indicator"></div>
+            </div>
+            <div class="kanban-card" data-start-date="2023-06-25" data-due-date="2023-07-15" data-status="late" data-lateness="2" data-criticality="3">
+                <h4>Structural Work</h4>
+                <p>Start the structural work for the building.</p>
+                <p>Start Date: June 25, 2023</p>
+                <p>Due Date: July 15, 2023</p>
+                <div class="lateness-indicator"></div>
+                <div class="criticality-indicator"></div>
+            </div>
+        </div>
+
+        <!-- Column 3: Done -->
+        <div class="kanban-column">
+            <h3 class="kanban-column-title">Done</h3>
+            <div class="kanban-card" data-start-date="2023-06-01" data-due-date="2023-06-05" data-status="accomplished" data-lateness="0" data-criticality="1">
+                <h4>Project Planning</h4>
+                <p>Complete the project planning and scheduling.</p>
+                <p>Start Date: June 1, 2023</p>
+                <p>Due Date: June 5, 2023</p>
+                <p>Completion Date: June 5, 2023</p>
+                <div class="lateness-indicator"></div>
+                <div class="criticality-indicator"></div>
+            </div>
+            <div class="kanban-card" data-start-date="2023-06-01" data-due-date="2023-06-10" data-status="late" data-lateness="1" data-criticality="2">
+                <h4>Permit Acquisition</h4>
+                <p>Acquire all necessary permits for the construction project.</p>
+                <p>Start Date: June 1, 2023</p>
+                <p>Due Date: June 10, 2023</p>
+                <p>Completion Date: June 12, 2023</p>
+                <div class="lateness-indicator"></div>
+                <div class="criticality-indicator"></div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- Kanban Board Script -->
+<script>
+
+
+    // Get all of the Kanban cards and columns
+    var cards = document.querySelectorAll('.kanban-card');
+    var columns = document.querySelectorAll('.kanban-column');
+
+    // Add drag and drop event listeners to the cards
+    cards.forEach(function (card) {
+        card.draggable = true;
+        card.addEventListener('dragstart', handleDragStart, false);
+        card.addEventListener('dragend', handleDragEnd, false);
+    });
+
+    // Add the lateness icons to each card
+    cards.forEach(function (card) {
+        var lateness = card.getAttribute('data-lateness');
+        var indicator = card.querySelector('.lateness-indicator');
+        for (var i = 0; i < lateness; i++) {
+            var icon = document.createElement('i');
+            icon.className = 'fas fa-exclamation-triangle';
+            if (lateness == 1) {
+                icon.style.color = 'orange';
+            } else if (lateness == 2) {
+                icon.style.color = 'red';
+            } else if (lateness == 3) {
+                icon.style.color = 'darkred';
+            }
+            indicator.appendChild(icon);
+        }
+    });
+
+    // Add the criticality icons to each card
+    cards.forEach(function (card) {
+        var criticality = card.getAttribute('data-criticality');
+        var indicator = card.querySelector('.criticality-indicator');
+        for (var i = 0; i < criticality; i++) {
+            var icon = document.createElement('i');
+            icon.className = 'fas fa-star';
+            if (criticality == 1) {
+                icon.style.color = 'yellow';
+            } else if (criticality == 2) {
+                icon.style.color = 'orange';
+            } else if (criticality == 3) {
+                icon.style.color = 'red';
+            }
+            indicator.appendChild(icon);
+        }
+    });
+
+    // Add drag and drop event listeners to the columns
+    columns.forEach(function (column) {
+        column.addEventListener('dragover', handleDragOver, false);
+        column.addEventListener('dragenter', handleDragEnter, false);
+        column.addEventListener('dragleave', handleDragLeave, false);
+        column.addEventListener('drop', handleDrop, false);
+    });
+
+    // Store the card that is currently being dragged
+    var currentCard = null;
+
+    // Handle the dragstart event
+    function handleDragStart(e) {
+        currentCard = this;
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('text/html', this.outerHTML);
+    }
+
+    // Handle the dragend event
+    function handleDragEnd(e) {
+        currentCard = null;
+    }
+
+    // Handle the dragover event
+    function handleDragOver(e) {
+        if (e.preventDefault) {
+            e.preventDefault(); // Necessary to allow a drop
+        }
+        e.dataTransfer.dropEffect = 'move';
+        return false;
+    }
+
+    // Handle the dragenter event
+    function handleDragEnter(e) {
+        // Add a visual cue to indicate where the card will be dropped
+        this.classList.add('over');
+    }
+
+    // Handle the dragleave event
+    function handleDragLeave(e) {
+        // Remove the visual cue
+        this.classList.remove('over');
+    }
+
+    // Handle the drop event
+    function handleDrop(e) {
+        if (e.stopPropagation) {
+            e.stopPropagation(); // Stops some browsers from redirecting
         }
 
-        function generateGraph(data) {
+        // Don't do anything if dropping the same card we're dragging
+        if (currentCard != this) {
+            // Remove the card from its current column and add it to the new one
+            currentCard.parentNode.removeChild(currentCard);
+            this.insertAdjacentHTML('beforeend', e.dataTransfer.getData('text/html'));
+        }
 
-            var nodes = [];
-            var links = [];
-            data.forEach(function (d) {
-                var sourceNode = nodes.find(function (n) {
-                    return n.name === d.source;
-                });
-                if (!sourceNode) {
-                    sourceNode = { name: d.source, degree: 0 };
-                    nodes.push(sourceNode);
-                }
-                var targetNode = nodes.find(function (n) {
-                    return n.name === d.target;
-                });
-                if (!targetNode) {
-                    targetNode = { name: d.target, degree: 0 };
-                    nodes.push(targetNode);
-                }
-                sourceNode.degree++;
-                targetNode.degree++;
-                links.push({ source: sourceNode, target: targetNode, value: d.value });
-            });
-            var width = 2000,
-                height = 1500;
+        // Remove the visual cue
+        this.classList.remove('over');
 
-            var toggle = 0;
+        return false;
+    }
 
-            var colors = d3.scale.category20();
+</script>
+<!-- Initialize Date Range Picker -->
+<script>
+    // Initialize the date range picker
+    flatpickr("#dateRangePicker", {
+        mode: "range",
+        dateFormat: "Y-m-d",
+        onChange: function (selectedDates, dateStr, instance) {
+            // When the date range changes, filter the Kanban cards
+            var startDate = selectedDates[0];
+            var endDate = selectedDates[1];
+            filterKanbanCards(startDate, endDate);
+        }
+    });
 
-            var radiusScale = d3.scale.sqrt()
-                .range([0, 300]);
+    // Function to filter the Kanban cards by date range
+    function filterKanbanCards(startDate, endDate) {
+        // Get all of the Kanban cards
+        var cards = document.querySelectorAll('.kanban-card');
 
-            // After I've read in my data I can get the maximum
-            //var max = d3.max(data, function(d) { return d.value });
-            // Now it will know the inputs are between 0 and the max value
-            //radiusScale.domain([0, max]);
-
-            var force = d3.layout.force()
-                .nodes(nodes)
-                .links(links)
-                .size([width, height])
-                .linkDistance(function (d) { return d.value; })
-                // .charge(-500)
-                .charge(function (d) { return (d.weight * -750) - 1000; })
-                // .chargeDistance(function(d) { return (200+(d.weight/10000000)); })
-                .chargeDistance(350)
-                .gravity(0.3)
-                // .gravity(function(d) { return (0.1+d.weight/10000); })
-                .friction(0.75)
-                .on("tick", tick)
-                .start();
-
-            var svg = d3.select("body").append("svg")
-                .attr("width", width)
-                .attr("height", height);
-
-            // add the links and the arrows
-            var path = svg.append("svg:g").selectAll("path")
-                .data(force.links())
-                .enter().append("svg:path")
-                // .attr("class", function(d) { return "link " + d.type; })
-                .attr("class", "link")
-                // Below sets stroke-width as per value
-                // .style("stroke-width", function (d) { return Math.sqrt(d.value); })
-                .style("stroke", function (d) { return colors(d.value); })
-                .attr("marker-end", "url(#end)")
-                .style({ opacity: '0.99' });
-            // define the nodes
-
-            var node = svg.selectAll(".node")
-                .data(force.nodes())
-                .enter().append("g")
-                .attr("class", "node")
-                .call(force.drag);
-            // add the nodes
-
-            node.append("circle")
-                //    .attr("r", 7)
-                // d3.weight property which can be used to count the number of links and associate with radius attribute of the circle
-                .attr("r", function (d) {
-                    var minRadius = 10;
-                    return minRadius + (d.weight / 2);
-                })
-                //	Using the scale to set the radius
-                //    .attr("r", function(d) { return radiusScale(d.value); })
-                .style("fill", function (d) { return colors(d.weight); })
-                //    .attr("xlink:href", "http://en.wikipedia.org/wiki/"+word)
-                .style({ opacity: '0.6' })
-                .on("mouseover", handleMouseOver)
-                .on("mouseout", handleMouseOut)
-                .on("click", handleClick);
-            // add the text
-            node.append("text")
-                .attr("x", -10)
-                .attr("dy", "1.9em")
-                .attr("font-size", "10px")
-                .attr("class", "shadow")
-                .text(function (d) { return d.name; })
-                .on("mouseover", handleMouseOver)
-                .on("mouseout", handleMouseOut)
-                .on("click", handleClick);
-
-            node.append("text")
-                .attr("class", "aa")
-                .attr("x", -1)
-                .attr("y", "0.4em")
-                .attr("font-size", "10px")
-                .text(function (d) { return "Degree: " + d.degree; });
-            function handleMouseOver(d) {
-                d3.select(this).style({ opacity: '1' });
-                d3.select(this).attr("r", function (d) {
-                    var minRadius = 10;
-                    return minRadius + (d.weight / 2) + 5;
-                });
-                toggle++;
-                if (toggle === 1) {
-                    d3.select(".status").text("Node name:- " + d.name + " | Degree:- " + d.degree);
-                } else {
-                    toggle = 0;
-                    d3.select(".status").text("Milestone node name:- " + "102  Wind Tunnel Model Test Report - IFR");
-                }
+        // Hide or show each card based on its start date and due date
+        cards.forEach(function (card) {
+            var start = new Date(card.getAttribute('data-start-date'));
+            var due = new Date(card.getAttribute('data-due-date'));
+            if (start >= startDate && due <= endDate) {
+                card.style.display = 'block';
+            } else {
+                card.style.display = 'none';
             }
-
-            function handleMouseOut(d) {
-                d3.select(this).style({ opacity: '0.6' });
-                d3.select(this).attr("r", function (d) {
-                    var minRadius = 10;
-                    return minRadius + (d.weight / 2);
-                });
-            }
-
-            function handleClick(d) {
-                var blockName = d.name + ".json";
-                d3.select(".test2").text("Index (internal):- " + d.index);
-                d3.select(".test3").text("Block name:- " + blockName);
-                d3.select(".test4").text("Critical Paths and lengths: | Degree Centrality: | PageRank: ");
-                d3.select(".status").text("Selected node:- " + d.name + " | Degree:- " + d.degree);
-            }
-
-            // add the curvy lines
-            function tick() {
-                path.attr("d", function (d) {
-                    var dx = d.target.x - d.source.x,
-                        dy = d.target.y - d.source.y,
-                        dr = Math.sqrt(dx * dx + dy * dy);
-                    return "M" +
-                        d.source.x + "," +
-                        d.source.y + "A" +
-                        dr + "," + dr + " 0 0,1 " +
-                        d.target.x + "," +
-                        d.target.y;
-                });
-                // recalculate and back off the distance
-                path.attr("d", function (d) {
-
-                    // length of current path
-                    var pl = this.getTotalLength(),
-                        // radius of circle plus marker head
-                        //r = (d.target.weight) * 4 + 16.97, //16.97 is the "size" of the marker Math.sqrt(12**2 + 12 **2)
-                        r = 20 + (d.target.weight) / 2,
-                        // position close to where path intercepts circle
-                        m = this.getPointAtLength(pl - r);
-
-                    var dx = m.x - d.source.x,
-                        dy = m.y - d.source.y,
-                        dr = Math.sqrt(dx * dx + dy * dy);
-
-                    return "M" + d.source.x + "," + d.source.y + "A" + dr + "," + dr + " 0 0,1 " + m.x + "," + m.y;
-                });
-                node
-                    .attr("transform", function (d) {
-                        return "translate(" + d.x + "," + d.y + ")";
-                    });
-            }
-            // build the arrow.
-
-            svg.append("svg:defs").selectAll("marker")
-                .data(["end"])      // Different link/path types can be defined here
-                .enter().append("svg:marker")    // This section adds in the arrows
-                .attr("id", String)
-                .attr("viewBox", "0 -5 10 10")
-                //    .attr("refX", graph.links(function(l) {
-                //        var r1 = 24;
-                //    var r2 = 1+l.weight;
-                //    var r3 =r2.weight;
-                //        return r1 + r2/5;
-                //      }))
-                //    .attr("refX", 20)
-                //    .attr("refY", -1.2)
-                .attr("refX", 0)
-                .attr("refY", 0)
-                .attr("markerWidth", 7)
-                .attr("markerHeight", 10)
-                .attr("orient", "auto")
-                .append("svg:path")
-                .attr("d", "M0,-5L10,0L0,5");
-
-            // Return all nodes **not working
-            d3.selection.prototype.nodes = function (d) {
-                var nodes = new Array(this.size()), i = -1;
-                this.each(function () { nodes[++i] = this; });
-                return nodes;
-            }
-
-            function handleClick(d, i) {  // Add interactivity
-                var str1 = d.name
-                var res = str1.split(" ");
-                var res2 = 'https://cybereum.io/wp-content/uploads/2018/11/' + res[0] + '.' + 'txt'
-                d3.select('.test3').text(res2);
-                //    window.location.href='http://google.com';
-                window.location.href = res2;
-            }
-
-            //Create an array logging what is connected to what
-            var linkedByIndex = {};
-            for (i = 0; i < d3GraphData.nodes.length; i++) {
-                linkedByIndex[i + "," + i] = 1;
-            };
-            d3GraphData.links.forEach(function (d) {
-                linkedByIndex[d.source.index + "," + d.target.index] = 1;
-            });
-            //This function looks up whether a pair are neighbours
-            function neighboring(a, b) {
-                return linkedByIndex[a.index + "," + b.index];
-            }
-
-            // Create Event Handlers for mouse
-            function handleMouseOver(d, i) {  // Add interactivity
-                var str1 = d.name
-                var res = str1.split(" ");
-                var res2 = res[0] + '.' + 'json'
-
-                d = d3.select(this).node().__data__;
-                node.style("opacity", function (o) {
-                    return neighboring(d, o) | neighboring(o, d) ? 1 : 0.99;
-                });
-
-                // Use D3 to select element, change color and size
-                d3.select(this).attr("r", function (d) {
-                    var minRadius = 10;
-                    return minRadius + (d.weight * 1.1);
-                })
-                    .style('font', '20px times')
-                    .style({ opacity: '1' })
-                    .style({ stroke: '#333' })
-                    .style('stroke-width', '3.5px');
-                //  stroke: #666;
-
-                //  stroke-width: 1.5px;
-
-                d3.select('.status')
-                    .text('Milestone node name:->   ' + d.name);
-                //    d3.select('.test').text(connectedNodes());
-
-                //    connectedNodes();
-                //    d3.select('.test').text(linkedByIndex);
-
-                d3.select('.test2')
-                    .text('Index (internal):->   ' + d.index);
-                d3.select('.test').text('Degree:->   ' + d.weight);
-                d3.select('.test3').text('Block name:->   ' + res2);
-                // Specify where to put label of text
-                //   function() { this.parentNode.appendChild(this);}
-
-                //    d3.select('.test2').text(linkedByIndex);
-
-                div.transition()
-                    .duration(500)
-                    .style("opacity", 0);
-                div.transition()
-                    .duration(200)
-                    .style("opacity", .9);
-                div.html(
-                    '<a href= "http://google.com">' + // The first <a> tag
-                    formatTime(d.date) +
-                    "</a>" +                          // closing </a> tag
-                    "<br/>" + d.close)
-                    .style("left", (d3.event.pageX) + "px")
-                    .style("top", (d3.event.pageY - 28) + "px");
-
-                var nodeSelection = d3.select(this).node.append("text").style({ opacity: '1' });
-                nodeSelection.select("text").style({ opacity: '0.1' });
-                d3.select(this).append("text")
-                    .attr(id, d.name + "-" + "1" + i)
-                    .attr("x", 100)
-
-                    .attr("dy", ".35em")
-                    .style('font', '20px times')
-                    .text(function (d) { return d.name; });
-            }
-
-            function handleMouseOut(d, i) {
-                // Use D3 to select element, change color back to normal
-                //d3.select(this).attr({fill: "black",r: 7});
-                d3.select(this).attr("r", function (d) {
-                    var minRadius = 10;
-                    return minRadius + (d.weight / 2);
-                })
-                    .style('font', '10px times')
-                    .style("opacity", 0.6)
-                    .style({ stroke: '#fff' })
-                    .style('stroke-width', '2.5px');
-                // Select text by id and then remove
-                d3.select(d.name + "-" + "1" + i).remove();  // Remove text location
-            }
-
-            //
-            var linkedByIndex = {};
-            for (i = 0; i < graph.nodes.length; i++) {
-                linkedByIndex[i + "," + i] = 1;
-            };
-            graph.links.forEach(function (d) {
-                linkedByIndex[d.source.index + "," + d.target.index] = 1;
-            });
-
-            function neighboring(a, b) {
-                return linkedByIndex[a.index + "," + b.index];
-            }
-
-            function connectedNodes() {
-                if (toggle == 0) {
-                    d = d3.select(this).node().__data__;
-                    node.style("opacity", function (o) {
-                        return neighboring(d, o) | neighboring(o, d) ? 1 : 0.15;
-                    });
-                    toggle = 1;
-                } else {
-                    node.style("opacity", 1);;
-                    toggle = 0;
-                }
-                //
-            }
-            d3.select('.test')
-                .text(linkedByIndex);
-            d3.select('.test2').text(function (d) {
-                var minRadius = 10;
-                return minRadius + (d.weight / 2.5);
-            });
         });
-    </script>
-    <div>
-        <input type="file" onchange="uploadFile(event)">
+    }
+</script>
+
+
+<!-- Fever Chart -->
+<section class="dashboard-section fever-chart">
+    <h2 class="section-title">Fever Chart</h2>
+    <div class="chart-container">
+        <canvas id="feverChart"></canvas>
     </div>
-</body>
-</html>
+</section>
+
+<!-- Fever Chart CSS -->
+<style>
+    .chart-container {
+        position: relative;
+        margin: auto;
+        max-width: 800px;
+        height: 400px;
+        background: linear-gradient(to top left, green, yellow 50%, red);
+        opacity: 0.75;
+    }
+
+    #feverChart {
+        position: relative;
+        height: 100%;
+        width: 100%;
+    }
+</style>
+
+<!-- Fever Chart Script -->
+<script>
+    var ctx = document.getElementById('feverChart').getContext('2d');
+    var chart = new Chart(ctx, {
+        type: 'scatter',
+        data: {
+            datasets: [{
+                label: 'Project Progress',
+                data: [{ x: 0, y: 0 }, { x: 20, y: 10 }, { x: 40, y: 20 }, { x: 60, y: 30 }, { x: 80, y: 40 }, { x: 100, y: 50 }],
+                backgroundColor: 'blue'
+            }]
+        },
+        options: {
+            scales: {
+                x: {
+                    type: 'linear',
+                    position: 'bottom',
+                    title: {
+                        display: true,
+                        text: 'Project Completion (%)',
+                        font: {
+                            size: 20,
+                            family: 'Arial',
+                            style: 'bold',
+                            lineHeight: 1.2,
+                        },
+                        color: '#000000'
+                    }
+                },
+                y: {
+                    type: 'linear',
+                    title: {
+                        display: true,
+                        text: 'Buffer Consumption (%)',
+                        font: {
+                            size: 20,
+                            family: 'Arial',
+                            style: 'bold',
+                            lineHeight: 1.2,
+                        },
+                        color: '#000000'
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    labels: {
+                        color: '#000000', // Makes the legend labels black
+                        font: {
+                            size: 14,
+                            family: 'Arial',
+                            style: 'normal',
+                            lineHeight: 1.2,
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+</script>
+
+<!-- Fever Chart End-->
+<!-- Dependency Analysis -->
+<section class="dashboard-section dependency-analysis">
+    <h2 class="section-title">Dependency Analysis</h2>
+    <div class="dashboard-cards">
+        <!-- Card: Dependency Graph -->
+        <div class="dashboard-card">
+            <h3>Activity Dependency Graph</h3>
+            <div id="dependency-graph" style="width: 100%; height: 400px;"></div>
+        </div>
+
+        <!-- Card: Impact Analysis -->
+        <div class="dashboard-card">
+            <h3>Impact of Delays</h3>
+            <ul class="impact-list">
+                <li>Delay in Activity 23 impacts Milestone 3.</li>
+                <li>Delay in Milestone 3 impacts Activity 42, 45.</li>
+                <!-- ... -->
+            </ul>
+        </div>
+    </div>
+
+    <!-- Dependency Graph Script -->
+    <script>
+        // create an array with nodes
+        var nodes = new vis.DataSet([
+            { id: 1, label: 'Activity 1', shape: 'box', color: '#0c0' },
+            { id: 2, label: 'Activity 2', shape: 'ellipse', color: '#0c0' },
+            { id: 3, label: 'Activity 3', shape: 'diamond', color: '#0c0' },
+            { id: 4, label: 'Activity 4', shape: 'triangle', color: '#0c0' },
+            { id: 5, label: 'Activity 5', shape: 'star', color: '#0c0' },
+            { id: 6, label: 'Activity 6', shape: 'hexagon', color: '#0c0' },
+            { id: 7, label: 'Activity 7', shape: 'circle', color: '#0c0' }
+            // ... more nodes
+        ]);
+
+        // create an array with edges
+        var edges = new vis.DataSet([
+            { from: 1, to: 2, arrows: 'to', color: '#0f0' },
+            { from: 2, to: 3, arrows: 'to', color: '#0f0' },
+            { from: 3, to: 4, arrows: 'to', color: '#0f0' },
+            { from: 4, to: 5, arrows: 'to', color: '#0f0' },
+            { from: 5, to: 6, arrows: 'to', color: '#0f0' },
+            { from: 6, to: 7, arrows: 'to', color: '#0f0' },
+            { from: 7, to: 1, arrows: 'to', color: '#0f0' },
+            { from: 2, to: 6, arrows: 'to', color: '#0f0' },
+            { from: 4, to: 7, arrows: 'to', color: '#0f0' }
+            // ... more edges
+        ]);
+
+        // create a network
+        var container = document.getElementById('dependency-graph');
+        var data = {
+            nodes: nodes,
+            edges: edges
+        };
+        var options = {
+            physics: {
+                enabled: true,
+                barnesHut: {
+                    gravitationalConstant: -2000,
+                    centralGravity: 0.3,
+                    springLength: 95,
+                    springConstant: 0.04,
+                    damping: 0.09,
+                    avoidOverlap: 0.1
+                }
+            },
+            interaction: {
+                hover: true,
+                tooltipDelay: 200
+            },
+            nodes: {
+                font: {
+                    size: 14,
+                    face: 'Arial',
+                    color: '#0f0'
+                }
+            },
+            edges: {
+                smooth: {
+                    type: 'continuous'
+                },
+                color: {
+                    inherit: 'from'
+                },
+                width: 2,
+                arrows: {
+                    to: {
+                        enabled: true,
+                        scaleFactor: 1
+                    }
+                }
+            }
+        };
+
+        var network = new vis.Network(container, data, options);
+    </script>
+
+
+    </script>
+
+</section>
+
+
+<div class="dashboard-section">
+    <canvas id="salesChart" class="dashboard-chart"></canvas>
+</div>
+<div class="dashboard-section">
+    <table class="dashboard-table">
+        <tr>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Signup Date</th>
+        </tr>
+        <tr>
+            <td>user1</td>
+            <td>user1@email.com</td>
+            <td>01/01/2019</td>
+        </tr>
+        <tr>
+            <td>user2</td>
+            <td>user2@email.com</td>
+            <td>01/02/2019</td>
+        </tr>
+        <tr>
+            <td>user3</td>
+            <td>user3@email.com</td>
+            <td>01/03/2019</td>
+        </tr>
+    </table>
+</div>
+<div class="dashboard-section">
+    <button class="dashboard-button">Export Data</button>
+</div>
+
+<br />
+<div class="dashboard-section">
+    <div class="gantt-chart1">
+
+        <div class="gantt-bar" style="left: 50px; width: 100px;">
+            <div class="gantt-bar-label">Task 1</div>
+        </div>
+        <br />
+        <div class="gantt-bar" style="left: 150px; width: 200px;">
+            <div class="gantt-bar-label">Task 2</div>
+        </div>
+
+        <br />
+        <div class="gantt-bar" style="left: 350px; width: 150px;">
+            <div class="gantt-bar-label">Task 3</div>
+        </div>
+        <div class="gantt-today-marker" style="left: 400px;"></div>
+        <div class="gantt-date-label">Date</div>
+    </div>
+</div>
+
+<br />
+<h1 class="dashboard-header">Futuristic Bar Chart</h1>
+<div class="dashboard-section">
+    <div class="chart">
+        <div class="bar" style="width: 100px;">
+            <div class="bar-label">Data 1</div>
+        </div>
+        <div class="bar" style="width: 75px;">
+            <div class="bar-label">Data 2</div>
+        </div>
+        <div class="bar" style="width: 150px;">
+            <div class="bar-label">Data 3</div>
+        </div>
+    </div>
+    <div class="chart-today-marker" style="left: 200px;"></div>
+    <div class="chart-axis">Data</div>
+</div>
+
+<div class="dashboard-section">
+    <div class="gantt-chart">
+        <!-- Dummy GANTT chart data -->
+
+
+        <table class="dashboard-table">
+            <tr>
+                <td>Activity1</td>
+                <td>user1@email.com</td>
+                <td>01/01/2019</td>
+                <td><div class="gantt-bar" style="left:0px;width:100px"></div><div class="gantt-bar-label">Activity 1</div></td>
+            </tr>
+            <tr>
+                <td>user1</td>
+                <td>user1@email.com</td>
+                <td>01/01/2019</td>
+            </tr>
+            <tr>
+                <td>user2</td>
+                <td>user2@email.com</td>
+                <td>01/02/2019</td>
+            </tr>
+            <tr>
+                <td>user3</td>
+                <td>user3@email.com</td>
+                <td>01/03/2019</td>
+            </tr>
+        </table>
+        <br />
+        <div class="gantt-bar" style="left:0px;width:100px">
+            <div class="gantt-bar-label">Activity 1</div>
+        </div>
+        <div class="gantt-bar" style="left:100px;width:200px">
+            <div class="gantt-bar-label">Activity 2</div>
+        </div>
+        <div class="gantt-bar" style="left:300px;width:150px">
+            <div class="gantt-bar-label">Activity 3</div>
+        </div>
+        <div class="gantt-bar" style="left:450px;width:250px">
+            <div class="gantt-bar-label">Activity 4</div>
+        </div>
+        <div class="gantt-bar" style="left:700px;width:200px">
+            <div class="gantt-bar-label">Activity 5</div>
+        </div>
+        <div class="gantt-bar" style="left:900px;width:100px">
+            <div class="gantt-bar-label">Activity 6</div>
+        </div>
+        <div class="gantt-bar" style="left:1000px;width:150px">
+            <div class="gantt-bar-label">Activity 7</div>
+        </div>
+    </div>
+</div>
+

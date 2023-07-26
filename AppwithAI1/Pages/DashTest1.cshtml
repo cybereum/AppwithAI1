@@ -16,6 +16,7 @@
 <link rel="stylesheet" href="css/bootstrap.min.css">
 <link rel="stylesheet" href="css/animate.min.css">
 <link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
  <!-- Include the AnyChart library and the custom CSS file -->
         <script src="https://cdn.anychart.com/releases/v8/js/anychart-base.min.js"></script>
@@ -23,6 +24,11 @@
         <script src="https://cdn.anychart.com/releases/v8/js/anychart-exports.min.js"></script>
         <script src="https://cdn.anychart.com/releases/v8/js/anychart-gantt.min.js"></script>
         <script src="https://cdn.anychart.com/releases/v8/js/anychart-data-adapter.min.js"></script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <link href="https://unpkg.com/vis-network@7.6.2/dist/vis-network.min.css" rel="stylesheet" type="text/css"/>
+        <script type="text/javascript" src="https://unpkg.com/vis-network@7.6.2/dist/vis-network.min.js"></script>
 
 
         <!-- Include the Materialize CSS library -->
@@ -39,9 +45,19 @@
                 flex-direction: column;
                 width: 100%;
                 height: 100%;
+                box-sizing: border-box;
                 /* Add the Materialize grid class */
-                class ="container"
+                class ="container";
             }
+
+            .chart-size {
+                width: 20px;
+                height: 20px;
+            }
+            .form-group {
+                margin-bottom: 15px; /* Adjust this value as needed */
+            }
+
         </style>
 
         <div id="page-container">
@@ -51,21 +67,276 @@
                     <div class="text-crystal font-w300">USER_LOGGED_IN</div>
                 </div>
                 <h1 class="h3 font-w200">
-                    <span class="text-crystal">//</span> <a class="link-sf font-w300" href="index.html">PROJECT_DASHBOARD</a>
+                    <span class="text-crystal">//</span> <a class="link-sf font-w300" href="index.html">PROJECT_SCHEDULE_DASHBOARD [internal]</a>
                 </h1>
-                <div class="logo-container"><img src="https://cybereum.io/wp-content/uploads/2018/08/cropped-cropped-cropped-top-logo-2-4-300x300.png" alt="cybereum" width="100" height="100"></div>
+                <div class="text-center">
+                    <img src="/Blue_Logo.png" style="width:150px;height:150px;" />
+                    <h1 class="display-4">cybereum</h1>
+                </div>
 
             </header>
             <!-- END Header -->
             <!-- Main Content -->
             <main id="page-main">
                 <!-- Columns -->
+
+
                 <div class="row">
                     <div class="col-lg-6 col-lg-push-3 overflow-hidden push-0">
-                        <h2 class="text-white-op font-weight-bold">GANTT Chart</h2>
-                        <div class="circles push-10">
+
+                        <div class="block-title text-white">
+                                <h2 data-toggle="appear" data-class="animated fadeInDown">KEY INTERNAL MILESTONES</h2>
+                            </div>
+                            <div class="block-content block-content-full overflow-hidden">
+                                <div class="font-w600 text-white-op push-5 visibility-hidden" data-toggle="appear" data-class="animated fadeInRight" data-timeout="100">Project Kickoff: 95%</div>
+                                <div class="progress visibility-hidden" data-toggle="appear" data-class="animated fadeInLeft" data-timeout="100">
+                                    <div class="progress-bar progress-bar-sf progress-bar-striped active" role="progressbar" aria-valuenow="95" aria-valuemin="0" aria-valuemax="100" style="width: 95%; height: 60px;"></div>
+                                </div>
+                                <div class="font-w600 text-white-op push-5 visibility-hidden" data-toggle="appear" data-class="animated fadeInRight" data-timeout="300">Site Preparation: 49%</div>
+                                <div class="progress visibility-hidden" data-toggle="appear" data-class="animated fadeInLeft" data-timeout="300">
+                                    <div class="progress-bar progress-bar-sf progress-bar-striped active" role="progressbar" aria-valuenow="49" aria-valuemin="0" aria-valuemax="100" style="width: 49%; height: 30px;"></div>
+                                </div>
+                                <div class="font-w600 text-white-op push-5 visibility-hidden" data-toggle="appear" data-class="animated fadeInRight" data-timeout="500">Structural Completion: 59%</div>
+                                <div class="progress visibility-hidden" data-toggle="appear" data-class="animated fadeInLeft" data-timeout="500">
+                                    <div class="progress-bar progress-bar-sf progress-bar-striped active" role="progressbar" aria-valuenow="59" aria-valuemin="0" aria-valuemax="100" style="width: 59%; height: 30px;"></div>
+                                </div>
+                                <div class="font-w600 text-white-op push-5 visibility-hidden" data-toggle="appear" data-class="animated fadeInRight" data-timeout="700">Utility Installation: 60%</div>
+                                <div class="progress visibility-hidden" data-toggle="appear" data-class="animated fadeInLeft" data-timeout="700">
+                                    <div class="progress-bar progress-bar-sf progress-bar-striped active" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%; height: 30px;"></div>
+                                </div>
+                                <div class="font-w600 text-white-op push-5 visibility-hidden" data-toggle="appear" data-class="animated fadeInRight" data-timeout="900">Safety Inspection: 80%</div>
+                                <div class="progress visibility-hidden" data-toggle="appear" data-class="animated fadeInLeft" data-timeout="900">
+                                    <div class="progress-bar progress-bar-sf progress-bar-striped active" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 80%; height: 30px;"></div>
+                                </div>
+                                        <div class="font-w600 text-white-op push-5 visibility-hidden" data-toggle="appear" data-class="animated fadeInRight" data-timeout="1100">Electrical and Plumbing: 70%</div>
+                                <div class="progress visibility-hidden" data-toggle="appear" data-class="animated fadeInLeft" data-timeout="1100">
+                                    <div class="progress-bar progress-bar-sf progress-bar-striped active" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width: 70%; height: 30px;"></div>
+                                </div>
+                                <div class="font-w600 text-white-op push-5 visibility-hidden" data-toggle="appear" data-class="animated fadeInRight" data-timeout="1300">Interior Finishing: 55%</div>
+                                <div class="progress visibility-hidden" data-toggle="appear" data-class="animated fadeInLeft" data-timeout="1300">
+                                    <div class="progress-bar progress-bar-sf progress-bar-striped active" role="progressbar" aria-valuenow="55" aria-valuemin="0" aria-valuemax="100" style="width: 55%; height: 30px;"></div>
+                                </div>
+                                <div class="font-w600 text-white-op push-5 visibility-hidden" data-toggle="appear" data-class="animated fadeInRight" data-timeout="1500">Exterior Landscaping: 35%</div>
+                                <div class="progress visibility-hidden" data-toggle="appear" data-class="animated fadeInLeft" data-timeout="1500">
+                                    <div class="progress-bar progress-bar-sf progress-bar-striped active" role="progressbar" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100" style="width: 35%; height: 30px;"></div>
+                                </div>
+                                <div class="font-w600 text-white-op push-5 visibility-hidden" data-toggle="appear" data-class="animated fadeInRight" data-timeout="1700">Final Inspection: 20%</div>
+                                <div class="progress visibility-hidden" data-toggle="appear" data-class="animated fadeInLeft" data-timeout="1700">
+                                    <div class="progress-bar progress-bar-sf progress-bar-striped active" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 20%; height: 30px;"></div>
+                                </div>
+                                <div class="font-w600 text-white-op push-5 visibility-hidden" data-toggle="appear" data-class="animated fadeInRight" data-timeout="1900">Project Handover: 5%</div>
+                                <div class="progress visibility-hidden" data-toggle="appear" data-class="animated fadeInLeft" data-timeout="1900">
+                                    <div class="progress-bar progress-bar-sf progress-bar-striped active" role="progressbar" aria-valuenow="5" aria-valuemin="0" aria-valuemax="100" style="width: 5%; height: 30px;"></div>
+                            </div>
+                        </div>
+``
+
+
+                        <!-- END POS_TRACKING -->
+
+                    </div>
+
+                    <!-- Left Column -->
+                    <div class="col-sm-6 col-lg-3 col-lg-pull-6">
+                        <!-- Environment -->
+                        <div class="block">
+                            <div class="block-title text-white">
+                                <h2 class="block-title text-white" data-toggle="appear" data-class="animated fadeInDown">Project Core KPIs</h2>
+                            </div>
+                            <div class="block-content">
+                                <div class="row items-push overflow-hidden">
+                                    <div class="col-xs-4 text-center visibility-hidden" data-toggle="appear" data-class="animated fadeInLeft" data-timeout="100">
+                                        <div class="js-pie-chart pie-chart" data-percent="65" data-line-width="5" data-size="65" data-bar-color="rgba(255, 255, 255, .2)" data-track-color="rgba(255, 255, 255, .1)">
+                                            <span class="font-s16 font-w600">Ratio</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-8 visibility-hidden" data-toggle="appear" data-class="animated fadeInRight" data-timeout="400">
+                                        <div class="text-uppercase font-w600 text-white-op"><i class="fas fa-wallet"></i> Budget</div>
+                                        <div class="font-s36 font-w300">0.65</div>
+                                    </div>
+                                </div>
+                                <div class="row items-push overflow-hidden">
+                                    <div class="col-xs-4 text-center visibility-hidden" data-toggle="appear" data-class="animated fadeInLeft" data-timeout="200">
+                                        <div class="js-pie-chart pie-chart" data-percent="45.5" data-line-width="5" data-size="65" data-bar-color="rgba(255, 255, 255, .2)" data-track-color="rgba(255, 255, 255, .1)">
+                                            <span class="font-s16 font-w600">%</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-8 visibility-hidden" data-toggle="appear" data-class="animated fadeInRight" data-timeout="500">
+                                        <div class="text-uppercase font-w600 text-white-op"><i class="fas fa-calendar-alt"></i> Schedule</div>
+                                        <div class="font-s36 font-w300">45.5</div>
+                                    </div>
+                                </div>
+                                <div class="row items-push overflow-hidden">
+                                    <div class="col-xs-4 text-center visibility-hidden" data-toggle="appear" data-class="animated fadeInLeft" data-timeout="300">
+                                        <div class="js-pie-chart pie-chart" data-percent="35" data-line-width="5" data-size="65" data-bar-color="rgba(255, 255, 255, .2)" data-track-color="rgba(255, 255, 255, .1)">
+                                            <span class="font-s16 font-w600">Ratio;</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-8 visibility-hidden" data-toggle="appear" data-class="animated fadeInRight" data-timeout="600">
+                                        <div class="text-uppercase font-w600 text-white-op"><i class="fas fa-tasks"></i> Scope</div>
+                                        <div class="font-s36 font-w300">0.35</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- END Environment -->
+                        <!-- Planets -->
+                        <!-- Key Deliverables -->
+                        <div class="block">
+                            <div class="block-title text-white">
+                                <h2 class="block-title text-white" data-toggle="appear" data-class="animated fadeInDown">Key Deliverables</h2>
+                            </div>
+                            <div class="block-content">
+                                <div class="row items-push overflow-hidden">
+                                    <div class="col-xs-4 text-center visibility-hidden" data-toggle="appear" data-class="animated fadeInLeft" data-timeout="100">
+                                        <canvas id="pieChart1" class="chart-size"></canvas>
+                                    </div>
+                                    <div class="col-xs-8 visibility-hidden" data-toggle="appear" data-class="animated fadeInRight" data-timeout="400">
+                                        <div class="text-uppercase font-w600 text-white-op"><i class="fas fa-tasks"></i> Project Execution Plan</div>
+                                        <div class="font-s36 font-w300 text-danger">Due Tomorrow</div>
+                                    </div>
+                                </div>
+                                <div class="row items-push overflow-hidden">
+                                    <div class="col-xs-4 text-center visibility-hidden" data-toggle="appear" data-class="animated fadeInLeft" data-timeout="200">
+                                        <canvas id="pieChart2" class="chart-size"></canvas>
+                                    </div>
+                                    <div class="col-xs-8 visibility-hidden" data-toggle="appear" data-class="animated fadeInRight" data-timeout="500">
+                                        <div class="text-uppercase font-w600 text-white-op"><i class="fas fa-file-alt"></i> Design Loads Report</div>
+                                        <div class="font-s36 font-w300 text-warning">Due in 7 days</div>
+                                    </div>
+                                </div>
+                                <div class="row items-push overflow-hidden">
+                                    <div class="col-xs-4 text-center visibility-hidden" data-toggle="appear" data-class="animated fadeInLeft" data-timeout="300">
+                                        <canvas id="pieChart3" class="chart-size"></canvas>
+                                    </div>
+                                    <div class="col-xs-8 visibility-hidden" data-toggle="appear" data-class="animated fadeInRight" data-timeout="600">
+                                        <div class="text-uppercase font-w600 text-white-op"><i class="fas fa-shopping-cart"></i> Procurement Plan</div>
+                                        <div class="font-s36 font-w300 text-success">Due in 30 days</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <script>
+                        document.addEventListener("DOMContentLoaded", function() {
+                            const pieChartData = [
+                                {percent: 65, barColor: '#ff0000', elementId: 'pieChart1'},
+                                {percent: 30, barColor: '#ffff00', elementId: 'pieChart2'},
+                                {percent: 10, barColor: '#00ff00', elementId: 'pieChart3'}
+                            ];
+
+                            pieChartData.forEach(chart => {
+                                const ctx = document.getElementById(chart.elementId).getContext('2d');
+                                new Chart(ctx, {
+                                    type: 'doughnut',
+                                    data: {
+                                        datasets: [
+                                            {
+                                                data: [chart.percent, 100 - chart.percent],
+                                                backgroundColor: [chart.barColor, '#c07635'],
+                                                borderWidth: 0
+                                            }
+                                        ]
+                                    },
+                                    options: {
+                                        circumference: Math.PI,
+                                        rotation: -Math.PI,
+                                        cutout: '80%',
+                                        plugins: {
+                                            legend: {
+                                                display: false
+                                            }
+                                        }
+                                    }
+                                });
+                           });
+                        });
+                        </script>
+
+
+                        <!-- END Planets -->
+                    </div>
+                    <!-- END Left Column -->
+                    <!-- Right Column -->
+                    <div class="col-sm-6 col-lg-3">
+
+                                                <!-- TASK COMPLETION -->
+                        
+                        <div class="block">
+                            <div class="block-header">
+                                <h2 class="block-title text-white">Task Completion Status</h2>
+                            </div>
+                            <div class="block-content overflow-hidden">
+                                <canvas id="taskCompletion"></canvas>
+                                <script>
+                                    var ctx = document.getElementById('taskCompletion').getContext('2d');
+                                    var chart = new Chart(ctx, {
+                                        type: 'doughnut',
+                                        data: {
+                                            labels: ['Completed', 'In Progress', 'Not Started'],
+                                            datasets: [{
+                                                data: [12, 5, 3],
+                                                backgroundColor: ['#1cc88a', '#f6c23e', '#e74a3b']
+                                            }]
+                                        },
+                                        options: {
+                                            responsive: true,
+                                            legend: {
+                                                labels: {
+                                                    fontColor: "white",
+                                                    boxWidth: 15
+                                                }
+                                            }
+                                        }
+                                    });
+                                </script>
+                            </div>
+                        </div>                       
+                        
+                        <!-- END TASK COMPLETION -->
+
+                        <!-- HQ_COMS -->
+                        <div class="block">
+                            <div class="block-header overflow-hidden">
+                                <h2 class="block-title text-white" data-toggle="appear" data-class="animated fadeInDown">External Milestone Communications</h2>
+                            </div>
+                            <div class="block-content overflow-hidden">
+                                <div class="row items-push">
+                                    <div class="col-xs-6 visibility-hidden" data-toggle="appear" data-class="animated fadeIn" data-timeout="300">
+                                        <div class="font-s24 font-w300 text-white-op">Permit Approval [<span class="text-success">40</span>]</div>
+                                    </div>
+                                    <div class="col-xs-6 visibility-hidden" data-toggle="appear" data-class="animated fadeIn" data-timeout="500">
+                                        <div class="font-s24 font-w300 text-white-op">Material Delivery [<span class="text-success">60</span>]</div>
+                                    </div>
+                                    <div class="col-xs-6 visibility-hidden" data-toggle="appear" data-class="animated fadeIn" data-timeout="700">
+                                        <div class="font-s24 font-w300 text-white-op">Site Inspection [<span class="text-success">80</span>]</div>
+                                    </div>
+                                    <div class="col-xs-6 visibility-hidden" data-toggle="appear" data-class="animated fadeIn" data-timeout="900">
+                                        <div class="font-s24 font-w300 text-white-op">Utility Connection [<span class="text-success">90</span>]</div>
+                                    </div>
+                                    <div class="col-xs-6 visibility-hidden" data-toggle="appear" data-class="animated fadeIn" data-timeout="1100">
+                                        <div class="font-s24 font-w300 text-white-op">Safety Audit [<span class="text-success">20</span>]</div>
+                                    </div>
+                                    <div class="col-xs-6 visibility-hidden" data-toggle="appear" data-class="animated fadeIn" data-timeout="1300">
+                                        <div class="font-s24 font-w300 text-white-op">Subcontractor Mobilization [<span class="text-success">30</span>]</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                        <!-- END HQ_COMS -->
+
+
+
+                <!-- GANTT CHART -->
+                <div class="block">
+                    <h2 class="text-white-op font-weight-bold">GANTT Chart</h2>
+                    <div class="circles push-10">
                             
-                        <div id="container" style="width: 120%;"></div>
+                        <div id="container" style="width: 100%;"></div>
                             
                             <script>
 
@@ -98,13 +369,13 @@
                                                 .labels({ hAlign: 'center' });
 
                                             // set second column settings
-                                            dataGrid.column(1).labels().hAlign('left').width(180);
+                                            dataGrid.column(1).labels().hAlign('left').width(240);
 
                                             // set third column settings
                                             dataGrid
                                                 .column(2)
                                                 .title('Start Time')
-                                                .width(70)
+                                                .width(80)
                                                 .labels()
                                                 .hAlign('right')
                                                 .format(function () {
@@ -145,195 +416,766 @@
                                 });
 
                             </script>
+
                         </div>
                     </div>
-
-
-
-
-
-                    <!-- Left Column -->
-                    <div class="col-sm-6 col-lg-3 col-lg-pull-6">
-                        <!-- Environment -->
-                        <div class="block">
-                            <div class="block-header overflow-hidden">
-                                <h2 class="block-title visibility-hidden" data-toggle="appear" data-class="animated fadeInDown">Project Core KPIs</h2>
-                            </div>
-                            <div class="block-content">
-                                <div class="row items-push overflow-hidden">
-                                    <div class="col-xs-4 text-center visibility-hidden" data-toggle="appear" data-class="animated fadeInLeft" data-timeout="100">
-                                        <div class="js-pie-chart pie-chart" data-percent="65" data-line-width="5" data-size="65" data-bar-color="rgba(255, 255, 255, .2)" data-track-color="rgba(255, 255, 255, .1)">
-                                            <span class="font-s16 font-w600">Ratio</span>
-                                        </div>
-                                    </div>
-                                    <div class="col-xs-8 visibility-hidden" data-toggle="appear" data-class="animated fadeInRight" data-timeout="400">
-                                        <div class="text-uppercase font-w600 text-white-op">Budget</div>
-                                        <div class="font-s36 font-w300">0.65</div>
-                                    </div>
-                                </div>
-                                <div class="row items-push overflow-hidden">
-                                    <div class="col-xs-4 text-center visibility-hidden" data-toggle="appear" data-class="animated fadeInLeft" data-timeout="200">
-                                        <div class="js-pie-chart pie-chart" data-percent="45.5" data-line-width="5" data-size="65" data-bar-color="rgba(255, 255, 255, .2)" data-track-color="rgba(255, 255, 255, .1)">
-                                            <span class="font-s16 font-w600">%</span>
-                                        </div>
-                                    </div>
-                                    <div class="col-xs-8 visibility-hidden" data-toggle="appear" data-class="animated fadeInRight" data-timeout="500">
-                                        <div class="text-uppercase font-w600 text-white-op">Schedule</div>
-                                        <div class="font-s36 font-w300">45.5</div>
-                                    </div>
-                                </div>
-                                <div class="row items-push overflow-hidden">
-                                    <div class="col-xs-4 text-center visibility-hidden" data-toggle="appear" data-class="animated fadeInLeft" data-timeout="300">
-                                        <div class="js-pie-chart pie-chart" data-percent="35" data-line-width="5" data-size="65" data-bar-color="rgba(255, 255, 255, .2)" data-track-color="rgba(255, 255, 255, .1)">
-                                            <span class="font-s16 font-w600">Ratio;</span>
-                                        </div>
-                                    </div>
-                                    <div class="col-xs-8 visibility-hidden" data-toggle="appear" data-class="animated fadeInRight" data-timeout="600">
-                                        <div class="text-uppercase font-w600 text-white-op">Scope</div>
-                                        <div class="font-s36 font-w300">0.35</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- END Environment -->
-                        <!-- Planets -->
-                        <div class="block">
-                            <div class="block-header overflow-hidden">
-                                <h2 class="block-title visibility-hidden" data-toggle="appear" data-class="animated fadeInDown">Key Deliverables</h2>
-                            </div>
-                            <div class="block-content">
-                                <div class="row items-push overflow-hidden">
-                                    <div class="col-xs-4 text-center visibility-hidden" data-toggle="appear" data-class="animated fadeInLeft" data-timeout="100">
-                                        <div class="js-pie-chart pie-chart" data-percent="65" data-line-width="20" data-size="45" data-bar-color="rgba(255, 255, 255, .2)" data-track-color="#c07635">
-                                            <span class="font-s16 font-w600"></span>
-                                        </div>
-                                    </div>
-                                    <div class="col-xs-8 visibility-hidden" data-toggle="appear" data-class="animated fadeInRight" data-timeout="400">
-                                        <div class="text-uppercase font-w600 text-white-op">Project Execution Plan</div>
-                                        <div class="font-s36 font-w300">1.67 <span class="font-s16 font-w400 text-crystal">L.Y.</span></div>
-                                    </div>
-                                </div>
-                                <div class="row items-push overflow-hidden">
-                                    <div class="col-xs-4 text-center visibility-hidden" data-toggle="appear" data-class="animated fadeInLeft" data-timeout="200">
-                                        <div class="js-pie-chart pie-chart" data-percent="30" data-line-width="22" data-size="50" data-bar-color="rgba(255, 255, 255, .2)" data-track-color="#3673cc">
-                                            <span class="font-s16 font-w600"></span>
-                                        </div>
-                                    </div>
-                                    <div class="col-xs-8 visibility-hidden" data-toggle="appear" data-class="animated fadeInRight" data-timeout="500">
-                                        <div class="text-uppercase font-w600 text-white-op">Design Loads Report</div>
-                                        <div class="font-s36 font-w300">1.62 <span class="font-s16 font-w400 text-crystal">L.Y.</span></div>
-                                    </div>
-                                </div>
-                                <div class="row items-push overflow-hidden">
-                                    <div class="col-xs-4 text-center visibility-hidden" data-toggle="appear" data-class="animated fadeInLeft" data-timeout="300">
-                                        <div class="js-pie-chart pie-chart" data-percent="10" data-line-width="30" data-size="70" data-bar-color="rgba(255, 255, 255, .2)" data-track-color="#f7c880">
-                                            <span class="font-s16 font-w600"></span>
-                                        </div>
-                                    </div>
-                                    <div class="col-xs-8 visibility-hidden" data-toggle="appear" data-class="animated fadeInRight" data-timeout="600">
-                                        <div class="text-uppercase font-w600 text-white-op">Procurement Plan</div>
-                                        <div class="font-s36 font-w300">2.22 <span class="font-s16 font-w400 text-crystal">L.Y.</span></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- END Planets -->
-                    </div>
-                    <!-- END Left Column -->
-                    <!-- Right Column -->
-                    <div class="col-sm-6 col-lg-3">
-                        <!-- HQ_COMS -->
-                        <div class="block">
-                            <div class="block-header overflow-hidden">
-                                <h2 class="block-title visibility-hidden" data-toggle="appear" data-class="animated fadeInDown">HQ_COMS</h2>
-                            </div>
-                            <div class="block-content overflow-hidden">
-                                <div class="row items-push">
-                                    <div class="col-xs-6 visibility-hidden" data-toggle="appear" data-class="animated fadeIn" data-timeout="300">
-                                        <div class="font-s24 font-w300 text-white-op">C1 [<span class="text-success">40</span>]</div>
-                                    </div>
-                                    <div class="col-xs-6 visibility-hidden" data-toggle="appear" data-class="animated fadeIn" data-timeout="500">
-                                        <div class="font-s24 font-w300 text-white-op">C2 [<span class="text-success">60</span>]</div>
-                                    </div>
-                                    <div class="col-xs-6 visibility-hidden" data-toggle="appear" data-class="animated fadeIn" data-timeout="700">
-                                        <div class="font-s24 font-w300 text-white-op">C3 [<span class="text-success">80</span>]</div>
-                                    </div>
-                                    <div class="col-xs-6 visibility-hidden" data-toggle="appear" data-class="animated fadeIn" data-timeout="900">
-                                        <div class="font-s24 font-w300 text-white-op">C4 [<span class="text-success">90</span>]</div>
-                                    </div>
-                                    <div class="col-xs-6 visibility-hidden" data-toggle="appear" data-class="animated fadeIn" data-timeout="1100">
-                                        <div class="font-s24 font-w300 text-white-op">C5 [<span class="text-success">20</span>]</div>
-                                    </div>
-                                    <div class="col-xs-6 visibility-hidden" data-toggle="appear" data-class="animated fadeIn" data-timeout="1300">
-                                        <div class="font-s24 font-w300 text-white-op">C6 [<span class="text-success">30</span>]</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- END HQ_COMS -->
-                        <!-- Milestone Progress -->
-                        <div class="block">
-                            <div class="block-header overflow-hidden">
-                                <h2 class="block-title visibility-hidden" data-toggle="appear" data-class="animated fadeInDown">MILESTONES</h2>
-                            </div>
-                            <div class="block-content block-content-full overflow-hidden">
-                                <div class="font-w600 text-white-op push-5 visibility-hidden" data-toggle="appear" data-class="animated fadeInRight" data-timeout="100">Milestone1: 95</div>
-                                <div class="progress visibility-hidden" data-toggle="appear" data-class="animated fadeInLeft" data-timeout="100">
-                                    <div class="progress-bar progress-bar-sf progress-bar-striped active" role="progressbar" aria-valuenow="95" aria-valuemin="0" aria-valuemax="100" style="width: 95%"></div>
-                                </div>
-                                <div class="font-w600 text-white-op push-5 visibility-hidden" data-toggle="appear" data-class="animated fadeInRight" data-timeout="300">Milestone2: 49</div>
-                                <div class="progress visibility-hidden" data-toggle="appear" data-class="animated fadeInLeft" data-timeout="300">
-                                    <div class="progress-bar progress-bar-sf progress-bar-striped active" role="progressbar" aria-valuenow="49" aria-valuemin="0" aria-valuemax="100" style="width: 49%"></div>
-                                </div>
-                                <div class="font-w600 text-white-op push-5 visibility-hidden" data-toggle="appear" data-class="animated fadeInRight" data-timeout="500">Milestone3: 59</div>
-                                <div class="progress visibility-hidden" data-toggle="appear" data-class="animated fadeInLeft" data-timeout="500">
-                                    <div class="progress-bar progress-bar-sf progress-bar-striped active" role="progressbar" aria-valuenow="59" aria-valuemin="0" aria-valuemax="100" style="width: 59%"></div>
-                                </div>
-                                <div class="font-w600 text-white-op push-5 visibility-hidden" data-toggle="appear" data-class="animated fadeInRight" data-timeout="700">Milestone4: +60</div>
-                                <div class="progress visibility-hidden" data-toggle="appear" data-class="animated fadeInLeft" data-timeout="700">
-                                    <div class="progress-bar progress-bar-sf progress-bar-striped active" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- END POS_TRACKING -->
-                        <!-- DATA_STREAM -->
-                        <div class="block">
-                            <div class="block-header overflow-hidden">
-                                <h2 class="block-title visibility-hidden" data-toggle="appear" data-class="animated fadeInDown">DATA_STREAM</h2>
-                            </div>
-                            <div class="block-content">
-                                <div class="row items-push">
-                                    <div class="col-xs-4 visibility-hidden" data-toggle="appear" data-class="animated fadeIn" data-timeout="100">
-                                        <div class="font-s12 text-white-op">AT1</div>
-                                        <div class="font-s18 text-success" data-toggle="countTo" data-to="148" data-speed="4000"></div>
-                                    </div>
-                                    <div class="col-xs-4 visibility-hidden" data-toggle="appear" data-class="animated fadeIn" data-timeout="300">
-                                        <div class="font-s12 text-white-op">SR1</div>
-                                        <div class="font-s18 text-success" data-toggle="countTo" data-to="30" data-speed="4000"></div>
-                                    </div>
-                                    <div class="col-xs-4 visibility-hidden" data-toggle="appear" data-class="animated fadeIn" data-timeout="500">
-                                        <div class="font-s12 text-white-op">AF1</div>
-                                        <div class="font-s18 text-success" data-toggle="countTo" data-to="123" data-speed="4000"></div>
-                                    </div>
-                                    <div class="col-xs-4 visibility-hidden" data-toggle="appear" data-class="animated fadeIn" data-timeout="700">
-                                        <div class="font-s12 text-white-op">AT2</div>
-                                        <div class="font-s18 text-success" data-toggle="countTo" data-to="180" data-speed="4000"></div>
-                                    </div>
-                                    <div class="col-xs-4 visibility-hidden" data-toggle="appear" data-class="animated fadeIn" data-timeout="900">
-                                        <div class="font-s12 text-white-op">SR2</div>
-                                        <div class="font-s18 text-success" data-toggle="countTo" data-to="680" data-speed="4000"></div>
-                                    </div>
-                                    <div class="col-xs-4 visibility-hidden" data-toggle="appear" data-class="animated fadeIn" data-timeout="1100">
-                                        <div class="font-s12 text-white-op">AF2</div>
-                                        <div class="font-s18 text-success" data-toggle="countTo" data-to="15" data-speed="4000"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- END DATA_STREAM -->
-                    </div>
-                    <!-- END Right Column -->
                 </div>
+                <!-- GANTT CHART END -->
+
+                <!-- DATA_STREAM -->
+                <div class="block">
+                    <div class="block-title text-white">
+                        <h2 class="block-title text-white" data-toggle="appear" data-class="animated fadeInDown">Project Schedule Dashboard</h2>
+                    </div>
+                    <div class="block-content">
+                        <div class="row items-push">
+                            <div class="col-xs-4 visibility-hidden" data-toggle="appear" data-class="animated fadeIn" data-timeout="100">
+                                <div class="font-s12 text-white-op">Participants</div>
+                                <div class="font-s18 text-primary" data-toggle="countTo" data-to="12" data-speed="2000"></div>
+                            </div>
+                            <div class="col-xs-4 visibility-hidden" data-toggle="appear" data-class="animated fadeIn" data-timeout="300">
+                                <div class="font-s12 text-white-op">Milestones Achieved</div>
+                                <div class="font-s18 text-success" data-toggle="countTo" data-to="5" data-speed="2000"></div>
+                            </div>
+                            <div class="col-xs-4 visibility-hidden" data-toggle="appear" data-class="animated fadeIn" data-timeout="500">
+                                <div class="font-s12 text-white-op">Funds Raised</div>
+                                <div class="font-s18 text-info" data-toggle="countTo" data-to="1000000" data-speed="2000">Current Margin Tracking (NPV): $110,000</div>
+                            </div>
+                            <div class="col-xs-12 col-md-6 visibility-hidden" data-toggle="appear" data-class="animated fadeIn" data-timeout="700">
+                                <div class="font-s12 text-white-op">Project Phase Progress</div>
+                                <canvas id="phaseProgress"></canvas>
+                            </div>
+                            <div class="col-xs-12 col-md-6 visibility-hidden" data-toggle="appear" data-class="animated fadeIn" data-timeout="900">
+                                <div class="font-s12 text-white-op">Budget vs Actual Cost</div>
+                                <canvas id="costPerformance"></canvas>
+                            </div>
+                            <div class="col-xs-12 visibility-hidden" data-toggle="appear" data-class="animated fadeIn" data-timeout="1100">
+                                <div class="font-s12 text-white-op">Risk Matrix</div>
+                                <table class="table table-bordered table-striped text-white">
+                                    <thead>
+                                        <tr>
+                                            <th>Milestone Risk</th>
+                                            <th>Probability</th>
+                                            <th>Impact</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Milestone 6</td>
+                                            <td>0.8</td>
+                                            <td>High</td>
+                                        </tr>
+                                        <tr>
+                                            <td>RMilestone 8</td>
+                                            <td>0.6</td>
+                                            <td>Medium</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Milestone 9</td>
+                                            <td>0.3</td>
+                                            <td>High</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-xs-12 visibility-hidden" data-toggle="appear" data-class="animated fadeIn" data-timeout="1300">
+                                <div class="font-s12 text-white-op">Milestone Distribution</div>
+                                <canvas id="milestoneDistribution"></canvas>
+                            </div>
+                            <div class="col-xs-12 visibility-hidden" data-toggle="appear" data-class="animated fadeIn" data-timeout="1500">
+                                <div class="font-s12 text-white-op">Path Distribution</div>
+                                <canvas id="pathDistribution"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <script>
+                    var phaseProgress = new Chart(document.getElementById('phaseProgress'), {
+                        type: 'doughnut',
+                        data: {
+                            labels: ['Design', 'Procurement', 'Construction', 'Commissioning'],
+                            datasets: [{
+                                data: [25, 30, 40, 5],
+                                backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc', '#f6c23e']
+                            }]
+                        },
+                        options: {
+                            legend: {
+                                labels: {
+                                    fontColor: 'white'
+                                }
+                            },
+                            tooltips: {
+                                callbacks: {
+                                    label: function (tooltipItem, data) {
+                                        var dataset = data.datasets[tooltipItem.datasetIndex];
+                                        var value = dataset.data[tooltipItem.index];
+                                        var label = data.labels[tooltipItem.index];
+                                        return label + ': ' + value + '%';
+                                    }
+                                }
+                            }
+                        }
+                    });
+
+                    var costPerformance = new Chart(document.getElementById('costPerformance'), {
+                        type: 'bar',
+                        data: {
+                            labels: ['Budgeted', 'Actual'],
+                            datasets: [{
+                                label: 'Cost in $',
+                                data: [1000000, 1100000],
+                                backgroundColor: ['#4e73df', '#1cc88a']
+                            }]
+                        },
+                       options: {
+                            legend: {
+                                labels: {
+                                    fontColor: 'white'
+                                }
+                            },
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        fontColor: 'white',
+                                        beginAtZero: true,
+                                        callback: function (value) {
+                                            return '$' + value.toFixed(2);
+                                        }
+                                    }
+                                }],
+                                xAxes: [{
+                                    ticks: {
+                                        fontColor: 'white'
+                                    }
+                                }]
+                            },
+                            tooltips: {
+                                callbacks: {
+                                    label: function (tooltipItem, data) {
+                                        var dataset = data.datasets[tooltipItem.datasetIndex];
+                                        var value = dataset.data[tooltipItem.index];
+                                        var label = dataset.label;
+                                        return label + ': $' + value.toLocaleString();
+                                    }
+                                }
+                            }
+                        }
+                    });
+
+                    var milestoneDistribution = new Chart(document.getElementById('milestoneDistribution'), {
+                        type: 'bar',
+                        data: {
+                            labels: ['Milestone 6', 'Milestone 9', 'Milestone 8', 'Milestone 4', 'Milestone 1', 'Milestone 5', 'Milestone 7', 'Milestone 2', 'Milestone 3', 'Milestone 10', 'Milestone 11', 'Milestone 12', 'Milestone 13', 'Milestone 14', 'Milestone 15', 'Milestone 16', 'Milestone 17', 'Milestone 18', 'Milestone 19', 'Milestone 20'],
+                            datasets: [{
+                                label: 'Milstone Risk',
+                                data: [20, 18, 16, 14, 12, 11.5, 10, 9, 7, 5, 3, 8, 8, 6, 4, 2, 5, 4, 2, 1],
+                                backgroundColor: '#4CBDF0'
+                            }]
+                        },
+                        options: {
+                            legend: {
+                                labels: {
+                                    fontColor: 'white'
+                                }
+                            },
+                            scales: {
+                                yAxes: [{
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Frequency',
+                                        fontColor: 'white'
+                                    },
+                                    ticks: {
+                                        fontColor: 'white',
+                                        beginAtZero: true,
+                                        callback: function (value) {
+                                            return value;
+                                        }
+                                    }
+                                }],
+                                xAxes: [{
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Milestone',
+                                        fontColor: 'white'
+                                    },
+                                    ticks: {
+                                        fontColor: 'white'
+                                    }
+                                }]
+                            }
+                        }
+                    });
+
+
+
+
+                    var pathDistribution = new Chart(document.getElementById('pathDistribution'), {
+                        type: 'bar',
+                        data: {
+                            labels: ['Path 6', 'Path 1', 'Path 4', 'Path 3', 'Path 5', 'Path 2', 'Path 7', 'Path 8', 'Path 9', 'Path 10', 'Path 11', 'Path 12', 'Path 13', 'Path 14', 'Path 15', 'Path 16', 'Path 17', 'Path 18', 'Path 19', 'Path 20'],
+                            datasets: [{
+                                label: 'Path Risk',
+                                data: [15, 12, 10, 8, 7, 8, 6, 6.5, 5, 4, 3, 5, 3, 2, 3, 1, 2, 1, 2, 1],
+                                backgroundColor: '#1cc88a'
+                            }]
+                        },
+                        options: {
+                            legend: {
+                                labels: {
+                                    fontColor: 'white'
+                                }
+                            },
+                            scales: {
+                                yAxes: [{
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Frequency',
+                                        fontColor: 'white'
+                                    },
+                                    ticks: {
+                                        fontColor: 'white',
+                                        beginAtZero: true,
+                                        callback: function (value) {
+                                            return value;
+                                        }
+                                    }
+                                }],
+                                xAxes: [{
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Path',
+                                        fontColor: 'white'
+                                    },
+                                    ticks: {
+                                        fontColor: 'white'
+                                    }
+                                }]
+                            }
+                        }
+                    });
+
+                </script>
+
+
+
+
+            <!-- END DATA_STREAM -->
+
+            <!-- ADD TEAM  -->
+                <div class="block">                        
+                    <div class="add-user-block">
+                        <h2>Add User to Project</h2>
+                        <form action="/add_user" method="post">
+                            <div class="form-group">
+                                <label for="username">Username:</label>
+                                <input type="text" id="username" name="username" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email:</label>
+                                <input type="email" id="email" name="email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="role">Role:</label>
+                                <select id="role" name="role">
+                                    <option value="project_manager">Project Manager</option>
+                                    <option value="civil_engineer">Civil Engineer</option>
+                                    <option value="mechanical_engineer">Mechanical Engineer</option>
+                                    <option value="electrical_engineer">Electrical Engineer</option>
+                                    <option value="software_engineer">Software Engineer</option>
+                                    <option value="architect">Architect</option>
+                                    <option value="construction_manager">Construction Manager</option>
+                                    <option value="quality_assurance">Quality Assurance</option>
+                                    <option value="safety_officer">Safety Officer</option>
+                                    <!-- Add more roles as needed -->
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <button type="submit">Add User</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            <!-- ADD TEAM  END-->
+
+                        <!-- TEAM MATRIX -->
+                        <div class="block">
+
+                            <div class="block-header">
+                                <h2 class="block-title text-white">Team Member Allocation</h2>
+                            </div>
+                            <div class="block-content">
+                                <canvas id="teamAllocation"></canvas>
+                                <canvas id="projectStatus"></canvas>
+                                <script>
+                                    // Team Member Allocation
+                                    var teamAllocationCtx = document.getElementById('teamAllocation').getContext('2d');
+                                    var teamAllocationChart = new Chart(teamAllocationCtx, {
+                                        type: 'doughnut',
+                                        data: {
+                                            labels: ['Engineering', 'Construction', 'Procurement', 'Management'],
+                                            datasets: [{
+                                                data: [8, 15, 5, 4],
+                                                backgroundColor: ['#36b9cc', '#f6c23e', '#1cc88a', '#4e73df']
+                                            }]
+                                        },
+                                        options: {
+                                            legend: {
+                                                display: true,
+                                                labels: {
+                                                    fontColor: 'white'
+                                                }
+                                            }
+                                        }
+                                    });
+
+                                    // Project Status
+                                    var projectStatusCtx = document.getElementById('projectStatus').getContext('2d');
+                                    var projectStatusChart = new Chart(projectStatusCtx, {
+                                        type: 'bar',
+                                        data: {
+                                            labels: ['Project 1', 'Project 2', 'Project 3', 'Project 4', 'Project 5'],
+                                            datasets: [{
+                                                label: 'Completed',
+                                                data: [3, 4, 2, 5, 1],
+                                                backgroundColor: '#36b9cc'
+                                            },
+                                            {
+                                                label: 'In Progress',
+                                                data: [2, 3, 4, 1, 2],
+                                                backgroundColor: '#f6c23e'
+                                            },
+                                            {
+                                                label: 'Not Started',
+                                                data: [1, 0, 1, 0, 2],
+                                                backgroundColor: '#4e73df'
+                                            }]
+                                        },
+                                        options: {
+                                            scales: {
+                                                yAxes: [{
+                                                    ticks: {
+                                                        beginAtZero: true,
+                                                        fontColor: 'white'
+                                                    }
+                                                }],
+                                                xAxes: [{
+                                                    ticks: {
+                                                        fontColor: 'white'
+                                                    }
+                                                }]
+                                            },
+                                            legend: {
+                                                display: true,
+                                                labels: {
+                                                    fontColor: 'white'
+                                                }
+                                            }
+                                        }
+                                    });
+                                </script>
+                            </div>
+                        </div>
+
+
+                        <!-- END TEAM MATRIX -->
+
+
+    <!-- RESOURCE UTILIZATION -->
+
+                        <div class="block">
+                            <div class="block-header">
+                                <h2 class="block-title" style="color: white;">Resource Utilization with Predictive Analytics</h2>
+                            </div>
+                            <div class="block-content">
+                                <canvas id="resourceUtilization" width="900" height="600"></canvas>
+                                <script>
+                                    var ctx = document.getElementById('resourceUtilization').getContext('2d');
+                                    var chart = new Chart(ctx, {
+                                        type: 'line',
+                                        data: {
+                                            labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5', 'Week 6', 'Week 7', 'Week 8'],
+                                            datasets: [
+                                                {
+                                                    label: 'Actual Resource Utilization (%)',
+                                                    data: [60, 65, 75, 80, 85, 90, 88, 87],
+                                                    borderColor: 'rgba(75, 192, 192, 1)',
+                                                    fill: false
+                                                },
+                                                {
+                                                    label: 'Predicted Resource Utilization (%)',
+                                                    data: [null, null, null, null, null, null, 87, 86, 85],
+                                                    borderColor: 'rgba(153, 102, 255, 1)',
+                                                    fill: false,
+                                                    borderDash: [5, 5]
+                                                }
+                                            ]
+                                        },
+                                        options: {
+                                            responsive: true,
+                                            title: {
+                                                display: true,
+                                                text: 'Weekly Resource Utilization',
+                                                fontColor: 'white'
+                                            },
+                                            tooltips: {
+                                                mode: 'index',
+                                                intersect: false,
+                                            },
+                                            hover: {
+                                                mode: 'nearest',
+                                                intersect: true
+                                            },
+                                            scales: {
+                                                xAxes: [{
+                                                    display: true,
+                                                    scaleLabel: {
+                                                        display: true,
+                                                        labelString: 'Week',
+                                                        fontColor: 'white'
+                                                    },
+                                                    ticks: {
+                                                        fontColor: 'white'
+                                                    }
+                                                }],
+                                                yAxes: [{
+                                                    display: true,
+                                                    scaleLabel: {
+                                                        display: true,
+                                                        labelString: 'Utilization (%)',
+                                                        fontColor: 'white'
+                                                    },
+                                                    ticks: {
+                                                        beginAtZero: true,
+                                                        max: 100,
+                                                        fontColor: 'white'
+                                                    }
+                                                }]
+                                            },
+                                            legend: {
+                                                labels: {
+                                                    fontColor: 'white'
+                                                }
+                                            }
+                                        }
+                                    });
+                                </script>
+                            </div>
+                        </div>
+
+
+    <!-- END RESOURCE UTILIZATION -->
+
+
+                        <!-- RISK MATRIX -->
+                        <div class="block">
+                            <div class="block-header">
+                                <h2 class="block-title text-white"><i class="fas fa-exclamation-triangle"></i> Risk Matrix</h2>
+                            </div>
+                            <div class="block-content">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <canvas id="riskMatrix"></canvas>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <table class="table table-bordered table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th style="color: white;"><i class="fas fa-exclamation-circle"></i> Risk</th>
+                                                    <th style="color: white;"><i class="fas fa-percentage"></i> Probability</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="riskTableBody"></tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <script>
+                                    var ctx = document.getElementById('riskMatrix').getContext('2d');
+                                    var chart = new Chart(ctx, {
+                                        type: 'scatter',
+                                        data: {
+                                            datasets: [{
+                                                label: 'Risks',
+                                                data: [
+                                                    { x: 0.2, y: 0.8, name: 'Supply Chain Disruption', probability: 'Low' },
+                                                    { x: 0.4, y: 0.9, name: 'Budget Overrun', probability: 'Medium' },
+                                                    { x: 0.3, y: 0.7, name: 'Scope Creep', probability: 'Low' },
+                                                    { x: 0.7, y: 0.5, name: 'Technical Failure', probability: 'High' },
+                                                    { x: 0.5, y: 0.3, name: 'Regulatory Changes', probability: 'Medium' },
+                                                    { x: 0.9, y: 0.2, name: 'Safety Incident', probability: 'High' },
+                                                    { x: 0.6, y: 0.6, name: 'Resource Shortage', probability: 'High' },
+                                                    { x: 0.8, y: 0.4, name: 'Schedule Delay', probability: 'High' }
+                                                ],
+                                                backgroundColor: ['#f6c23e', '#e74a3b', '#1cc88a', '#4e73df', '#36b9cc', '#ff6384', '#8c76e4', '#f9a825'],
+                                                pointStyle: 'circle',
+                                                pointRadius: 10,
+                                                hoverRadius: 12
+                                            }]
+                                        },
+                                        options: {
+                                            scales: {
+                                                y: {
+                                                    title: {
+                                                        display: true,
+                                                        text: 'Impact',
+                                                        color: 'white',
+                                                        font: {
+                                                            size: 14
+                                                        }
+                                                    },
+                                                    ticks: {
+                                                        color: 'white',
+                                                        beginAtZero: true,
+                                                        max: 1
+                                                    }
+                                                },
+                                                x: {
+                                                    title: {
+                                                        display: true,
+                                                        text: 'Probability',
+                                                        color: 'white',
+                                                        font: {
+                                                            size: 14
+                                                        }
+                                                    },
+                                                    ticks: {
+                                                        color: 'white',
+                                                        beginAtZero: true,
+                                                        max: 1
+                                                    }
+                                                }
+                                            },
+                                            plugins: {
+                                                tooltip: {
+                                                    callbacks: {
+                                                        label: function(context) {
+                                                            var risk = context.dataset.data[context.dataIndex];
+                                                            return risk.name + ' (Probability: ' + risk.probability + ')';
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    });
+
+                                    // Populate the risk table
+                                    var risks = chart.data.datasets[0].data;
+                                    var riskTableBody = document.getElementById('riskTableBody');
+
+                                    risks.forEach(function(risk) {
+                                        var row = document.createElement('tr');
+                                        var nameCell = document.createElement('td');
+                                        var probabilityCell = document.createElement('td');
+
+                                        nameCell.textContent = risk.name;
+                                        probabilityCell.textContent = risk.probability;
+
+                                        nameCell.style.color = 'white';
+                                        probabilityCell.style.color = 'white';
+
+                                        row.appendChild(nameCell);
+                                        row.appendChild(probabilityCell);
+
+                                        riskTableBody.appendChild(row);
+                                    });
+                                </script>
+                            </div>
+                        </div>
+
+
+                    <!-- END RISK MATRIX -->
+
+                    <!-- PROJECT ACTIVITY NETWORK -->
+                    <div class="block">
+                        <div class="block-header">
+                            <h2 class="block-title text-white">Critical Activity-Group Network Visualization</h2>
+                        </div>
+                        <div class="block-content">
+                            <div id="activityNetwork" style="width: 1000px; height: 600px;"></div>
+                            <script>
+                                var nodes = new vis.DataSet([
+                                    {id: 1, label: 'Start'},
+                                    {id: 2, label: 'Activity A'},
+                                    {id: 3, label: 'Activity B'},
+                                    {id: 4, label: 'Activity C'},
+                                    {id: 5, label: 'Activity D'},
+                                    {id: 6, label: 'Activity E'},
+                                    {id: 7, label: 'Activity F'},
+                                    {id: 8, label: 'End'}
+                                ]);
+
+                                var edges = new vis.DataSet([
+                                    {from: 1, to: 2},
+                                    {from: 2, to: 3},
+                                    {from: 3, to: 4},
+                                    {from: 4, to: 5},
+                                    {from: 5, to: 6},
+                                    {from: 6, to: 7},
+                                    {from: 7, to: 8},
+                                    {from: 2, to: 6},
+                                    {from: 4, to: 7}
+                                ]);
+
+                                var container = document.getElementById('activityNetwork');
+
+                                var data = {
+                                    nodes: nodes,
+                                    edges: edges
+                                };
+
+                                var options = {
+                                    nodes: {
+                                        shape: 'dot',
+                                        size: 30,
+                                        font: {
+                                            size: 32,
+                                            color: '#ffffff'
+                                        },
+                                        borderWidth: 2
+                                    },
+                                    edges: {
+                                        width: 2
+                                    }
+                                };
+
+                                var network = new vis.Network(container, data, options);
+                            </script>
+                        </div>
+                    </div>                        
+                    <!-- END PROJECT ACTIVITY NETWORK -->
+
+                        <!-- PROJECT FORECASTING -->
+                        <div class="block">
+                            <div class="block-header">
+                                <h2 class="block-title text-white" style="color: white;">Forecasting with Machine Learning and RCF</h2>
+                            </div>
+                            <div class="block-content">
+                                <canvas id="forecastingML" width="900" height="600"></canvas>
+                                <script>
+                                    var ctx = document.getElementById('forecastingML').getContext('2d');
+                                    var chart = new Chart(ctx, {
+                                        type: 'line',
+                                        data: {
+                                            labels: ['Q1', 'Q2', 'Q3', 'Q4', 'Q5', 'Q6', 'Q7', 'Q8', 'Q9', 'Q10', 'Q11', 'Q12'],
+                                            datasets: [
+                                                {
+                                                    label: 'Historical Project Cost (in $K)',
+                                                    data: [50, 130, 260, 450, 690, 950, 1200, 1400, 1550, 1650, 1700, 1720],
+                                                    borderColor: 'rgba(255, 99, 132, 1)',
+                                                    fill: false
+                                                },
+                                                {
+                                                    label: 'Forecasted Project Cost (in $K)',
+                                                    data: [null, null, null, null, null, null, null, null, null, 1650, 1705, 1730],
+                                                    borderColor: 'rgba(255, 159, 64, 1)',
+                                                    fill: false,
+                                                    borderDash: [5, 5]
+                                                },
+                                                {
+                                                    label: 'Historical Schedule Performance (%)',
+                                                    data: [5, 10, 20, 40, 65, 85, 95, 98, 99, 99.5, 99.8, 100],
+                                                    borderColor: 'rgba(75, 192, 192, 1)',
+                                                    fill: false
+                                                },
+                                                {
+                                                    label: 'Forecasted Schedule Performance (%)',
+                                                    data: [null, null, null, null, null, null, null, null, null, 99.6, 99.9, 100],
+                                                    borderColor: 'rgba(153, 102, 255, 1)',
+                                                    fill: false,
+                                                    borderDash: [5, 5]
+                                                }
+                                            ]
+                                        },
+                                        options: {
+                                            responsive: true,
+                                            title: {
+                                                display: true,
+                                                text: 'Quarterly Project Forecast',
+                                                fontColor: 'white'
+                                            },
+                                            tooltips: {
+                                                mode: 'index',
+                                                intersect: false,
+                                            },
+                                            hover: {
+                                                mode: 'nearest',
+                                                intersect: true
+                                            },
+                                            scales: {
+                                                xAxes: [{
+                                                    display: true,
+                                                    scaleLabel: {
+                                                        display: true,
+                                                        labelString: 'Quarter',
+                                                        fontColor: 'white'
+                                                    },
+                                                    ticks: {
+                                                        fontColor: 'white'
+                                                    }
+                                                }],
+                                                yAxes: [{
+                                                    display:true,
+                                                    scaleLabel: {
+                                                        display: true,
+                                                        labelString: 'Value / Performance (%)',
+                                                        fontColor: 'white'
+                                                    },
+                                                    ticks: {
+                                                        beginAtZero: true,
+                                                        fontColor: 'white'
+                                                    }
+                                                }]
+                                            },
+                                            legend: {
+                                                labels: {
+                                                    fontColor: 'white'
+                                                }
+                                            }
+                                        }
+                                    });
+                                </script>
+                            </div>
+                        </div>
+    <!-- END PROJECT FORECASTING -->
+
+
+                        <div class="block">
+                            <div class="block-header">
+                                <h2 class="block-title text-white">Project Schedule</h2>
+                            </div>
+                            <div class="block-content">
+                                <!-- You can use a Gantt chart library to create the timeline. Example: -->
+                                <div id="ganttChart"></div>
+                                <script>
+                                    // Assuming you are using a Gantt chart library like dhtmlxGantt.
+                                    // Initialize the Gantt chart
+                                    gantt.init("ganttChart");
+                                    // Load tasks and links data
+                                    gantt.parse({
+                                        data: [
+                                            {id: 1, text: 'Project Kickoff', start_date: '2023-07-01', duration: 1},
+                                            {id: 2, text: 'Site Preparation', start_date: '2023-07-02', duration: 14},
+                                            {id: 3, text: 'Structural Completion', start_date: '2023-07-16', duration: 28},
+                                            // ... other tasks
+                                        ],
+                                        links: [
+                                            {id: 1, source: 1, target: 2, type: '0'},
+                                            {id: 2, source: 2, target: 3, type: '0'},
+                                            // ... other links
+                                        ]
+                                    });
+                                </script>
+                            </div>
+                        </div>
+
+                        <!-- ENDBUDGET Monitoring -->
+
+
+
                 <!-- END Columns -->
                 <!-- Page Footer -->
                 <div class="block">
@@ -347,6 +1189,9 @@
         </div>
         <!-- END Page Container -->
         <!-- Scripts -->
+
+
+
         <script src="assets/js/core/jquery.min.js"></script>
         <script src="assets/js/plugins/jquery.appear.min.js"></script>
         <script src="assets/js/plugins/jquery.countTo.min.js"></script>
