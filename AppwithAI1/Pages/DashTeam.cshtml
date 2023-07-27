@@ -1,0 +1,411 @@
+﻿@page
+@model AppwithAI1.Pages.DashTeamModel
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0">
+
+
+
+<!-- Web fonts -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway:200,300,400,600,700&Open+Sans:300,400,600,700">
+
+<!-- Bootstrap and Ares CSS -->
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<link rel="stylesheet" href="css/animate.min.css">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+ <!-- Include the AnyChart library and the custom CSS file -->
+        <script src="https://cdn.anychart.com/releases/v8/js/anychart-base.min.js"></script>
+        <script src="https://cdn.anychart.com/releases/v8/js/anychart-ui.min.js"></script>
+        <script src="https://cdn.anychart.com/releases/v8/js/anychart-exports.min.js"></script>
+        <script src="https://cdn.anychart.com/releases/v8/js/anychart-gantt.min.js"></script>
+        <script src="https://cdn.anychart.com/releases/v8/js/anychart-data-adapter.min.js"></script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <link href="https://unpkg.com/vis-network@7.6.2/dist/vis-network.min.css" rel="stylesheet" type="text/css"/>
+        <script type="text/javascript" src="https://unpkg.com/vis-network@7.6.2/dist/vis-network.min.js"></script>
+
+
+        <!-- Include the Materialize CSS library -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+        <!-- Page Container -->
+
+        <style>
+            /* Add the Materialize grid classes to the containers */
+
+            #container {
+                display: flex;
+                flex-direction: column;
+                width: 100%;
+                height: 100%;
+                box-sizing: border-box;
+                /* Add the Materialize grid class */
+                class ="container";
+            }
+
+            .chart-size {
+                width: 20px;
+                height: 20px;
+            }
+            .form-group {
+                margin-bottom: 15px; /* Adjust this value as needed */
+            }
+
+        </style>
+
+        <div id="page-container">
+            <!-- Header -->
+            <header id="page-header">
+                <div class="h3 text-right pull-right hidden-xs">
+                    <div class="text-crystal font-w300">USER_LOGGED_IN</div>
+                </div>
+                <h1 class="h3 font-w200">
+                    <span class="text-crystal">//</span> <a class="link-sf font-w300" href="index.html">Team_Dashboard [internal]</a>
+                </h1>
+                <div class="text-center">
+                    <img src="/Blue_Logo.png" style="width:150px;height:150px;" />
+                    <h1 class="display-4">cybereum</h1>
+                </div>
+
+            </header>
+            <!-- END Header -->
+            <!-- Main Content -->
+            <main id="page-main">
+                <!-- Columns -->
+
+
+            <!-- ADD TEAM  -->
+                <div class="block">                        
+                    <div class="add-user-block">
+                        <h2>Add Internal Participant</h2>
+                        <form action="/add_user" method="post">
+                            <div class="form-group">
+                                <label for="username">Username:</label>
+                                <input type="text" id="username" name="username" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email:</label>
+                                <input type="email" id="email" name="email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="role">Role:</label>
+                                <select id="role" name="role">
+                                    <option value="project_manager">Project Manager</option>
+                                    <option value="civil_engineer">Civil Engineer</option>
+                                    <option value="mechanical_engineer">Mechanical Engineer</option>
+                                    <option value="electrical_engineer">Electrical Engineer</option>
+                                    <option value="software_engineer">Software Engineer</option>
+                                    <option value="architect">Architect</option>
+                                    <option value="construction_manager">Construction Manager</option>
+                                    <option value="quality_assurance">Quality Assurance</option>
+                                    <option value="safety_officer">Safety Officer</option>
+                                    <!-- Add more roles as needed -->
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <button type="submit">Add Participant</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            <!-- ADD TEAM  END-->
+        <!-- Card 3: Add Participants -->
+        <div class="dashboard-card">
+            <h2>Add External Participant</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col" class="white-text">Name</th>
+                        <th scope="col" class="white-text">Role</th>
+                        <th scope="col" class="white-text">Company</th>
+                        <th scope="col" class="white-text">Email</th>
+                        <th scope="col" class="white-text">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="participant-list">
+                    <!-- Participants will be populated here -->
+                </tbody>
+            </table>
+
+            <form>
+                <div class="form-group">
+                    <label for="participantName">Name:</label>
+                    <input type="text" class="form-control" id="participantName" placeholder="Enter participant's name">
+                </div>
+                <div class="form-group">
+                    <label for="participantRole">Role:</label>
+                    <input type="text" class="form-control" id="participantRole" placeholder="Enter participant's role">
+                </div>
+                <div class="form-group">
+                    <label for="participantCompany">Company:</label>
+                    <input type="text" class="form-control" id="participantCompany" placeholder="Enter participant's company">
+                </div>
+                <div class="form-group">
+                    <label for="participantEmail">Email:</label>
+                    <input type="email" class="form-control" id="participantEmail" placeholder="Enter participant's email">
+                </div>
+
+                <button type="submit" class="btn btn-success">Add Participant</button>
+            </form>
+        </div>
+        <!-- Card 4: Add Project Team -->
+        <div class="dashboard-card">
+            <h2>Project Team</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col" class="white-text">Name</th>
+                        <th scope="col" class="white-text">Department</th>
+                        <th scope="col" class="white-text">Role</th>
+                        <th scope="col" class="white-text">Supervisor</th>
+                        <th scope="col" class="white-text">Contact Information</th>
+                        <th scope="col" class="white-text">Assigned Tasks</th>
+                        <th scope="col" class="white-text">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="team-list">
+                    <!-- Team members will be populated here -->
+                </tbody>
+            </table>
+
+            <form>
+                <div class="form-group">
+                    <label for="teamMemberName">Name:</label>
+                    <input type="text" class="form-control" id="teamMemberName" placeholder="Enter team member's name">
+                </div>
+                <div class="form-group">
+                    <label for="teamMemberDepartment">Department:</label>
+                    <input type="text" class="form-control" id="teamMemberDepartment" placeholder="Enter team member's department">
+                </div>
+                <div class="form-group">
+                    <label for="teamMemberRole">Role:</label>
+                    <input type="text" class="form-control" id="teamMemberRole" placeholder="Enter team member's role">
+                </div>
+                <div class="form-group">
+                    <label for="teamMemberFocus">Member Focus:</label>
+                    <select class="form-control" id="teamMemberFocus">
+                        <option value="">Select Member Focus</option>
+                        <option value="Engineering">Engineering</option>
+                        <option value="Procurement">Procurement</option>
+                        <option value="Construction">Construction</option>
+                        <option value="Management">Management</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="teamMemberSupervisor">Supervisor:</label>
+                    <input type="text" class="form-control" id="teamMemberSupervisor" placeholder="Enter team member's supervisor">
+                </div>
+                <div class="form-group">
+                    <label for="teamMemberContact">Contact Information:</label>
+                    <input type="text" class="form-control" id="teamMemberContact" placeholder="Enter team member's contact information">
+                </div>
+                <div class="form-group">
+                    <label for="teamMemberTasks">Assigned Tasks:</label>
+                    <textarea class="form-control" id="teamMemberTasks" rows="3" placeholder="Enter tasks assigned to the team member"></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-success">Add Team Member</button>
+            </form>
+        </div>
+
+        <!-- TEAM MATRIX -->
+        <div class="block">
+
+            <div class="block-header">
+                <h2 class="block-title text-white">Project Team Member Allocation</h2>
+            </div>
+            <div class="block-content">
+                <canvas id="teamAllocation"></canvas>
+                <script>
+                    // Team Member Allocation
+                    var teamAllocationCtx = document.getElementById('teamAllocation').getContext('2d');
+                    var teamAllocationChart = new Chart(teamAllocationCtx, {
+                        type: 'doughnut',
+                        data: {
+                            labels: ['Engineering', 'Construction', 'Procurement', 'Management'],
+                            datasets: [{
+                                data: [8, 15, 5, 4],
+                                backgroundColor: ['#36b9cc', '#f6c23e', '#1cc88a', '#4e73df']
+                            }]
+                        },
+                        options: {
+                            cutoutPercentage: 40, // Adjust this value for desired compactness
+                            responsive: true,
+                            legend: {
+                                display: true,
+                                labels: {
+                                    fontColor: 'white'
+                                }
+                            }
+                        }
+                    });
+                </script>
+            </div>
+
+            <div class="block-header">
+                <h2 class="block-title text-white">Project Status by Department</h2>
+            </div>
+            <div class="block-content">
+                <canvas id="projectStatus"></canvas>
+                <script>
+                    // Project Status by Department
+                    var projectStatusCtx = document.getElementById('projectStatus').getContext('2d');
+                    var projectStatusChart = new Chart(projectStatusCtx, {
+                        type: 'bar',
+                        data: {
+                            labels: ['Completed', 'In Progress', 'Not Started'],
+                            datasets: [{
+                                label: 'Engineering',
+                                data: [3, 2, 1],
+                                backgroundColor: '#36b9cc'
+                            }, {
+                                label: 'Construction',
+                                data: [4, 3, 0],
+                                backgroundColor: '#f6c23e'
+                            }, {
+                                label: 'Procurement',
+                                data: [2, 4, 1],
+                                backgroundColor: '#1cc88a'
+                            }, {
+                                label: 'Management',
+                                data: [5, 1, 0],
+                                backgroundColor: '#4e73df'
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero: true,
+                                        fontColor: 'white'
+                                    }
+                                }],
+                                xAxes: [{
+                                    ticks: {
+                                        fontColor: 'white'
+                                    }
+                                }]
+                            },
+                            legend: {
+                                display: true,
+                                labels: {
+                                    fontColor: 'white'
+                                }
+                            }
+                        }
+                    });
+                </script>
+            </div>
+
+        </div>
+        <!-- END TEAM MATRIX -->
+
+        <!-- RESOURCE UTILIZATION -->
+
+            <div class="block">
+                <div class="block-header">
+                    <h2 class="block-title" style="color: white;">Resource Utilization with Predictive Analytics</h2>
+                </div>
+                <div class="block-content">
+                    <canvas id="resourceUtilization" width="900" height="600"></canvas>
+                    <script>
+                        var ctx = document.getElementById('resourceUtilization').getContext('2d');
+                        var chart = new Chart(ctx, {
+                            type: 'line',
+                            data: {
+                                labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5', 'Week 6', 'Week 7', 'Week 8'],
+                                datasets: [
+                                    {
+                                        label: 'Actual Resource Utilization (%)',
+                                        data: [60, 65, 75, 80, 85, 90, 88, 87],
+                                        borderColor: 'rgba(75, 192, 192, 1)',
+                                        fill: false
+                                    },
+                                    {
+                                        label: 'Predicted Resource Utilization (%)',
+                                        data: [null, null, null, null, null, null, 87, 86, 85],
+                                        borderColor: 'rgba(153, 102, 255, 1)',
+                                        fill: false,
+                                        borderDash: [5, 5]
+                                    }
+                                ]
+                            },
+                            options: {
+                                responsive: true,
+                                title: {
+                                    display: true,
+                                    text: 'Weekly Resource Utilization',
+                                    fontColor: 'white'
+                                },
+                                tooltips: {
+                                    mode: 'index',
+                                    intersect: false,
+                                },
+                                hover: {
+                                    mode: 'nearest',
+                                    intersect: true
+                                },
+                                scales: {
+                                    xAxes: [{
+                                        display: true,
+                                        scaleLabel: {
+                                            display: true,
+                                            labelString: 'Week',
+                                            fontColor: 'white'
+                                        },
+                                        ticks: {
+                                            fontColor: 'white'
+                                        }
+                                    }],
+                                    yAxes: [{
+                                        display: true,
+                                        scaleLabel: {
+                                            display: true,
+                                            labelString: 'Utilization (%)',
+                                            fontColor: 'white'
+                                        },
+                                        ticks: {
+                                            beginAtZero: true,
+                                            max: 100,
+                                            fontColor: 'white'
+                                        }
+                                    }]
+                                },
+                                legend: {
+                                    labels: {
+                                        fontColor: 'white'
+                                    }
+                                }
+                            }
+                        });
+                    </script>
+                </div>
+            </div>
+
+
+    <!-- END RESOURCE UTILIZATION -->
+
+
+
+        <script src="assets/js/core/jquery.min.js"></script>
+        <script src="assets/js/plugins/jquery.appear.min.js"></script>
+        <script src="assets/js/plugins/jquery.countTo.min.js"></script>
+        <script src="assets/js/plugins/jquery.easypiechart.min.js"></script>
+        <script src="assets/js/ares.js"></script>
+
+        <!-- Page JS Code -->
+        <script>
+            jQuery(function () {
+                // Init page helpers (Appear + CountTo + Easy Pie Chart plugins)
+                Ares.initHelpers(['appear', 'appear-countTo', 'easy-pie-chart']);
+            });
+        </script>

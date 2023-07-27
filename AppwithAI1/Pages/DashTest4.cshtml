@@ -636,8 +636,8 @@
         <div class="dashboard-card">
             <h3>Impact of Delays</h3>
             <ul class="impact-list">
-                <li>Delay in Activity 23 impacts Milestone 3.</li>
-                <li>Delay in Milestone 3 impacts Activity 42, 45.</li>
+                <li><p>Delay in Activity 23 impacts Milestone 3.</p></li>
+                <li><p>Delay in Milestone 3 impacts Activity 42, 45.</p></li>
                 <!-- ... -->
             </ul>
         </div>
@@ -721,9 +721,127 @@
     </script>
 
 
-    </script>
+  </section>
 
+
+<!-- RISK MATRIX -->
+<section class="dashboard-section dependency-analysis">
+<div class="dashboard-card">
+    <div class="block-header">
+        <h2 class="block-title text-white"><i class="fas fa-exclamation-triangle"></i> Risk Matrix</h2>
+    </div>
+    <div class="block-content">
+        <div class="row">
+            <div class="col-md-6">
+                <canvas id="riskMatrix"></canvas>
+            </div>
+            <div class="col-md-6">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th style="color: white;"><i class="fas fa-exclamation-circle"></i> Risk</th>
+                            <th style="color: white;"><i class="fas fa-percentage"></i> Probability</th>
+                        </tr>
+                    </thead>
+                        <tbody id="riskTableBody" style="color: white;">></tbody>
+                </table>
+            </div>
+        </div>
+        <script>
+            var ctx = document.getElementById('riskMatrix').getContext('2d');
+            var chart = new Chart(ctx, {
+                type: 'scatter',
+                data: {
+                    datasets: [{
+                        label: 'Risks',
+                        data: [
+                            { x: 0.2, y: 0.8, name: 'Supply Chain Disruption', probability: 'Low' },
+                            { x: 0.4, y: 0.9, name: 'Budget Overrun', probability: 'Medium' },
+                            { x: 0.3, y: 0.7, name: 'Scope Creep', probability: 'Low' },
+                            { x: 0.7, y: 0.5, name: 'Technical Failure', probability: 'High' },
+                            { x: 0.5, y: 0.3, name: 'Regulatory Changes', probability: 'Medium' },
+                            { x: 0.9, y: 0.2, name: 'Safety Incident', probability: 'High' },
+                            { x: 0.6, y: 0.6, name: 'Resource Shortage', probability: 'High' },
+                            { x: 0.8, y: 0.4, name: 'Schedule Delay', probability: 'High' }
+                        ],
+                        backgroundColor: ['#f6c23e', '#e74a3b', '#1cc88a', '#4e73df', '#36b9cc', '#ff6384', '#8c76e4', '#f9a825'],
+                        pointStyle: 'circle',
+                        pointRadius: 10,
+                        hoverRadius: 12
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Impact',
+                                color: 'white',
+                                font: {
+                                    size: 14
+                                }
+                            },
+                            ticks: {
+                                color: 'white',
+                                beginAtZero: true,
+                                max: 1
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Probability',
+                                color: 'white',
+                                font: {
+                                    size: 14
+                                }
+                            },
+                            ticks: {
+                                color: 'white',
+                                beginAtZero: true,
+                                max: 1
+                            }
+                        }
+                    },
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function (context) {
+                                    var risk = context.dataset.data[context.dataIndex];
+                                    return risk.name + ' (Probability: ' + risk.probability + ')';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Populate the risk table
+            var risks = chart.data.datasets[0].data;
+            var riskTableBody = document.getElementById('riskTableBody');
+
+            risks.forEach(function (risk) {
+                var row = document.createElement('tr');
+                var nameCell = document.createElement('td');
+                var probabilityCell = document.createElement('td');
+
+                nameCell.textContent = risk.name;
+                probabilityCell.textContent = risk.probability;
+
+                nameCell.style.color = 'white';
+                probabilityCell.style.color = 'white';
+
+                row.appendChild(nameCell);
+                row.appendChild(probabilityCell);
+
+                riskTableBody.appendChild(row);
+            });
+        </script>
+    </div>
+</div>
 </section>
+
+<!-- END RISK MATRIX -->
 
 
 <div class="dashboard-section">

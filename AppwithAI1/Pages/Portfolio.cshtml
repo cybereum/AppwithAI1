@@ -58,6 +58,17 @@
         box-shadow: 0 0 5px #8ce6ff;
     }
 
+    .chart-container {
+        display: flex; /* Creates a flexbox layout */
+        justify-content: space-around; /* Centers the charts horizontally with equal space around them */
+        align-items: center; /* Centers the charts vertically */
+        flex-wrap: wrap; /* Allows the charts to wrap to the next line on smaller screens */
+    }
+
+    .chart-item {
+        flex-basis: 45%; /* Sets a base width for each chart. It will shrink and grow from this point */
+    }
+
 </style>
 
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet"> 
@@ -235,5 +246,90 @@
         </table>
     </div>
 </div>
+<!-- TEAM MATRIX -->
+<div class="card">
+    <div class="card-body">
+        <h2 class="block-title text-white">Team Member Allocation</h2>
+    </div>
+    <div class="block-content">
+        <div class="chart-container">
+            <!-- Added chart-container div to hold the charts -->
+            <div class="chart-item">
+                <canvas id="teamAllocation"></canvas>
+            </div>
+            <div class="chart-item">
+                <canvas id="projectStatus"></canvas>
+            </div>
+        </div>
+        <script>
+            // Team Member Allocation
+            var teamAllocationCtx = document.getElementById('teamAllocation').getContext('2d');
+            var teamAllocationChart = new Chart(teamAllocationCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Engineering', 'Construction', 'Procurement', 'Management'],
+                    datasets: [{
+                        data: [8, 15, 5, 4],
+                        backgroundColor: ['#36b9cc', '#f6c23e', '#1cc88a', '#4e73df']
+                    }]
+                },
+                options: {
+                    legend: {
+                        display: true,
+                        labels: {
+                            fontColor: 'white'
+                        }
+                    }
+                }
+            });
+
+            // Project Status
+            var projectStatusCtx = document.getElementById('projectStatus').getContext('2d');
+            var projectStatusChart = new Chart(projectStatusCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Project 1', 'Project 2', 'Project 3', 'Project 4', 'Project 5'],
+                    datasets: [{
+                        label: 'Completed',
+                        data: [3, 4, 2, 5, 1],
+                        backgroundColor: '#36b9cc'
+                    },
+                    {
+                        label: 'In Progress',
+                        data: [2, 3, 4, 1, 2],
+                        backgroundColor: '#f6c23e'
+                    },
+                    {
+                        label: 'Not Started',
+                        data: [1, 0, 1, 0, 2],
+                        backgroundColor: '#4e73df'
+                    }]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true,
+                                fontColor: 'white'
+                            }
+                        }],
+                        xAxes: [{
+                            ticks: {
+                                fontColor: 'white'
+                            }
+                        }]
+                    },
+                    legend: {
+                        display: true,
+                        labels: {
+                            fontColor: 'white'
+                        }
+                    }
+                }
+            });
+        </script>
+    </div>
+</div>
 
 
+<!-- END TEAM MATRIX -->
